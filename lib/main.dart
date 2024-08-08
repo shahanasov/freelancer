@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance/presentation/login/login.dart';
+import 'package:freelance/presentation/Buildprofile/buildprofile.dart';
 import 'package:freelance/presentation/login/widgets/bloc/toggle_bloc.dart';
 
 main() {
@@ -19,9 +19,13 @@ class MyApp extends StatelessWidget {
           child: Container(),
         )
       ],
-      child: const MaterialApp(
+      child:  MaterialApp(
+        themeMode: ThemeMode.system,
+        theme: ThemeData.light(),
+        darkTheme:ThemeData.dark(),
+        title: 'Freelnce',
         debugShowCheckedModeBanner: false,
-        home: LoginPage(),
+        home: const BuildProfile(),
       ),
     );
   }

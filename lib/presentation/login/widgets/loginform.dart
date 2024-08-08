@@ -13,19 +13,21 @@ class LoginForm extends StatelessWidget {
         // crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           TextFormField(
-            decoration: const InputDecoration(
+            decoration:  InputDecoration(
                 hintText: 'Enter email or username',
-                border: UnderlineInputBorder()),
+                hintStyle: TextStyle(color: black),
+                border: const UnderlineInputBorder()),
           ),
           TextFormField(
             obscureText: true,
-            decoration: const InputDecoration(
-                suffixIcon: Icon(
+            decoration:  InputDecoration(
+                suffixIcon: const Icon(
                   Icons.remove_red_eye_sharp,
                   size: Checkbox.width,
                 ),
                 hintText: 'Password',
-                border: UnderlineInputBorder()),
+                hintStyle: TextStyle(color: black),
+                border: const UnderlineInputBorder()),
           ),
           const SizedBox(
             height: 10,
@@ -39,7 +41,6 @@ class LoginForm extends StatelessWidget {
           TextButton(
               style: ButtonStyle(
                   minimumSize: MaterialStateProperty.all(const Size(192, 50)),
-                  // maximumSize: MaterialStateProperty.all(const Size(500, 50)),
                   backgroundColor: MaterialStateProperty.all(black),
                   foregroundColor: MaterialStatePropertyAll(white)),
               onPressed: () {},

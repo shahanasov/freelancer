@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.6
   bloc: ^8.1.4
+  intl_phone_field: ^3.2.0
+  csc_picker: ^0.2.7
+  
   
 
 dev_dependencies:

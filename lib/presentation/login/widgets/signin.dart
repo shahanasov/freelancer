@@ -12,17 +12,22 @@ class SignIn extends StatelessWidget {
           child: Column(
         children: [
           TextFormField(
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
                 hintText: 'Enter email or username',
-                border: UnderlineInputBorder()),
+                hintStyle: TextStyle(color: black),
+                border: const UnderlineInputBorder()),
           ),
           TextFormField(
-            decoration: const InputDecoration(
-                hintText: 'Password', border: UnderlineInputBorder()),
+            decoration: InputDecoration(
+                hintText: 'Password',
+                hintStyle: TextStyle(color: black),
+                border: const UnderlineInputBorder()),
           ),
           TextFormField(
-            decoration: const InputDecoration(
-                hintText: 'Confirm Password', border: UnderlineInputBorder()),
+            decoration: InputDecoration(
+                hintText: 'Confirm Password',
+                hintStyle: TextStyle(color: black),
+                border: const UnderlineInputBorder()),
           ),
           const SizedBox(
             height: 35,
