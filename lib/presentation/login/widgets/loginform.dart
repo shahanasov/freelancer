@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freelance/presentation/Buildprofile/upload/uploadcv.dart';
 import 'package:freelance/theme/color.dart';
 
 class LoginForm extends StatelessWidget {
@@ -13,14 +14,14 @@ class LoginForm extends StatelessWidget {
         // crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           TextFormField(
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
                 hintText: 'Enter email or username',
                 hintStyle: TextStyle(color: black),
                 border: const UnderlineInputBorder()),
           ),
           TextFormField(
             obscureText: true,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
                 suffixIcon: const Icon(
                   Icons.remove_red_eye_sharp,
                   size: Checkbox.width,
@@ -43,7 +44,10 @@ class LoginForm extends StatelessWidget {
                   minimumSize: MaterialStateProperty.all(const Size(192, 50)),
                   backgroundColor: MaterialStateProperty.all(black),
                   foregroundColor: MaterialStatePropertyAll(white)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const UploadCv()));
+              },
               child: const Text('Login')),
           const SizedBox(
             height: 35,
@@ -60,7 +64,10 @@ class LoginForm extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 30,
                       backgroundColor: white,
-                      child: Image.asset("assets/images/facelogo.png",fit: BoxFit.fill,),
+                      child: Image.asset(
+                        "assets/images/facelogo.png",
+                        fit: BoxFit.fill,
+                      ),
                     )),
                 Material(
                     elevation: 4,

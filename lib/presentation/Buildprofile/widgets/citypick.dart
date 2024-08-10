@@ -20,40 +20,42 @@ class _CitySelectState extends State<CitySelect> {
     return CSCPicker(
       showCities: true,
       showStates: true,
-    
+
       // flagState: CountryFlag.DISABLE,
       dropdownDecoration: BoxDecoration(
-        
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
           color: white,
-          border: Border.all(color: Colors.grey.shade300, width: 1)),
-      countrySearchPlaceholder: "Country" ,
-      stateSearchPlaceholder: "State",
-      citySearchPlaceholder: "City",
+          border: Border.all(color: white, width: 6)),
+      countrySearchPlaceholder: "Search Country",
+      stateSearchPlaceholder: "Search State",
+      citySearchPlaceholder: "Search City",
+
+      disabledDropdownDecoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+          color:white,
+          //  Colors.grey.shade300,
+          border: Border.all(color: white, width: 6)),
 
       ///labels for dropdown
       countryDropdownLabel: "Country",
       stateDropdownLabel: "State",
       cityDropdownLabel: "City",
 
-       
-      
-              onCountryChanged: (value) {
-      			setState(() {
-      					countryValue = value;
-      				});
-                  },
-                  onStateChanged:(value) {
-                      setState(() {
-      					stateValue = value ??'';
-      				});
-                  },
-                  onCityChanged:(value) {
-                  setState(() {
-                      cityValue = value ?? '';
-      			});
-      		},
-          
+      onCountryChanged: (value) {
+        setState(() {
+          countryValue = value;
+        });
+      },
+      onStateChanged: (value) {
+        setState(() {
+          stateValue = value ?? '';
+        });
+      },
+      onCityChanged: (value) {
+        setState(() {
+          cityValue = value ?? '';
+        });
+      },
     );
   }
 }

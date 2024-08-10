@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance/presentation/Buildprofile/buildprofile.dart';
+import 'package:freelance/presentation/bottom/bloc/bloc/bottomnavigation_bloc.dart';
+import 'package:freelance/presentation/login/login.dart';
 import 'package:freelance/presentation/login/widgets/bloc/toggle_bloc.dart';
 
 main() {
@@ -16,16 +17,18 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => ToggleBloc(),
-          child: Container(),
+        ),
+        BlocProvider(
+          create: (context) => BottomNavigationBloc(),
         )
       ],
-      child:  MaterialApp(
+      child: MaterialApp(
         themeMode: ThemeMode.system,
         theme: ThemeData.light(),
-        darkTheme:ThemeData.dark(),
+        darkTheme: ThemeData.dark(),
         title: 'Freelnce',
         debugShowCheckedModeBanner: false,
-        home: const BuildProfile(),
+        home: const LoginPage(),
       ),
     );
   }

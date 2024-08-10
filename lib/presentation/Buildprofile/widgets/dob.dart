@@ -31,7 +31,7 @@ class _DOBWidgetState extends State<DOBWidget> {
   Future<void> selectDate(context) async {
   DateTime? picked=  await showDatePicker(
       context: context,
-      firstDate: DateTime(1000),
+      firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
 

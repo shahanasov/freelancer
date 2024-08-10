@@ -3,6 +3,7 @@ import 'package:freelance/presentation/Buildprofile/widgets/addskills.dart';
 import 'package:freelance/presentation/Buildprofile/widgets/citypick.dart';
 import 'package:freelance/presentation/Buildprofile/widgets/dob.dart';
 import 'package:freelance/presentation/Buildprofile/widgets/dropdown.dart';
+import 'package:freelance/presentation/bottom/bottomnav.dart';
 import 'package:freelance/theme/color.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -99,7 +100,29 @@ class BuildProfile extends StatelessWidget {
                     height: 10,
                   ),
 
-                  const SkillAdding(),
+                  const SkillAdding(
+                    hintText: 'Enter a skill',
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const SkillAdding(
+                    hintText: 'Enter Your Services',
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextButton(
+                      style: ButtonStyle(
+                          minimumSize:
+                              MaterialStateProperty.all(const Size(192, 50)),
+                          backgroundColor: MaterialStateProperty.all(white),
+                          foregroundColor: MaterialStatePropertyAll(black)),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const BottomNav()));
+                      },
+                      child: const Text('Submit')),
                 ],
               ),
             ),

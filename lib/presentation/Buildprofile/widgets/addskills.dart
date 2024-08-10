@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:freelance/theme/color.dart';
 
 class SkillAdding extends StatefulWidget {
-  const SkillAdding({super.key});
+ final String hintText;
+   const SkillAdding({super.key, required this.hintText});
 
   @override
   State<SkillAdding> createState() => _SkillAddingState();
@@ -11,6 +12,12 @@ class SkillAdding extends StatefulWidget {
 class _SkillAddingState extends State<SkillAdding> {
   final TextEditingController _skillController = TextEditingController();
   final List<String> _skills = [];
+  late String hint;
+  @override
+  void initState() {
+    hint=widget.hintText;
+    super.initState();
+  }
 
   void _addSkill() {
     String skill = _skillController.text.trim();
@@ -40,7 +47,7 @@ class _SkillAddingState extends State<SkillAdding> {
               ),
               filled: true,
               fillColor: white,
-              hintText: 'Enter a skill',
+              hintText:  hint,
               hintStyle: TextStyle(color: black),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15))),
