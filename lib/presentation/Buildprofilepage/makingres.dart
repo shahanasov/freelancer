@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/presentation/Buildprofile/buildprofile.dart';
+import 'package:freelance/presentation/Buildprofilepage/buildprofile/buildprofile.dart';
 import 'package:freelance/theme/color.dart';
 
 class ResposiveBuildProfile extends StatelessWidget {
@@ -9,11 +9,11 @@ class ResposiveBuildProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder:(context,constaints){
       if(constaints.maxWidth<600){
-        return const BuildProfile();
+        return  BuildProfile();
       }
       return Container(color: black,
-        child: const Padding(
-          padding: EdgeInsets.fromLTRB(400, 0, 400, 0),
+        child:  Padding(
+          padding: const EdgeInsets.fromLTRB(400, 0, 400, 0),
           child: BuildProfile(),
         ),
       );

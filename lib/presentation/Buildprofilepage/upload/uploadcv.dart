@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/presentation/Buildprofile/makingres.dart';
+import 'package:freelance/presentation/Buildprofilepage/makingres.dart';
 import 'package:freelance/theme/color.dart';
 
 class UploadCv extends StatelessWidget {
@@ -24,7 +24,7 @@ class UploadCv extends StatelessWidget {
                       foregroundColor: MaterialStatePropertyAll(black)),
                 onPressed: (){
 
-              }, child: const Text('Upload Your cv')),
+              }, child: const Text('Upload Your Resume')),
               const SizedBox(height: 20,),
                Text('or',style: TextStyle(color: white),),
               const SizedBox(height: 20,),
@@ -36,7 +36,7 @@ class UploadCv extends StatelessWidget {
                 onPressed: (){
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => const ResposiveBuildProfile()));
-              }, child: const Text('Build a cv')),
+              }, child: const Text('Build a Resume')),
             ],
           ),
         ),

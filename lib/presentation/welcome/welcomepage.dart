@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/presentation/Buildprofile/makingres.dart';
-import 'package:freelance/presentation/Buildprofile/upload/uploadcv.dart';
+import 'package:freelance/presentation/Buildprofilepage/makingres.dart';
+import 'package:freelance/presentation/Buildprofilepage/upload/uploadcv.dart';
 import 'package:freelance/theme/color.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -10,6 +10,7 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
        appBar: AppBar(automaticallyImplyLeading: false,backgroundColor: Colors.transparent,),
+      // inbuildgradle 10th line app gradle buildgradle classpath "com.google.gms.google-services4.4.2"
       backgroundColor: black,
       body: Center(
         child: Column(

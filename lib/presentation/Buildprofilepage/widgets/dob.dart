@@ -2,18 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:freelance/theme/color.dart';
 
 class DOBWidget extends StatefulWidget {
-  const DOBWidget({super.key});
+   TextEditingController dob;
+   DOBWidget({super.key,required this.dob});
 
   @override
   State<DOBWidget> createState() => _DOBWidgetState();
 }
 
 class _DOBWidgetState extends State<DOBWidget> {
-  TextEditingController dob=TextEditingController();
+  late TextEditingController dob;
+  @override
+  void initState() {
+    dob=widget.dob;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     
     return TextField(
+      style: TextStyle(color: black),
       controller: dob,
       keyboardType: TextInputType.none,
       decoration: InputDecoration(

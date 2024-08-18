@@ -13,9 +13,9 @@ class _GenderDropdownState extends State<GenderDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      
+      borderRadius: const BorderRadius.all(Radius.circular(15)),
+        style: TextStyle(color: black),
         decoration: InputDecoration(
-          
             filled: true,
             fillColor: white,
             border:
@@ -24,6 +24,8 @@ class _GenderDropdownState extends State<GenderDropdown> {
           'Gender',
           style: TextStyle(color: black),
         ),
+        
+        dropdownColor: white,
         icon: const Icon(Icons.arrow_drop_down_rounded),
         value: dropdownitem,
         items: const [

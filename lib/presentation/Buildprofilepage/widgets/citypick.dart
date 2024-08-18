@@ -18,11 +18,14 @@ class _CitySelectState extends State<CitySelect> {
   @override
   Widget build(BuildContext context) {
     return CSCPicker(
+      selectedItemStyle:  TextStyle(color: black),
+      // style: TextStyle(color: black),
       showCities: true,
       showStates: true,
 
       // flagState: CountryFlag.DISABLE,
       dropdownDecoration: BoxDecoration(
+        
           borderRadius: const BorderRadius.all(Radius.circular(15)),
           color: white,
           border: Border.all(color: white, width: 6)),

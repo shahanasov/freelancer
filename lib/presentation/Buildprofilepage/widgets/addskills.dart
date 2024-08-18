@@ -40,6 +40,7 @@ class _SkillAddingState extends State<SkillAdding> {
     return Column(
       children: [
         TextField(
+          style: TextStyle(color: black),
           decoration: InputDecoration(
               suffixIcon: IconButton(
                 icon: const Icon(Icons.add),

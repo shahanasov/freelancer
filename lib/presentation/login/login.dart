@@ -19,22 +19,24 @@ class LoginPage extends StatelessWidget {
               color: white, borderRadius: BorderRadius.circular(20)),
           height: 523,
           width: 315,
-          child:  Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 50),
-                child: ToggleButton(),
-              ),
-              BlocBuilder<ToggleBloc, ToggleState>(
-                builder: (context, state) {
-                   if(state is SignUpState){
-                    return const SignIn();
-                  }else{
-                    return const LoginForm();
-                  }
-                },
-              )
-            ],
+          child:  SingleChildScrollView(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: ToggleButton(),
+                ),
+                BlocBuilder<ToggleBloc, ToggleState>(
+                  builder: (context, state) {
+                     if(state is SignUpState){
+                      return  SignIn();
+                    }else{
+                      return  LoginForm();
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
