@@ -15,3 +15,7 @@ class ProfileErrorState extends ProfilePageState {
 
   ProfileErrorState(this.message);
 }
+
+// class PostTabState extends ProfilePageState{}
+// class ResumeTabState extends ProfilePageState{}
+// class WorkTabState extends ProfilePageState{}

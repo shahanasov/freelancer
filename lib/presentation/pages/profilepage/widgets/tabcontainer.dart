@@ -15,7 +15,7 @@ class TabContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(25.0),
         
       ),
-      child: Center(child: Text(tabtext,style:const TextStyle(fontSize: 18),)),
+      child: Center(child: Text(tabtext,style: TextStyle(fontSize: 18,color: white),)),
     );
   }
 }

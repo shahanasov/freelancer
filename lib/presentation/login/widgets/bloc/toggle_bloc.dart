@@ -21,11 +21,12 @@ class ToggleBloc extends Bloc<ToggleEvent, ToggleState> {
     on<LoginSubmitted>(login);
     on<SignInSubmitted>(signin);
     on<SignOut>(signout);
+    on<GoogleSignIn>(googleSignin);
   }
 
   FutureOr<void> login(LoginSubmitted event, Emitter<ToggleState> emit) async {
     try {
-      await auth.signinwithEmailandPassword(event.email, event.password);
+      await  auth.signinwithEmailandPassword(event.email, event.password);
       emit(LoginSubmittedState());
     } catch (e) {
       emit(ErrorsignIn());
@@ -45,5 +46,13 @@ class ToggleBloc extends Bloc<ToggleEvent, ToggleState> {
   FutureOr<void> signout(SignOut event, Emitter<ToggleState> emit) async {
     await auth.signOut();
     emit(SignOutState());
+  }
+
+  FutureOr<void> googleSignin(GoogleSignIn event, Emitter<ToggleState> emit) async{
+    try{
+      print(await auth.signInwithGoogle());
+    }catch(e){
+      emit(ErrorsignIn());
+    }
   }
 }

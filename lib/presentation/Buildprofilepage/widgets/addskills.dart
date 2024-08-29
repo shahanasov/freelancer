@@ -3,7 +3,9 @@ import 'package:freelance/theme/color.dart';
 
 class SkillAdding extends StatefulWidget {
  final String hintText;
-   const SkillAdding({super.key, required this.hintText});
+  List<String> skills;
+  List<String> services;
+    SkillAdding({super.key, required this.hintText, required this.services,required this.skills});
 
   @override
   State<SkillAdding> createState() => _SkillAddingState();
@@ -11,11 +13,16 @@ class SkillAdding extends StatefulWidget {
 
 class _SkillAddingState extends State<SkillAdding> {
   final TextEditingController _skillController = TextEditingController();
-  final List<String> _skills = [];
+  
+  List<String> _skills = [];
+   List<String> _services= [];
+  
   late String hint;
   @override
   void initState() {
     hint=widget.hintText;
+  _skills=widget.skills;
+  _services=widget.services;
     super.initState();
   }
 
@@ -23,7 +30,7 @@ class _SkillAddingState extends State<SkillAdding> {
     String skill = _skillController.text.trim();
     if (skill.isNotEmpty && !_skills.contains(skill)) {
       setState(() {
-        _skills.add(skill);
+          _skills.add(skill);  
       });
     }
     _skillController.clear();

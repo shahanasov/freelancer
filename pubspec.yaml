@@ -43,6 +43,11 @@ dependencies:
   cloud_firestore:
   firebase_auth:
   firebase_database: ^10.4.9
+  google_sign_in: ^6.2.1
+  file_picker: ^8.0.0+1
+  firebase_storage: ^11.6.9
+  path_provider:
+  
   
   
   

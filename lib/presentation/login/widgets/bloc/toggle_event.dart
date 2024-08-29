@@ -15,6 +15,6 @@ class SignInSubmitted extends ToggleEvent{
   SignInSubmitted({required this.password, required this.email});
 }
 class SignOut extends ToggleEvent{}
-// class ShowPasswordEvent extends ToggleEvent{}
+class GoogleSignIn extends ToggleEvent{}
 
 

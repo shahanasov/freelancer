@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:freelance/db/model/userdetails.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Authentication {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -20,86 +21,50 @@ class Authentication {
     }
   }
 
-  Future<User?> signinwithEmailandPassword(
-      String email, String password) async {
+  // Future<User?>
+  signinwithEmailandPassword(String email, String password) async {
     try {
       UserCredential credential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       return credential.user;
     } catch (e) {
       // print('error duirng sign in :$e');
-      return null;
+      return e;
     }
   }
 
-  signOut() {
-    auth.signOut();
+  signOut() async {
+    //  await GoogleSignIn().signOut();
+    await auth.signOut();
   }
 
-  Future buildProflieSaving(
-      {required UserDetailsModel userdetailsmodel}) async {
-    final userdetail = FirebaseFirestore.instance.collection("UsersDetails");
-    // String id = userdetail.doc().id;
-    // final String? userId = FirebaseAuth.instance.currentUser?.uid;
-
-    //  await firestore.collection('UsersDetails').doc("1").set(userdetails);
-    final newUser = UserDetailsModel(
-      id: userId,
-      firstName: userdetailsmodel.firstName,
-      lastName: userdetailsmodel.lastName,
-      phone: userdetailsmodel.phone,
-      gender: userdetailsmodel.gender,
-      country: userdetailsmodel.country,
-      state: userdetailsmodel.state,
-      city: userdetailsmodel.city,
-      dob: userdetailsmodel.dob,
-      skills: userdetailsmodel.skills,
-      services: userdetailsmodel.services,
-    ).tojson();
-
-    userdetail.doc(userId).set(newUser);
-  }
-
-  Future<UserDetailsModel?> gettingDetailsofTheUser() async {
-    // final String? userId = FirebaseAuth.instance.currentUser?.uid;
-
-    if (userId == null) {
-      throw Exception('User ID is null');
-    }
-
+  signInwithGoogle() async {
     try {
-      final userDetailDoc = await FirebaseFirestore.instance
-          .collection('UsersDetails')
-          .doc(userId)
-          .get();
-
-      if (userDetailDoc.exists) {
-        return UserDetailsModel.fromSnapshot(userDetailDoc);
-      } else {
+      final GoogleSignInAccount? guser = await GoogleSignIn().signIn();
+      log((guser?.email).toString());
+      if (guser == null) {
         return null;
       }
-    } catch (e) {
-      // print(e);
+      final GoogleSignInAuthentication gauth = await guser.authentication;
+
+      final cred = GoogleAuthProvider.credential(
+          idToken: gauth.idToken, accessToken: gauth.accessToken);
+
+      return FirebaseAuth.instance.signInWithCredential(cred);
+    } on FirebaseException catch (e) {
+      log(e.code);
       return null;
     }
   }
 
-  editDetailsofTheUser({required UserDetailsModel userdetailsmodel}) async {
-    final userDetailDoc = FirebaseFirestore.instance;
-    final updated = UserDetailsModel(
-      id: userId,
-      firstName: userdetailsmodel.firstName,
-      lastName: userdetailsmodel.lastName,
-      phone: userdetailsmodel.phone,
-      gender: userdetailsmodel.gender,
-      country: userdetailsmodel.country,
-      state: userdetailsmodel.state,
-      city: userdetailsmodel.city,
-      dob: userdetailsmodel.dob,
-      skills: userdetailsmodel.skills,
-      services: userdetailsmodel.services,
-    ).tojson();
-
-    userDetailDoc.collection('UsersDetails').doc(userId).update(updated);
-  }
+//  userCheckingIfnewornot(){
+// ref.once().then((DatabaseEvent event) {
+//  DataSnapshot snapshot=event.snapshot;
+//  if(!snapshot.exists){
+//   ref.set({'isnew':true});
+//  }else{
+//   bool isNew =snapshot.value?['isnew']?? false;
+//  }
+// });
+//  }
 }

@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:freelance/theme/color.dart';
 
 class GenderDropdown extends StatefulWidget {
-  const GenderDropdown({super.key});
+  final TextEditingController genderController;
+  const GenderDropdown({super.key, required this.genderController});
 
   @override
   State<GenderDropdown> createState() => _GenderDropdownState();
 }
 
 class _GenderDropdownState extends State<GenderDropdown> {
+late TextEditingController genderController;
+@override
+  void initState() {
+    genderController =widget.genderController;
+    super.initState();
+  }
   String? dropdownitem;
   @override
   Widget build(BuildContext context) {
@@ -29,13 +36,14 @@ class _GenderDropdownState extends State<GenderDropdown> {
         icon: const Icon(Icons.arrow_drop_down_rounded),
         value: dropdownitem,
         items: const [
-          DropdownMenuItem(value: 'one', child: Text('Female')),
-          DropdownMenuItem(value: 'two', child: Text('Male')),
-          DropdownMenuItem(value: 'three', child: Text('Others'))
+          DropdownMenuItem(value: 'Female', child: Text('Female')),
+          DropdownMenuItem(value: 'Male', child: Text('Male')),
+          DropdownMenuItem(value: 'Others', child: Text('Others'))
         ],
         onChanged: (String? newValue) {
           setState(() {
             dropdownitem = newValue;
+            genderController.text=newValue!;
           });
         });
   }

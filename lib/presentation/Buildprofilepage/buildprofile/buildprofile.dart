@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance/db/functions/firebaseauth.dart';
+import 'package:freelance/db/functions/firebasedatabase.dart';
 import 'package:freelance/db/model/userdetails.dart';
 import 'package:freelance/presentation/Buildprofilepage/widgets/addskills.dart';
 import 'package:freelance/presentation/Buildprofilepage/widgets/citypick.dart';
@@ -22,9 +23,13 @@ class BuildProfile extends StatelessWidget {
   TextEditingController stateController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController dobController = TextEditingController();
-  TextEditingController skillController = TextEditingController();
-  TextEditingController servicesController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  // TextEditingController servicesController = TextEditingController();
+  List<String> skills = [];
+  List<String> services = [];
+
   Authentication auth = Authentication();
+  UserDatabaseFunctions storage = UserDatabaseFunctions();
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +70,8 @@ class BuildProfile extends StatelessWidget {
                       style: TextStyle(color: black),
                       controller: firstNameController,
                       decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: white)),
+                          // focusedBorder: OutlineInputBorder(
+                          //     borderSide: BorderSide(color: white)),
                           focusColor: white,
                           filled: true,
                           fillColor: white,
@@ -92,6 +97,26 @@ class BuildProfile extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
+                    TextFormField(
+                      minLines: 1,
+                      maxLines: 5,
+                      style: TextStyle(color: black),
+                      controller: descriptionController,
+                      decoration: InputDecoration(
+                          // focusedBorder: OutlineInputBorder(
+                          //     // borderSide: BorderSide(color: white)
+                          //     ),
+                          focusColor: white,
+                          filled: true,
+                          fillColor: white,
+                          hintText: 'Write a short description about you', //reached
+                          hintStyle: TextStyle(color: black),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15))),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     IntlPhoneField(
                       style: TextStyle(color: black),
 
@@ -110,26 +135,38 @@ class BuildProfile extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                     DOBWidget(dob: dobController,),
+                    DOBWidget(
+                      dob: dobController,
+                    ), //reached
                     const SizedBox(
                       height: 10,
                     ),
-                    const GenderDropdown(),
+                    GenderDropdown(
+                      genderController: genderController,
+                    ), //reached
                     const SizedBox(
                       height: 10,
                     ),
-                    const CitySelect(),
+                    CitySelect(
+                      countryController: countryController,
+                      cityController: cityController,
+                      stateController: stateController,
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const SkillAdding(
+                    SkillAdding(
+                      skills: skills,
                       hintText: 'Enter a skill',
+                      services: services,
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const SkillAdding(
+                    SkillAdding(
+                      services: services,
                       hintText: 'Enter Your Services',
+                      skills: skills,
                     ),
                     const SizedBox(
                       height: 10,
@@ -163,11 +200,10 @@ class BuildProfile extends StatelessWidget {
     final state = stateController.text.trim();
     final city = cityController.text.trim();
     final dob = dobController.text.trim();
-    final skills = skillController.text.trim();
-    final services = servicesController.text.trim();
+    final description=descriptionController.text.trim();
 
     final userDetails = UserDetailsModel(
-      // id:'',
+        // id:'',
         firstName: firstName,
         lastName: secondName,
         phone: phone,
@@ -176,9 +212,9 @@ class BuildProfile extends StatelessWidget {
         state: state,
         city: city,
         dob: dob,
-        skills: [skills],
-        services: [services]);
-    auth.buildProflieSaving( userdetailsmodel: userDetails);
+        skills: skills,
+        services: services, description: description);
+    storage.buildProflieSaving(userdetailsmodel: userDetails);
 
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const BottomNav()));

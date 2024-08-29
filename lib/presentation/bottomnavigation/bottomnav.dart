@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/bottomnavigation/bloc/bloc/bottomnavigation_bloc.dart';
 import 'package:freelance/presentation/pages/Home/homepage.dart';
+import 'package:freelance/presentation/pages/add_post_pages/add_post_page.dart';
 import 'package:freelance/presentation/pages/profilepage/profile.dart';
+import 'package:freelance/presentation/pages/search_page/search_page.dart';
 import 'package:freelance/theme/color.dart';
 
 List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
@@ -18,8 +20,8 @@ List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
 
 List<Widget> pages = <Widget>[
   const HomePage(),
-  const Center(child: Text('one')),
-  const Center(child: Text('two')),
+  const SearchPage(),
+  const  PostAddPage(),
   const Center(child: Text('theee')),
    const ProfilePage()
 ];

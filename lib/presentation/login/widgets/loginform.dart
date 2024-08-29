@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/bottomnavigation/bottomnav.dart';
 import 'package:freelance/presentation/login/widgets/bloc/toggle_bloc.dart';
 import 'package:freelance/presentation/login/widgets/forgotpassword.dart';
@@ -26,12 +27,12 @@ class LoginForm extends StatelessWidget {
                 style: TextStyle(color: black),
                 controller: emailController,
                 decoration: InputDecoration(
-                    hintText: 'Enter email or username',
+                    hintText: 'Enter email',
                     hintStyle: TextStyle(color: black),
                     border: const UnderlineInputBorder()),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Enter email or username';
+                    return 'Enter email';
                   }
                   return null;
                 },
@@ -58,7 +59,13 @@ class LoginForm extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.all(black),
                       foregroundColor: MaterialStatePropertyAll(white)),
                   onPressed: () async {
-                    login(context);
+                    final email = emailController.text.trim();
+                    final password = passwordController.text.trim();
+                    // login(context);
+                    if (formkey.currentState!.validate()) {
+                      context.read<ToggleBloc>().add(
+                          LoginSubmitted(password: password, email: email));
+                    }
                   },
                   child: const Text('Login')),
               const SizedBox(
@@ -81,22 +88,28 @@ class LoginForm extends StatelessWidget {
                             fit: BoxFit.fill,
                           ),
                         )),
-                    Material(
-                        elevation: 4,
-                        shape: const CircleBorder(),
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: white,
-                          child: Image.asset("assets/images/googlelogo.png"),
-                        )),
-                    Material(
-                        elevation: 4,
-                        shape: const CircleBorder(),
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: white,
-                          child: Image.asset("assets/images/metalogo.png"),
-                        )),
+                    InkWell(
+                      onTap: () {
+                        context.read<ToggleBloc>().add(GoogleSignIn());
+                        // print("${FirebaseAuth.instance.currentUser?.uid}....login");
+                      },
+                      child: Material(
+                          elevation: 4,
+                          shape: const CircleBorder(),
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: white,
+                            child: Image.asset("assets/images/googlelogo.png"),
+                          )),
+                    ),
+                    // Material(
+                    //     elevation: 4,
+                    //     shape: const CircleBorder(),
+                    //     child: CircleAvatar(
+                    //       radius: 30,
+                    //       backgroundColor: white,
+                    //       child: Image.asset("assets/images/metalogo.png"),
+                    //     )),
                   ],
                 ),
               )
@@ -117,41 +130,40 @@ class LoginForm extends StatelessWidget {
     // }
 
     String message = 'login failed';
-    //Validate username and password
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const BottomNav()));
-    } on FirebaseAuthException catch (e) {
-      // print('$e ..........is the error');
-      if (e.code == 'invalid-credential]') {
-        message = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        message = 'Wrong password provided for that user.';
-      } else if (e.code == 'mail address is badly formatted.') {
-        message = 'Incorrect mail id.';
-      } else {
-        message = 'Please check your email and password .';
-      }
-    }
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: const Text('Login failed'),
-              content: Text(message),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('OK'),
-                ),
-              ],
-            ));
     if (formkey.currentState!.validate()) {
-      context
-          .read<ToggleBloc>()
-          .add(LoginSubmitted(password: password, email: email));
+      // context.read<ToggleBloc>().add(LoginSubmitted(password: password, email: email));
+      //     print("${FirebaseAuth.instance.currentUser?.uid}....login");
+      //Validate username and password
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const BottomNav()));
+      } on FirebaseAuthException catch (e) {
+        // print('$e ..........is the error');
+        if (e.code == 'invalid-credential]') {
+          message = 'No user found for that email.';
+        } else if (e.code == 'wrong-password') {
+          message = 'Wrong password provided for that user.';
+        } else if (e.code == 'mail address is badly formatted.') {
+          message = 'Incorrect mail id.';
+        } else {
+          message = 'Please check your email and password .';
+        }
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text(message),
+                  content: Text(message),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ));
+      }
 
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => const BottomNav()));

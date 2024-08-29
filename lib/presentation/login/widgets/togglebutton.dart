@@ -55,7 +55,7 @@ class ToggleButton extends StatelessWidget {
                             context.read<ToggleBloc>().add(ToggleSignUP()),
                         child: Center(
                           child: Text(
-                            'Sign In',
+                            'Sign Up',
                             style: TextStyle(color: isLogin ? black : white),
                           ),
                         ),

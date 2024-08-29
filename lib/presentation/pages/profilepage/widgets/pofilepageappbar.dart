@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/model/userdetails.dart';
+import 'package:freelance/presentation/login/login.dart';
 import 'package:freelance/presentation/login/widgets/bloc/toggle_bloc.dart';
 import 'package:freelance/presentation/pages/profilepage/widgets/profilepagebody.dart';
 import 'package:freelance/theme/color.dart';
 
 class ProfilePageAppBar extends StatelessWidget {
-  final UserDetailsModel userDetailsModel;
+  final UserDetailsModel? userDetailsModel;
   const ProfilePageAppBar({
-    super.key, required this.userDetailsModel,
+    super.key,
+    this.userDetailsModel,
   });
 
   @override
@@ -17,69 +19,95 @@ class ProfilePageAppBar extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        endDrawer: Drawer(
-          child: ListView(
-            children: [
-              InkWell(
-                onTap: () {
-                  context.read<ToggleBloc>().add(SignOut());
-                },
-                child: const ListTile(
-                  title: Text('log out'),
-                ),
-              ),
-                InkWell(
-                onTap: () {
-                  // context.read<ToggleBloc>().add(SignOut());
-                },
-                child: const ListTile(
-                  title: Text('Edit Your profile'),
-                ),
-              )
-            ],
-      
-          ),
-        ),
-        drawerEnableOpenDragGesture: false,
-        appBar: PreferredSize(
-            preferredSize: const Size(double.infinity, 350),
-            child: AppBar(
-              automaticallyImplyLeading: false,
-              flexibleSpace: Stack(
+          endDrawer: Drawer(
+            child: BlocListener<ToggleBloc, ToggleState>(
+              listener: (context, state) {
+                if (state is SignOutState) {
+                  Navigator.pop(context);
+                }
+              },
+              child: ListView(
                 children: [
-                  Container(
-                    height: 180,
-                    width: double.infinity,
-                    color: black,
+                  InkWell(
+                    onTap: () {
+                      context.read<ToggleBloc>().add(SignOut());
+                    },
+                    child: const ListTile(
+                      title: Text('log out'),
+                    ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 110,),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 60,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(userDetailsModel.firstName,style: const TextStyle(fontSize: 30),),
-                        const SizedBox(
-                        height: 10,
-                      ),
-                      const Text('Position')
-                    ],
-                  ),
+                  InkWell(
+                    onTap: () {
+                      context.read<ToggleBloc>().add(SignOut());
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
+                    },
+                    child: const ListTile(
+                      title: Text('Edit Your profile'),
+                    ),
+                  )
                 ],
               ),
-            )),
-            body: const ProfilePageBody()
-      ),
+            ),
+          ),
+          drawerEnableOpenDragGesture: false,
+          appBar: PreferredSize(
+              preferredSize: const Size(double.infinity, 390),
+              child: AppBar(
+                automaticallyImplyLeading: false,
+                flexibleSpace: Stack(
+                  children: [
+                    Container(
+                      height: 180,
+                      width: double.infinity,
+                      color: black,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 80,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                           ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CircleAvatar(
+                            radius: 60,
+                            child: Image.asset(
+                              "assets/images/profilenew.jpg",
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                        ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "${userDetailsModel?.firstName} ${userDetailsModel?.lastName}",
+                          style: const TextStyle(fontSize: 30),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+                          child: Text(
+                            userDetailsModel?.description ?? 'Description',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5,
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )),
+          body: const ProfilePageBody()),
     );
   }
 }
-

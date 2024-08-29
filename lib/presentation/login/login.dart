@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/login/widgets/bloc/toggle_bloc.dart';
 import 'package:freelance/presentation/login/widgets/loginform.dart';
-import 'package:freelance/presentation/login/widgets/signin.dart';
+import 'package:freelance/presentation/login/widgets/signup.dart';
 import 'package:freelance/presentation/login/widgets/togglebutton.dart';
 import 'package:freelance/theme/color.dart';
 
@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
                 BlocBuilder<ToggleBloc, ToggleState>(
                   builder: (context, state) {
                      if(state is SignUpState){
-                      return  SignIn();
+                      return  SignUp();
                     }else{
                       return  LoginForm();
                     }
