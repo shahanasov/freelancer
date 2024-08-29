@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance/presentation/pages/Home/widgets/post_widget.dart';
 import 'package:freelance/presentation/pages/message_page/message_list.dart';
-import 'package:freelance/theme/color.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

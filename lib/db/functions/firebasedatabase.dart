@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -6,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:freelance/db/model/filesmodel.dart';
 import 'package:freelance/db/model/userdetails.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class UserDatabaseFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -100,16 +103,41 @@ class UserDatabaseFunctions {
             resumename: pickedFile.name,
             resumepath: cvpath); // Return the download URL if needed
       } catch (e) {
-        print('Error uploading file: $e');
+        // print('Error uploading file: $e');
         return null;
       }
     } else {
-      print('No file selected');
+      // print('No file selected');
       return null;
     }
   }
 
+  imageSelect() async {
+    final ImagePicker imagePicker = ImagePicker();
+    final XFile? pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    return pickedImage;
+  }
 
-  
-  
+  Future<File> convertUint8ListToFile(Uint8List imageBytes) async {
+    final tempDir = await getTemporaryDirectory();
+    final file = await File('${tempDir.path}/edited_image.png').create();
+    file.writeAsBytesSync(imageBytes);
+    return file;
+  }
+
+  uploadImageToFirebaseAsPost() async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child('');
+
+      // UploadTask task = ref.putFile();
+      // TaskSnapshot snapshot = await task;
+      // cvpath = await snapshot.ref.getDownloadURL();
+      // print('File uploaded successfully! Download URL: $pathstring');
+      return FilesModel(); // Return the download URL if needed
+    } catch (e) {
+      // print('Error uploading file: $e');
+      return null;
+    }
+  }
 }

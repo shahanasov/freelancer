@@ -14,9 +14,7 @@ class ProfilePage extends StatelessWidget {
       // buildWhen: (previous, current) => current is !PostTabState && current is !ResumeTabState && current is !WorkTabState,
       builder: (context, state) {
         if (state is ProfileLoadingState) {
-          return Container(
-            // color: Colors.red,
-          );
+          return const ProfilePageAppBar();
         } else if (state is ProfileErrorState) {
           return const ProfilePageAppBar();
         } else if (state is ProfileLoadedState) {

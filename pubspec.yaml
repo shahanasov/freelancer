@@ -47,6 +47,8 @@ dependencies:
   file_picker: ^8.0.0+1
   firebase_storage: ^11.6.9
   path_provider:
+  image_picker: ^1.0.8
+  image_editor_plus: ^1.0.5
   
   
   

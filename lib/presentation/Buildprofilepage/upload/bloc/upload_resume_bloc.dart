@@ -17,7 +17,7 @@ class UploadResumeBloc extends Bloc<UploadResumeEvent, UploadResumeState> {
 //somewhere  need to give loadingstate while waiting
     if(event is UploadingEvent){
       try{
-        // here
+        emit(UploadingResumeState());
        FilesModel? filesModel= await UserDatabaseFunctions().cvUpload(filesModel: FilesModel());
         emit(UploadedResume(filesModel: filesModel));
       }catch (e){

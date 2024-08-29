@@ -87,7 +87,8 @@ class ProfilePageAppBar extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          "${userDetailsModel?.firstName} ${userDetailsModel?.lastName}",
+                          userDetailsModel!=null?
+                          "${userDetailsModel?.firstName} ${userDetailsModel?.lastName}":'name',
                           style: const TextStyle(fontSize: 30),
                         ),
                         const SizedBox(

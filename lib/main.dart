@@ -12,6 +12,7 @@ import 'package:freelance/presentation/Buildprofilepage/upload/uploadcv.dart';
 import 'package:freelance/presentation/bottomnavigation/bottomnav.dart';
 import 'package:freelance/presentation/login/login.dart';
 import 'package:freelance/presentation/login/widgets/bloc/toggle_bloc.dart';
+import 'package:freelance/presentation/pages/add_post_pages/bloc/add_post_bloc.dart';
 import 'package:freelance/presentation/pages/profilepage/businesslogin/bloc/profile_page_bloc.dart';
 import 'package:freelance/presentation/pages/profilepage/tabs/bloc/tabs_bloc.dart';
 import 'package:freelance/presentation/welcome/businesslogic/bloc/bloc/splash_bloc.dart';
@@ -55,7 +56,9 @@ class MyApp extends StatelessWidget {
           child: Container(),
         ),
         BlocProvider(create: (context)=> UploadResumeBloc(),
-        )
+        ),
+        BlocProvider(create: (context)=> AddPostBloc(),
+        ),
       ],
       child: MaterialApp(
         themeMode: ThemeMode.system,
