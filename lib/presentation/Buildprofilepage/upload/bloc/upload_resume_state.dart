@@ -5,8 +5,8 @@ part of 'upload_resume_bloc.dart';
 final class UploadResumeInitial extends UploadResumeState {}
 final class UploadingResumeState extends UploadResumeState{}
 final class UploadedResume extends UploadResumeState{
-  final FilesModel? filesModel;
+  final ResumeModel? resumeModel;
 
-  UploadedResume({required this.filesModel});
+  UploadedResume({required this.resumeModel});
 }
 final class ErrorUploadState extends UploadResumeState{}

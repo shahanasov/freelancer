@@ -5,21 +5,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance/db/functions/firebaseauth.dart';
-import 'package:freelance/db/functions/firebasedatabase.dart';
-import 'package:freelance/presentation/Buildprofilepage/upload/bloc/upload_resume_bloc.dart';
-import 'package:freelance/presentation/Buildprofilepage/upload/uploadcv.dart';
+import 'package:freelance/db/services/firebaseauth.dart';
+import 'package:freelance/db/services/firebase_database.dart';
 import 'package:freelance/presentation/bottomnavigation/bottomnav.dart';
 import 'package:freelance/presentation/login/login.dart';
 import 'package:freelance/presentation/login/widgets/bloc/toggle_bloc.dart';
-import 'package:freelance/presentation/pages/add_post_pages/bloc/add_post_bloc.dart';
-import 'package:freelance/presentation/pages/profilepage/businesslogin/bloc/profile_page_bloc.dart';
-import 'package:freelance/presentation/pages/profilepage/tabs/bloc/tabs_bloc.dart';
+import 'package:freelance/presentation/pages/Home/bloc/home_page_bloc.dart';
+import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.dart';
+import 'package:freelance/presentation/pages/profile_page/tabs/bloc/tabs_bloc.dart';
+import 'package:freelance/presentation/pages/search_page/business_logic/bloc/search_bloc.dart';
 import 'package:freelance/presentation/welcome/businesslogic/bloc/bloc/splash_bloc.dart';
 import 'package:freelance/presentation/welcome/splashscreen.dart';
 
-import 'db/functions/firebase_options.dart';
+import 'db/services/firebase_options.dart';
+import 'presentation/Buildprofilepage/upload/bloc/upload_resume_bloc.dart';
+import 'presentation/Buildprofilepage/upload/uploadcv.dart';
 import 'presentation/bottomnavigation/bloc/bloc/bottomnavigation_bloc.dart';
+import 'presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +60,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context)=> UploadResumeBloc(),
         ),
         BlocProvider(create: (context)=> AddPostBloc(),
+        ),
+        BlocProvider(create: (context)=> SearchBloc(),
+        ),
+        BlocProvider(create: (context)=> HomePageBloc(),
         ),
       ],
       child: MaterialApp(

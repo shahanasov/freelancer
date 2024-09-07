@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/presentation/Buildprofilepage/makingres.dart';
-import 'package:freelance/presentation/Buildprofilepage/upload/uploadcv.dart';
 import 'package:freelance/theme/color.dart';
+
+import '../Buildprofilepage/makingres.dart';
+import '../Buildprofilepage/upload/uploadcv.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});

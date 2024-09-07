@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:freelance/db/functions/firebaseauth.dart';
+import 'package:freelance/db/services/firebaseauth.dart';
 
 part 'toggle_event.dart';
 part 'toggle_state.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:freelance/db/functions/firebasedatabase.dart';
-import 'package:freelance/db/model/filesmodel.dart';
+import 'package:freelance/db/services/firebase_database.dart';
+import 'package:freelance/db/model/cv_pdf_model.dart';
 
 
 part 'upload_resume_event.dart';
@@ -14,12 +14,12 @@ class UploadResumeBloc extends Bloc<UploadResumeEvent, UploadResumeState> {
   }
 
   FutureOr<void> upload(UploadResumeEvent event, Emitter<UploadResumeState> emit)async {
-//somewhere  need to give loadingstate while waiting
+
     if(event is UploadingEvent){
       try{
         emit(UploadingResumeState());
-       FilesModel? filesModel= await UserDatabaseFunctions().cvUpload(filesModel: FilesModel());
-        emit(UploadedResume(filesModel: filesModel));
+       ResumeModel? resumeModel= await UserDatabaseFunctions().cvUpload(resumeModel: ResumeModel());
+        emit(UploadedResume(resumeModel: resumeModel));
       }catch (e){
         emit(ErrorUploadState());
       }

@@ -7,6 +7,8 @@ import 'package:freelance/presentation/login/widgets/forgotpassword.dart';
 import 'package:freelance/presentation/login/widgets/showpassword.dart';
 import 'package:freelance/theme/color.dart';
 
+import '../../pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
+
 class LoginForm extends StatelessWidget {
   LoginForm({super.key});
 
@@ -118,16 +120,9 @@ class LoginForm extends StatelessWidget {
     );
   }
 
-  Future login(context) async {
+  Future login(BuildContext context) async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-
-    // // Check if user is already signed in
-    // User? user = FirebaseAuth.instance.currentUser;
-    // if (user != null) {
-    //   Navigator.pushReplacementNamed(context, '/home');
-    //   return;
-    // }
 
     String message = 'login failed';
     if (formkey.currentState!.validate()) {
@@ -151,6 +146,7 @@ class LoginForm extends StatelessWidget {
         } else {
           message = 'Please check your email and password .';
         }
+        // ignore: use_build_context_synchronously
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -164,7 +160,9 @@ class LoginForm extends StatelessWidget {
                   ],
                 ));
       }
-
+        // ignore: use_build_context_synchronously
+        context.read<ProfilePageBloc>().add(ProfileLoadEvent());
+      // ignore: use_build_context_synchronously
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => const BottomNav()));
     }

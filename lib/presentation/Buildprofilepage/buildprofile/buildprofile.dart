@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/db/functions/firebaseauth.dart';
-import 'package:freelance/db/functions/firebasedatabase.dart';
+import 'package:freelance/db/services/firebaseauth.dart';
+import 'package:freelance/db/services/firebase_database.dart';
 import 'package:freelance/db/model/userdetails.dart';
-import 'package:freelance/presentation/Buildprofilepage/widgets/addskills.dart';
-import 'package:freelance/presentation/Buildprofilepage/widgets/citypick.dart';
-import 'package:freelance/presentation/Buildprofilepage/widgets/dob.dart';
-import 'package:freelance/presentation/Buildprofilepage/widgets/dropdown.dart';
 import 'package:freelance/presentation/bottomnavigation/bottomnav.dart';
 import 'package:freelance/theme/color.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+
+import '../widgets/addskills.dart';
+import '../widgets/citypick.dart';
+import '../widgets/dob.dart';
+import '../widgets/dropdown.dart';
 
 class BuildProfile extends StatelessWidget {
   BuildProfile({super.key});
@@ -17,6 +18,7 @@ class BuildProfile extends StatelessWidget {
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController secondNameController = TextEditingController();
+  TextEditingController jobtitleController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController genderController = TextEditingController();
   TextEditingController countryController = TextEditingController();
@@ -90,6 +92,20 @@ class BuildProfile extends StatelessWidget {
                           filled: true,
                           fillColor: white,
                           hintText: 'Last Name', //reached
+                          hintStyle: TextStyle(color: black),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15))),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                     TextFormField(
+                      style: TextStyle(color: black),
+                      controller: jobtitleController,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: white,
+                          hintText: 'Job Title', //reached
                           hintStyle: TextStyle(color: black),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15))),
@@ -194,6 +210,7 @@ class BuildProfile extends StatelessWidget {
   Future submitUserDetails(context) async {
     final firstName = firstNameController.text.trim();
     final secondName = secondNameController.text.trim();
+    final jobTitle= jobtitleController.text.trim();
     final phone = int.parse(phoneNumberController.text.trim());
     final gender = genderController.text.trim();
     final country = countryController.text.trim();
@@ -213,7 +230,7 @@ class BuildProfile extends StatelessWidget {
         city: city,
         dob: dob,
         skills: skills,
-        services: services, description: description);
+        services: services, description: description, jobTitle: jobTitle);
     storage.buildProflieSaving(userdetailsmodel: userDetails);
 
     Navigator.of(context)

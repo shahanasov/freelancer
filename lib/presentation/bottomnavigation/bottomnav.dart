@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/bottomnavigation/bloc/bloc/bottomnavigation_bloc.dart';
 import 'package:freelance/presentation/pages/Home/homepage.dart';
-import 'package:freelance/presentation/pages/add_post_pages/add_post_page.dart';
-import 'package:freelance/presentation/pages/profilepage/profile.dart';
-import 'package:freelance/presentation/pages/search_page/search_page.dart';
+import 'package:freelance/presentation/pages/add_post_page/add_post_page.dart';
+import 'package:freelance/presentation/pages/profile_page/profile.dart';
 import 'package:freelance/theme/color.dart';
+
+import '../pages/search_page/search_page.dart';
 
 List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
   const BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
@@ -21,7 +22,7 @@ List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
 List<Widget> pages = <Widget>[
   const HomePage(),
   const SearchPage(),
-  const  PostAddPage(),
+   PostAddPage(),
   const Center(child: Text('theee')),
    const ProfilePage()
 ];

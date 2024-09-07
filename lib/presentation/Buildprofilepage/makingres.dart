@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/presentation/Buildprofilepage/buildprofile/buildprofile.dart';
 import 'package:freelance/theme/color.dart';
+
+import 'buildprofile/buildprofile.dart';
 
 class ResposiveBuildProfile extends StatelessWidget {
   const ResposiveBuildProfile({super.key});

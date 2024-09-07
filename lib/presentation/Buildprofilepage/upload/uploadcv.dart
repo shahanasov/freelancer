@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance/presentation/Buildprofilepage/buildprofile/buildprofile.dart';
-import 'package:freelance/presentation/Buildprofilepage/makingres.dart';
-import 'package:freelance/presentation/Buildprofilepage/upload/bloc/upload_resume_bloc.dart';
 import 'package:freelance/theme/color.dart';
 
+import '../buildprofile/buildprofile.dart';
+import '../makingres.dart';
+import 'bloc/upload_resume_bloc.dart';
 
 class UploadCv extends StatelessWidget {
   const UploadCv({super.key});
@@ -72,8 +71,10 @@ class UploadCv extends StatelessWidget {
               ),
             ),
           );
+        } else if (state is UploadingResumeState) {
+          return const CircularProgressIndicator();
         } else if (state is UploadedResume) {
-          final url = state.filesModel!.resumepath!;
+          // final url = state.resumeModel!.resumepath!;
           return Scaffold(
             backgroundColor: black,
             appBar: AppBar(
@@ -96,16 +97,13 @@ class UploadCv extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      '${state.filesModel!.resumename}',
+                      '${state.resumeModel!.resumename}',
                       style: TextStyle(
                         color: white,
                         fontSize: 16,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      // child:
-                    ),
                     const SizedBox(height: 30),
                     TextButton(
                       style: ButtonStyle(

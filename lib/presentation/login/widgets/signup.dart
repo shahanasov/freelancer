@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance/presentation/Buildprofilepage/upload/uploadcv.dart';
 import 'package:freelance/presentation/login/widgets/bloc/toggle_bloc.dart';
 import 'package:freelance/theme/color.dart';
+import '../../Buildprofilepage/upload/uploadcv.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({super.key});
@@ -36,6 +36,7 @@ class SignUp extends StatelessWidget {
                     border: const UnderlineInputBorder()),
               ),
               TextFormField(
+                obscureText: true,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 style: TextStyle(color: black),
                 validator: (value) {
@@ -51,6 +52,7 @@ class SignUp extends StatelessWidget {
                     border: const UnderlineInputBorder()),
               ),
               TextFormField(
+                obscureText: true,
                 style: TextStyle(color: black),
                 controller: confirmPassword,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -91,7 +93,7 @@ class SignUp extends StatelessWidget {
                       }
                     }
                   },
-                  child: const Text('Signin')),
+                  child: const Text('Sign Up')),
               const SizedBox(
                 height: 35,
               ),

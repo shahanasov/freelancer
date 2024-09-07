@@ -30,7 +30,7 @@ class LoginPage extends StatelessWidget {
                   builder: (context, state) {
                      if(state is SignUpState){
                       return  SignUp();
-                    }else{
+                    }else {
                       return  LoginForm();
                     }
                   },

@@ -4,6 +4,7 @@ class UserDetailsModel {
   final String? id;
   final String firstName;
   final String lastName;
+  final String jobTitle;
   final String description;
   final int phone;
   final String gender;
@@ -19,6 +20,7 @@ class UserDetailsModel {
       {this.id,
       required this.description,
       required this.firstName,
+      required this.jobTitle,
       required this.lastName,
       required this.phone,
       required this.gender,
@@ -33,33 +35,35 @@ class UserDetailsModel {
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return UserDetailsModel(
       // id: snapshot.get('id'),
-      firstName: snapshot.get('First Name') as String,
-      lastName: snapshot.get('Last Name') as String,
-      description: snapshot.get('Description')as String,
-      phone: snapshot.get('Phone Number') as int,
-      gender: snapshot.get('Gender') as String,
-      country: snapshot.get('Country') as String,
-      state: snapshot.get('State') as String,
-      city: snapshot.get('City') as String,
-      dob: snapshot.get('DOB') as String,
-      skills: List<String>.from(snapshot.get('Skills')),
-      services: List<String>.from(snapshot.get('Services')),
+      firstName: snapshot.get('firstName') as String,
+      lastName: snapshot.get('lastName') as String,
+      jobTitle: snapshot.get('jobTitle') as String,
+      description: snapshot.get('description')as String,
+      phone: snapshot.get('phoneNumber') as int,
+      gender: snapshot.get('gender') as String,
+      country: snapshot.get('country') as String,
+      state: snapshot.get('state') as String,
+      city: snapshot.get('city') as String,
+      dob: snapshot.get('dOB') as String,
+      skills: List<String>.from(snapshot.get('skills')),
+      services: List<String>.from(snapshot.get('services')),
     );
   }
 
   Map<String, dynamic> tojson() {
     return {
-      'First Name': firstName,
-      'Last Name': lastName,
-      'Description' : description,
-      'Phone Number': phone,
-      'Gender': gender,
-      'Country': country,
-      'State': state,
-      'City': city,
-      'DOB': dob,
-      'Skills': skills,
-      'Services': services
+      'firstName': firstName,
+      'lastName': lastName,
+      'jobTitle':jobTitle,
+      'description' : description,
+      'phoneNumber': phone,
+      'gender': gender,
+      'country': country,
+      'state': state,
+      'city': city,
+      'dOB': dob,
+      'skills': skills,
+      'services': services
     };
   }
 }
