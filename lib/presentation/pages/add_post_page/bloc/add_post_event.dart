@@ -13,5 +13,10 @@ class EditImage extends AddPostEvent {
   });
 }
 
-class UploadLoadingEvent extends AddPostEvent{}
+class UploadEvent extends AddPostEvent{
+  final PostModel postModel;
+
+  UploadEvent({required this.postModel});
+  
+}
 

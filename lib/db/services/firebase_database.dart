@@ -113,11 +113,6 @@ class UserDatabaseFunctions {
     }
   }
 
- 
-
- 
-  
-
   Future<List<UserDetailsModel>?> getSearchResult(
       {DocumentSnapshot? start, required String querySearch}) async {
     Query user = FirebaseFirestore.instance
@@ -134,25 +129,9 @@ class UserDatabaseFunctions {
     }).toList();
 
     //to sort
-    // userList.sort((b, a) => a.firstName.compareTo(b.firstName));
+    userList.sort((b, a) => a.firstName.compareTo(b.firstName));
     return userList;
   }
 
-
-  Future<List<PostWithUserDetailsModel>> fetchPostAlongwithUser ()async{
-    QuerySnapshot<Map<String, dynamic>>  postSnapshot = await FirebaseFirestore.instance.collection('Posts').get();
-
-    List<PostWithUserDetailsModel> postswithUserDetails =[];
-
-    for(var postDoc in postSnapshot.docs){
-      var postData = PostModel.fromSnapshot(postDoc);
-       DocumentSnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore.instance.collection('UsersDetails').doc(postData.userId).get();
-    UserDetailsModel userData = UserDetailsModel.fromSnapshot(userSnapshot);
-
-    postswithUserDetails.add(PostWithUserDetailsModel(postModel: postData, userDetailsModel: userData));
-    }
-
-    return postswithUserDetails;
-
-  }
+  
 }

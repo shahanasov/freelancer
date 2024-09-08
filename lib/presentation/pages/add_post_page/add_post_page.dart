@@ -7,6 +7,8 @@ import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.da
 import 'package:freelance/presentation/pages/add_post_page/widgets/add_widget.dart';
 import 'package:freelance/presentation/pages/add_post_page/widgets/share_thoughts_widget.dart';
 
+import '../profile_page/tabs/posts.dart';
+
 class PostAddPage extends StatelessWidget {
   PostAddPage({super.key});
 
@@ -30,6 +32,7 @@ class PostAddPage extends StatelessWidget {
                       context.read<AddPostBloc>().add(EditImage(
                           image: File(state.selectedImage!.path),
                           context: context));
+                          
                     },
                     child: const Text('Next'))
               ],
@@ -63,12 +66,9 @@ class PostAddPage extends StatelessWidget {
                         // final uploadedPostModel =
                         await PostFunctions()
                             .uploadDescriptionAndImage(postModel: postModel);
-
+                           
                         // if (uploadedPostModel != null) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(
-                        //         content: Text('Post uploaded successfully!')),
-                        //   );
+                         
                         // } else {
                         //   ScaffoldMessenger.of(context).showSnackBar(
                         //     const SnackBar(
@@ -103,7 +103,7 @@ class PostAddPage extends StatelessWidget {
             ),
           );
         } else if (state is UploadLoadingState) {
-          return const Center(child: LinearProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else {
           return const EditImageWidget();
         }

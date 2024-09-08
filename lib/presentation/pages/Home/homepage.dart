@@ -37,63 +37,76 @@ class HomePage extends StatelessWidget {
             if (state is HomePageLoaded) {
               return Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: ListView.builder(
-                    itemCount: state.posts.length,
-                    itemBuilder: (context, index) {
-                      return Column(children: [
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        ListTile(
+                child: ListView.separated(
+                  itemCount: state.posts.length,
+                  itemBuilder: (context, index) {
+                    return Column(children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ListTile(
                           onTap: () {
-                             Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ProfilePageAppBar(userDetailsModel: state.posts[index].userDetailsModel,)));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ProfilePageAppBar(
+                                      userDetailsModel:
+                                          state.posts[index].userDetailsModel,
+                                    )));
                           },
                           leading: const CircleAvatar(
                             radius: 20,
                           ),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(state
-                                  .posts[index].userDetailsModel.firstName),
-                              Text(state.posts[index].userDetailsModel.jobTitle)
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text(
-                              state.posts[index].postModel.postDescription ??
+                          title: Text(
+                              state.posts[index].userDetailsModel.firstName),
+                          subtitle: Text(
+                              state.posts[index].userDetailsModel.jobTitle)),
+                      state.posts[index].postModel.imagepathofPost == null
+                          ? Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(state
+                                      .posts[index].postModel.postDescription ??
                                   ''),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        state.posts[index].postModel.imagepathofPost != null
-                            ? Image.network(
-                                state.posts[index].postModel.imagepathofPost!,
-                                fit: BoxFit.cover,
-                              )
-                            : const SizedBox(),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Row(
-                          children: [
-                            Icon(Icons.favorite),
-                            SizedBox(
-                              width: 10,
+                            )
+                          : Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Text(state.posts[index].postModel
+                                          .postDescription ??
+                                      ''),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Image.network(
+                                  state.posts[index].postModel.imagepathofPost!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ],
                             ),
-                            Icon(Icons.share),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(Icons.add) // request that survice
-                          ],
-                        ),
-                      ]);
-                    }),
+                           const SizedBox(height: 10,), 
+                      const Row(
+                        children: [
+                          Icon(Icons.favorite),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Icon(Icons.share),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Icon(Icons.add)
+                        ],
+                      ),
+                      const SizedBox(height: 10,)
+                    ]);
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return  Divider(
+                      thickness: 1,
+                      color: black,
+                    );
+                  },
+                ),
               );
             } else {
               return Padding(

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/db/services/post_functions.dart';
 import 'package:image_editor_plus/image_editor_plus.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +15,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
   AddPostBloc() : super(AddPostInitial()) {
     on<SelectImage>(selectImage);
     on<EditImage>(editImage);
-    
+    // on<UploadEvent>(uploadpost);
   }
 
   FutureOr<void> selectImage(
@@ -52,5 +53,14 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
     }
   }
 
-
+  // FutureOr<void> uploadpost(
+  //     UploadEvent event, Emitter<AddPostState> emit) async {
+  //       emit(UploadLoadingState());
+  //   try {
+  //     // final uploadedPostModel =
+  //     await PostFunctions().uploadDescriptionAndImage(postModel: postModel);
+  //   } catch (e) {
+  //     (e);
+  //   }
+  // }
 }

@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/db/model/user_and_post_model.dart';
-import 'package:freelance/db/services/firebase_database.dart';
 import 'package:freelance/db/services/post_functions.dart';
 
 part 'home_page_event.dart';
@@ -20,7 +18,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       UsersPostFetchEvent event, Emitter<HomePageState> emit) async {
     try {
       emit(HomePageLoading());
-      final postModel = await UserDatabaseFunctions().fetchPostAlongwithUser();
+      final postModel = await PostFunctions().fetchPostAlongwithUser();
       
         emit(HomePageLoaded(posts:postModel ));
       

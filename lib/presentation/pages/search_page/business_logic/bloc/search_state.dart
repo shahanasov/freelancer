@@ -8,7 +8,7 @@ class SearchingState extends SearchState {
   final List<UserDetailsModel>? users;
   final bool? hasReachedLimit;
 
-  SearchingState({this.users, this.hasReachedLimit}) ;
+  SearchingState({this.users, this.hasReachedLimit}):super() ;
   SearchingState copywith({
   List<UserDetailsModel>? users,
   bool? hasReachedLimit,
@@ -20,23 +20,23 @@ class SearchingState extends SearchState {
   }
   List<Object?> get props=>[users,hasReachedLimit];
 }
-// class SearchResultLoaded extends SearchState {
-//   final List<UserDetailsModel>? users;
-//   final bool? hasReachedLimit;
+class SearchResultLoaded extends SearchState {
+  final List<UserDetailsModel>? users;
+  final bool? hasReachedLimit;
 
-//  SearchResultLoaded({this.users, this.hasReachedLimit});
+ SearchResultLoaded({this.users, this.hasReachedLimit}):super();
 
-//   SearchResultLoaded copyWith({
-//     List<UserDetailsModel>? users,
-//     bool? hasReachedLimit,
-//   }) {
-//     return SearchResultLoaded(
-//       users: users ?? this.users,
-//       hasReachedLimit: hasReachedLimit ?? this.hasReachedLimit,
-//     );
-//   }
+  SearchResultLoaded copyWith({
+    List<UserDetailsModel>? users,
+    bool? hasReachedLimit,
+  }) {
+    return SearchResultLoaded(
+      users: users ?? this.users,
+      hasReachedLimit: hasReachedLimit ?? this.hasReachedLimit,
+    );
+  }
 
-//   @override
-//   List<Object?> get props => [users, hasReachedLimit];
-// }
+  @override
+  List<Object?> get props => [users, hasReachedLimit];
+}
 

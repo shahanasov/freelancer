@@ -8,18 +8,12 @@ class SearchPageAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final  TextEditingController searchController = TextEditingController();
+    final TextEditingController searchController = TextEditingController();
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
-        
-        // String? typedSearch = "";
         if (state is SearchingState) {
-          // typedSearch =
-              searchController.text=state.users?.isEmpty ?? true ? "" : state.users!.first.jobTitle;
-          // searchController.text = typedSearch;
-        //   searchController.addListener(() {
-        //   context.read<SearchBloc>().add(SearchingEvent(query: searchController.text));
-        // });
+          searchController.text =
+              state.users?.isEmpty ?? false? "" : state.users!.first.jobTitle;
         }
         return AppBar(
           bottom: PreferredSize(
@@ -35,11 +29,8 @@ class SearchPageAppbar extends StatelessWidget {
                 },
                 onTap: () {
                   if (state is SearchingState && state.users!.isEmpty) {
-                    // typedSearch = '';
                     searchController.clear();
-                    context
-                        .read<SearchBloc>()
-                        .add(SearchingEvent(query: ""));
+                    context.read<SearchBloc>().add(SearchingEvent(query: ""));
                   } else {
                     if (searchController.text.isNotEmpty) {
                       context

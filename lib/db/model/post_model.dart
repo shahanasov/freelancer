@@ -30,7 +30,7 @@ class PostModel {
      userId : snapshot.get('userId') as String,
       postId: snapshot.get('postId') as String,
       postDescription: snapshot.get('postDescription') as String,
-      imagepathofPost: snapshot.get('imagePathofPost') as String,
+      imagepathofPost: snapshot.get('imagePathofPost') as String?,
       time: timestamp.toDate(),
     );
   }

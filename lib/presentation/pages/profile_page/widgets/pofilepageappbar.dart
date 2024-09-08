@@ -37,14 +37,29 @@ class ProfilePageAppBar extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      context.read<ToggleBloc>().add(SignOut());
-                      // ProgressIndicatorTheme(data: , child: child)
-                      Future.delayed(const Duration(seconds: 2), () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                        );
-                      });
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Do you wana log out'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      context.read<ToggleBloc>().add(SignOut());
+                                      // ProgressIndicatorTheme(data: , child: child)
+                                      Future.delayed(const Duration(seconds: 2),
+                                          () {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LoginPage()),
+                                        );
+                                      });
+                                    },
+                                    child: const Text('Log out'))
+                              ],
+                            );
+                          });
                     },
                     child: const ListTile(
                       title: Text('log out'),

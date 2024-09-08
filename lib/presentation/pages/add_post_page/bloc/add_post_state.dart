@@ -12,4 +12,5 @@ class EditingState extends AddPostState{
   EditingState({required this.editedImage});
 }
 class UploadLoadingState extends AddPostState{}
+class UploadedState extends AddPostState{}
 

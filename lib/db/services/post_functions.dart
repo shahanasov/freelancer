@@ -8,6 +8,9 @@ import 'package:freelance/db/model/post_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../model/user_and_post_model.dart';
+import '../model/userdetails.dart';
+
 class PostFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
   File imagetoPost = File('');
@@ -47,7 +50,7 @@ class PostFunctions {
       return querySnapshot.docs
           .map((doc) => PostModel.fromSnapshot(doc))
           .toList();
-    }on FirebaseException catch (e) {
+    } on FirebaseException catch (e) {
       print(e.toString());
       return e;
     }
@@ -55,8 +58,9 @@ class PostFunctions {
 
   getAllUsersPost() async {
     try {
-      final querySnapshot =
-          await FirebaseFirestore.instance.collection('Posts').orderBy('time',descending: true)
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('Posts')
+          .orderBy('time', descending: true)
           .get();
 
       return querySnapshot.docs
@@ -69,8 +73,13 @@ class PostFunctions {
   }
 
   Future<void> uploadDescriptionAndImage({required PostModel postModel}) async {
-    String? imagePathToSave = await uploadImageToFirebase(
-        File(postModel.imagepathofPost!)); // Upload the image and get the path
+    String? imagePathToSave;
+    if(postModel.imagepathofPost!=null &&postModel.imagepathofPost!.isNotEmpty){
+      imagePathToSave = await uploadImageToFirebase(
+        File(postModel.imagepathofPost!));
+    }
+     // Upload the image and get the path
+
     final postId = FirebaseFirestore.instance.collection('Posts').doc().id;
     postModel.postId = postId;
     final posts = FirebaseFirestore.instance.collection("Posts");
@@ -90,5 +99,27 @@ class PostFunctions {
     } catch (e) {
       print('Error uploading new post: $e');
     }
+  }
+
+  Future<List<PostWithUserDetailsModel>> fetchPostAlongwithUser() async {
+    QuerySnapshot<Map<String, dynamic>> postSnapshot =
+        await FirebaseFirestore.instance.collection('Posts').get();
+
+    List<PostWithUserDetailsModel> postswithUserDetails = [];
+
+    for (var postDoc in postSnapshot.docs) {
+      var postData = PostModel.fromSnapshot(postDoc);
+      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+          await FirebaseFirestore.instance
+              .collection('UsersDetails')
+              .doc(postData.userId)
+              .get();
+      UserDetailsModel userData = UserDetailsModel.fromSnapshot(userSnapshot);
+
+      postswithUserDetails.add(PostWithUserDetailsModel(
+          postModel: postData, userDetailsModel: userData));
+    }
+
+    return postswithUserDetails;
   }
 }
