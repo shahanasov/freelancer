@@ -17,7 +17,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
        List<UserDetailsModel>? users = await UserDatabaseFunctions()
           .getSearchResult(querySearch: event.query);
            if (users==null|| users.isEmpty) {
-        emit(SearchResultLoaded(users: users,hasReachedLimit: true));
+        emit(SearchingState(users: users,hasReachedLimit: true));
       } else {
         emit(SearchingState(
           users: users,
