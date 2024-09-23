@@ -5,9 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:freelance/db/model/cv_pdf_model.dart';
-import 'package:freelance/db/model/post_model.dart';
-import 'package:freelance/db/model/user_and_post_model.dart';
-import 'package:freelance/db/model/userdetails.dart';
+import 'package:freelance/db/model/user_details.dart';
 
 class UserDatabaseFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -16,10 +14,9 @@ class UserDatabaseFunctions {
 
   Future buildProflieSaving(
       {required UserDetailsModel userdetailsmodel}) async {
+    print(userId);
     final userdetail = FirebaseFirestore.instance.collection("UsersDetails");
-    // String id = userdetail.doc().id;
 
-    //  await firestore.collection('UsersDetails').doc("1").set(userdetails);
     final newUser = UserDetailsModel(
       id: userId,
       firstName: userdetailsmodel.firstName,
@@ -39,8 +36,8 @@ class UserDatabaseFunctions {
     userdetail.doc(userId).set(newUser);
   }
 
-  Future<UserDetailsModel?> gettingDetailsofTheUser() async {
-    print(userId);
+  Future<UserDetailsModel?> gettingDetailsOfTheUser() async {
+    // print(userId);
     if (userId == null) {
       throw Exception('User ID is null');
     }
@@ -62,7 +59,7 @@ class UserDatabaseFunctions {
     }
   }
 
-  editDetailsofTheUser({required UserDetailsModel userdetailsmodel}) async {
+  editDetailsOfTheUser({required UserDetailsModel userdetailsmodel}) async {
     final userDetailDoc = FirebaseFirestore.instance;
     final updated = UserDetailsModel(
       id: userId,
@@ -89,7 +86,7 @@ class UserDatabaseFunctions {
         .pickFiles(type: FileType.custom, allowedExtensions: ['pdf', 'doc']);
     if (selectedfile != null) {
       pickedFile = selectedfile.files.first;
-      final path = '$userId/${pickedFile.name}';
+      final path = 'resume/${pickedFile.name}';
       final file = File(pickedFile.path!);
 
       try {
@@ -100,9 +97,10 @@ class UserDatabaseFunctions {
         cvpath = await snapshot.ref.getDownloadURL();
         // print('File uploaded successfully! Download URL: $pathstring');
         return ResumeModel(
+            userId: userId,
             resumeUrl: pickedFile.path,
-            resumename: pickedFile.name,
-            resumepath: cvpath); // Return the download URL if needed
+            resumeName: pickedFile.name,
+            resumePath: cvpath); // Return the download URL if needed
       } catch (e) {
         // print('Error uploading file: $e');
         return null;
@@ -133,5 +131,34 @@ class UserDatabaseFunctions {
     return userList;
   }
 
-  
+  Future<String> uploadProfilePhotoToFirebase(File imageFile) async {
+    final storageRef =
+        FirebaseStorage.instance.ref().child('profilephoto/$userId.jpg');
+    // final uploadTask =
+    await storageRef.putFile(imageFile);
+    return await storageRef.getDownloadURL(); // Return the image download URL
+  }
+
+  Future<void> uploadResumetoDb({required ResumeModel resumeModel}) async {
+    // Upload the image and get the path
+
+    final postId = FirebaseFirestore.instance.collection('Resume').doc().id;
+
+    final posts = FirebaseFirestore.instance.collection("Resume");
+
+    try {
+      // Create a new PostModel instance with the image path and description
+      final newPost = ResumeModel(
+              userId: userId,
+              resumeUrl: resumeModel.resumeUrl,
+              resumeName: resumeModel.resumeName,
+              resumePath: resumeModel.resumePath)
+          .tojson();
+
+      // Add the new post to Firestore under the user's ID
+      await posts.doc(postId).set(newPost);
+    } catch (e) {
+      // print('Error uploading new post: $e');
+    }
+  }
 }

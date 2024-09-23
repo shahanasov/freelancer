@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
     
     return Scaffold(
      body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(20.0),
         child: TextField(
           controller: sharethoughtsController,
           maxLines: 100,

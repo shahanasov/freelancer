@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
-import 'package:freelance/presentation/pages/profile_page/widgets/pofilepageappbar.dart';
+import 'package:freelance/presentation/pages/profile_page/widgets/pofile_page_appbar.dart';
 
 import 'tabs/bloc/tabs_bloc.dart';
 

@@ -18,7 +18,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       UsersPostFetchEvent event, Emitter<HomePageState> emit) async {
     try {
       emit(HomePageLoading());
-      final postModel = await PostFunctions().fetchPostAlongwithUser();
+      final postModel = await PostFunctions().fetchPostAlongWithUser();
       
         emit(HomePageLoaded(posts:postModel ));
       

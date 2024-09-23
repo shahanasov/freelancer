@@ -17,6 +17,7 @@ class PostTabState extends TabsState {
 
   PostTabState({required this.posts});
 }
+class PostEmptyState extends TabsState{}
 
 class ResumeTabState extends TabsState {}
 

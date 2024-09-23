@@ -18,16 +18,4 @@ class ProfileErrorState extends ProfilePageState {
   ProfileErrorState(this.message);
 }
 
-// class PostLoadingState extends ProfilePageState {}
 
-// class PostLoaded extends ProfilePageState {
-//   final List<PostModel> posts;
-
-//   PostLoaded(this.posts);
-// }
-
-// class PostErrorState extends ProfilePageState {
-//   final String message;
-
-//   PostErrorState(this.message);
-// }

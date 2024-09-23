@@ -1,5 +1,5 @@
 import 'package:freelance/db/model/post_model.dart';
-import 'package:freelance/db/model/userdetails.dart';
+import 'package:freelance/db/model/user_details.dart';
 
 class PostWithUserDetailsModel {
   PostModel postModel;

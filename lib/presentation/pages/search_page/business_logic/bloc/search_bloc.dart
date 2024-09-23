@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:freelance/db/services/firebase_database.dart';
-import 'package:freelance/db/model/userdetails.dart';
+import 'package:freelance/db/model/user_details.dart';
 
 part 'search_event.dart';
 part 'search_state.dart';

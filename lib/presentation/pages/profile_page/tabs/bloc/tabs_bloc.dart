@@ -12,10 +12,13 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
       if (event is PostTabEvent) {
         emit(PostLoadingState());
         try {
-          final posts = await PostFunctions().getCurrentUserPosts();
+          final List<PostModel> posts = await PostFunctions().getCurrentUserPosts();
+         if(posts.isEmpty){
+          emit(PostEmptyState());
+         }
           emit(PostTabState(posts: posts,));
         } catch (e) {
-          print(e.toString());
+          // print(e.toString());
           emit(PostErrorState(e.toString()));
         }
       } else if (event is WorksTabEvent) {

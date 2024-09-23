@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance/db/model/post_model.dart';
-
 import 'package:freelance/presentation/pages/add_post_page/widgets/share_thoughts_widget.dart';
-
 import '../../../../db/services/post_functions.dart';
 
 class EditImageWidget extends StatelessWidget {
@@ -22,17 +20,20 @@ class EditImageWidget extends StatelessWidget {
                   final postDescription = sharethoughtsController.text.trim();
 
                   PostModel postModel = PostModel(
+                      likes: [],
                       postDescription: postDescription,
                       imagepathofPost: '',
                       time: DateTime.now());
 
-                  // final uploadedPostModel =
                   await PostFunctions()
                       .uploadDescriptionAndImage(postModel: postModel);
+                  // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> PostsWidget()));
                 },
-                child: const Text('Next'))
+                child: const Text('Done'))
           ],
         ),
-        body:  Body(sharethoughtsController: sharethoughtsController,));
+        body: Body(
+          sharethoughtsController: sharethoughtsController,
+        ));
   }
 }

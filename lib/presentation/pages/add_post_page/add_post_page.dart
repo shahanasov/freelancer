@@ -7,8 +7,6 @@ import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.da
 import 'package:freelance/presentation/pages/add_post_page/widgets/add_widget.dart';
 import 'package:freelance/presentation/pages/add_post_page/widgets/share_thoughts_widget.dart';
 
-import '../profile_page/tabs/posts.dart';
-
 class PostAddPage extends StatelessWidget {
   PostAddPage({super.key});
 
@@ -24,7 +22,9 @@ class PostAddPage extends StatelessWidget {
             appBar: AppBar(
               leading: IconButton(
                 icon: const Icon(Icons.close),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
               actions: [
                 TextButton(
@@ -32,7 +32,6 @@ class PostAddPage extends StatelessWidget {
                       context.read<AddPostBloc>().add(EditImage(
                           image: File(state.selectedImage!.path),
                           context: context));
-                          
                     },
                     child: const Text('Next'))
               ],
@@ -40,7 +39,12 @@ class PostAddPage extends StatelessWidget {
             body: Center(
                 child: state.selectedImage != null
                     ? Image.file(File(state.selectedImage!.path))
-                    :  Body(sharethoughtsController: sharethoughtsController,)),
+                    : Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Body(
+                          sharethoughtsController: sharethoughtsController,
+                        ),
+                      )),
           );
         } else if (state is EditingState) {
           return Scaffold(
@@ -48,7 +52,7 @@ class PostAddPage extends StatelessWidget {
               leading: IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () {
-                  // Navigator.pop(context);
+                 Navigator.of(context).pop();
                 },
               ),
               actions: [
@@ -58,6 +62,7 @@ class PostAddPage extends StatelessWidget {
                           sharethoughtsController.text.trim();
                       final postModel = PostModel(
                         time: DateTime.now(),
+                        likes: [],
                         postDescription: postDescription,
                         imagepathofPost: state.editedImage.path,
                       );
@@ -66,9 +71,9 @@ class PostAddPage extends StatelessWidget {
                         // final uploadedPostModel =
                         await PostFunctions()
                             .uploadDescriptionAndImage(postModel: postModel);
-                           
+
                         // if (uploadedPostModel != null) {
-                         
+
                         // } else {
                         //   ScaffoldMessenger.of(context).showSnackBar(
                         //     const SnackBar(
@@ -76,29 +81,32 @@ class PostAddPage extends StatelessWidget {
                         //   );
                         // }
                       } catch (e) {
-                        print('Error uploading post: $e');
+                        // print('Error uploading post: $e');
                       }
                     },
-                    child: const Text('Next'))
+                    child: const Text('Done'))
               ],
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextField(
-                    controller: sharethoughtsController,
-                    maxLines: 10,
-                    decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Share your thoughts....'),
-                  ),
-                  Center(
-                      child: Image.file(
-                    File(state.editedImage.path),
-                    width: double.infinity,
-                    height: 300,
-                  )),
-                ],
+            body: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: sharethoughtsController,
+                      maxLines: 10,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Share your thoughts....'),
+                    ),
+                    Center(
+                        child: Image.file(
+                      File(state.editedImage.path),
+                      width: double.infinity,
+                      height: 300,
+                    )),
+                  ],
+                ),
               ),
             ),
           );

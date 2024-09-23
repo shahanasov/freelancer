@@ -7,9 +7,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:freelance/db/model/post_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:share_plus/share_plus.dart';
+import 'package:social_share/social_share.dart';
 import '../model/user_and_post_model.dart';
-import '../model/userdetails.dart';
+import '../model/user_details.dart';
 
 class PostFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -33,13 +34,14 @@ class PostFunctions {
   Future<String> uploadImageToFirebase(File imageFile) async {
     final storageRef =
         FirebaseStorage.instance.ref().child('Posts/${DateTime.now()}.jpg');
-    final uploadTask = await storageRef.putFile(imageFile);
+    // final uploadTask =
+    await storageRef.putFile(imageFile);
     return await storageRef.getDownloadURL(); // Return the image download URL
   }
 
   getCurrentUserPosts() async {
     // FirebaseFirestore.instance.clearPersistence();
-
+    // print("current user $userId");
     try {
       final querySnapshot = await FirebaseFirestore.instance
           .collection("Posts")
@@ -51,7 +53,7 @@ class PostFunctions {
           .map((doc) => PostModel.fromSnapshot(doc))
           .toList();
     } on FirebaseException catch (e) {
-      print(e.toString());
+      // print(e.toString());
       return e;
     }
   }
@@ -74,11 +76,12 @@ class PostFunctions {
 
   Future<void> uploadDescriptionAndImage({required PostModel postModel}) async {
     String? imagePathToSave;
-    if(postModel.imagepathofPost!=null &&postModel.imagepathofPost!.isNotEmpty){
-      imagePathToSave = await uploadImageToFirebase(
-        File(postModel.imagepathofPost!));
+    if (postModel.imagepathofPost != null &&
+        postModel.imagepathofPost!.isNotEmpty) {
+      imagePathToSave =
+          await uploadImageToFirebase(File(postModel.imagepathofPost!));
     }
-     // Upload the image and get the path
+    // Upload the image and get the path
 
     final postId = FirebaseFirestore.instance.collection('Posts').doc().id;
     postModel.postId = postId;
@@ -89,6 +92,7 @@ class PostFunctions {
       final newPost = PostModel(
         postId: postId,
         userId: userId,
+        likes: [],
         time: DateTime.now(), // Set current time
         imagepathofPost: imagePathToSave, // Save the new image path
         postDescription: postModel.postDescription, // Save the description
@@ -97,11 +101,11 @@ class PostFunctions {
       // Add the new post to Firestore under the user's ID
       await posts.doc(postId).set(newPost);
     } catch (e) {
-      print('Error uploading new post: $e');
+      // print('Error uploading new post: $e');
     }
   }
 
-  Future<List<PostWithUserDetailsModel>> fetchPostAlongwithUser() async {
+  Future<List<PostWithUserDetailsModel>> fetchPostAlongWithUser() async {
     QuerySnapshot<Map<String, dynamic>> postSnapshot =
         await FirebaseFirestore.instance.collection('Posts').get();
 
@@ -121,5 +125,77 @@ class PostFunctions {
     }
 
     return postswithUserDetails;
+  }
+
+  editPost(PostModel postModel) async {
+    final updated = PostModel(
+      postId: postModel.postId,
+      userId: postModel.userId,
+      likes: postModel.likes,
+      time: postModel.time,
+      imagepathofPost: postModel.imagepathofPost,
+      postDescription: postModel.postDescription,
+    ).tojson();
+    await FirebaseFirestore.instance
+        .collection('Posts')
+        .doc(postModel.postId)
+        .update(updated);
+  }
+
+  getSpecificUserPosts(String? id) async {
+    // FirebaseFirestore.instance.clearPersistence();
+    // print("current user $userId");
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection("Posts")
+          .where('userId', isEqualTo: id)
+          .orderBy('time', descending: true)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => PostModel.fromSnapshot(doc))
+          .toList();
+    } on FirebaseException catch (e) {
+      // print(e.toString());
+      return e;
+    }
+  }
+
+  deletePost(PostModel postModel) async {
+    await FirebaseFirestore.instance
+        .collection('Posts')
+        .doc(postModel.postId)
+        .delete();
+  }
+
+  void sharePost(String postId) async {
+    DocumentSnapshot post =
+        await FirebaseFirestore.instance.collection('Posts').doc(postId).get();
+
+    if (post.exists) {
+      String content =
+          "${post['imagePathofPost']}\n${post['postDescription']}"; // Assuming your post has a 'content' field
+      Share.share(content, subject: 'New Post!');
+    } else {
+      // print('Post not found');
+    }
+  }
+
+  postLike(bool isLiked, PostModel postModel) {
+    final postref =
+        FirebaseFirestore.instance.collection('Posts').doc(postModel.postId);
+    if (isLiked) {
+      postref.update({
+        'likes': FieldValue.arrayUnion([userId])
+      });
+    } else {
+      postref.update({
+        'likes': FieldValue.arrayRemove([userId])
+      });
+    }
+  }
+
+  void shareToChat(String content) {
+    SocialShare.shareOptions(content);
   }
 }
