@@ -56,17 +56,11 @@ class LoginForm extends StatelessWidget {
               TextButton(
                   style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all(const Size(192, 50)),
-                      backgroundColor: MaterialStateProperty.all(black),
-                      foregroundColor: MaterialStatePropertyAll(white)),
-                  onPressed: () async {
-                    final email = emailController.text.trim();
-                    final password = passwordController.text.trim();
-                    // login(context);
-                    if (formkey.currentState!.validate()) {
-                      context.read<ToggleBloc>().add(
-                          LoginSubmitted(password: password, email: email));
-                    }
+                        const WidgetStatePropertyAll(Size(192, 50)),
+                      backgroundColor: WidgetStatePropertyAll(black),
+                      foregroundColor: WidgetStatePropertyAll(white)),
+                  onPressed: () {
+                    login(context);
                   },
                   child: const Text('Login')),
               const SizedBox(
@@ -120,50 +114,56 @@ class LoginForm extends StatelessWidget {
   }
 
   Future login(BuildContext context) async {
+    // FirebaseAuth auth = FirebaseAuth.instance;
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
-    String message = 'login failed';
+    // String message = 'login failed';
     if (formkey.currentState!.validate()) {
       // context.read<ToggleBloc>().add(LoginSubmitted(password: password, email: email));
-      //     print("${FirebaseAuth.instance.currentUser?.uid}....login");
-      //Validate username and password
+      print("${FirebaseAuth.instance.currentUser?.uid}....login");
+      // Validate username and password
       try {
-        UserCredential userCredential = await FirebaseAuth.instance
+        // final credential =
+         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
-
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const BottomNav()));
-      } on FirebaseAuthException catch (e) {
-        // print('$e ..........is the error');
-        if (e.code == 'invalid-credential]') {
-          message = 'No user found for that email.';
-        } else if (e.code == 'wrong-password') {
-          message = 'Wrong password provided for that user.';
-        } else if (e.code == 'mail address is badly formatted.') {
-          message = 'Incorrect mail id.';
-        } else {
-          message = 'Please check your email and password .';
-        }
-        // ignore: use_build_context_synchronously
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: Text(message),
-                  content: Text(message),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ));
-      }
-        // ignore: use_build_context_synchronously
         context.read<ProfilePageBloc>().add(ProfileLoadEvent());
-      // ignore: use_build_context_synchronously
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const BottomNav()));
+
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const BottomNav()));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text('No user found for that email'),
+                content: const Text('No user found for that email'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ));
+          
+        } else if (e.code == 'wrong-password') {
+          showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text('Wrong password provided for that user.'),
+                content: const Text('Wrong password provided for that user.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ));
+       
+        }
+      }
+
+      
     }
   }
 }

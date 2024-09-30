@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freelance/db/services/notification_functions.dart';
 import 'package:freelance/db/services/post_functions.dart';
 import 'package:freelance/presentation/pages/home/widgets/like_button.dart';
-import 'package:freelance/presentation/pages/message_page/message_list.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/others_profile_page.dart';
 import 'package:freelance/presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
 import 'package:freelance/theme/color.dart';
@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
     final String? userId = FirebaseAuth.instance.currentUser?.uid;
     context.read<ProfilePageBloc>().add(ProfileLoadEvent());
     context.read<HomePageBloc>().add(UsersPostFetchEvent());
+
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -27,8 +28,8 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.message),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ListMessageScreen()));
+                // Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (context) => ChatUsersListPage()));
               },
             ),
             const SizedBox(
@@ -45,6 +46,7 @@ class HomePage extends StatelessWidget {
                 child: ListView.separated(
                   itemCount: state.posts.length,
                   itemBuilder: (context, index) {
+                    //  final likeNotif ValueNotifier(state.posts[index].postModel.likes.length);
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -53,10 +55,13 @@ class HomePage extends StatelessWidget {
                           ),
                           ListTile(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => OthersProfilePage(
-                                        userModel: state.posts[index],
-                                      )));
+                              if (userId !=
+                                  state.posts[index].postModel.userId) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => OthersProfilePage(
+                                          userModel: state.posts[index],
+                                        )));
+                              }
                             },
                             leading: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
@@ -101,15 +106,11 @@ class HomePage extends StatelessWidget {
                             height: 10,
                           ),
                           ListTile(
-                            leading: LikeButton(isLiked:state.posts[index].postModel.likes.contains(userId)
-                             ,postModel: state.posts[index].postModel,),
-                            // IconButton(
-                            //   icon: const Icon(Icons.favorite),
-                            //   onPressed: () {
-                            //     PostFunctions()
-                            //         .editPost(state.posts[index].postModel);
-                            //   },
-                            // ),
+                            leading: LikeButton(
+                              isLiked: state.posts[index].postModel.likes
+                                  .contains(userId),
+                              postModel: state.posts[index].postModel,
+                            ),
                             title: IconButton(
                               icon: const Icon(Icons.share),
                               onPressed: () {
@@ -117,15 +118,19 @@ class HomePage extends StatelessWidget {
                                     state.posts[index].postModel.postId!);
                               },
                             ),
-                            trailing: GestureDetector(onTap: (){
-                              PostFunctions().shareToChat(state.posts[index].postModel.imagepathofPost!);
-                            },
-                              child: const Icon(Icons.question_answer)),
+                            trailing: GestureDetector(
+                                onTap: () {
+                                  NotificationFunctions().initNotifications();
+                                  // PostFunctions().shareToChat(state
+                                  // .posts[index].postModel.imagepathofPost!);
+                                },
+                                child: const Icon(Icons.question_answer)),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          Text("${state.posts[index].postModel.likes.length} Likes"),
+                          Text(
+                              "${state.posts[index].postModel.likes.length} Likes"),
                         ]);
                   },
                   separatorBuilder: (BuildContext context, int index) {

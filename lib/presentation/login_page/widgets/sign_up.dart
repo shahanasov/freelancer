@@ -75,10 +75,10 @@ class SignUp extends StatelessWidget {
               TextButton(
                   style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all(const Size(192, 50)),
+                          const WidgetStatePropertyAll(Size(192, 50)),
                       // maximumSize: MaterialStateProperty.all(const Size(500, 50)),
-                      backgroundColor: MaterialStateProperty.all(black),
-                      foregroundColor: MaterialStatePropertyAll(white)),
+                      backgroundColor: WidgetStatePropertyAll(black),
+                      foregroundColor: WidgetStatePropertyAll(white)),
                   onPressed: () async {
                     final email = emailController.text.trim();
                     final password = passwordController.text.trim();

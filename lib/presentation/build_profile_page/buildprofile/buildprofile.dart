@@ -1,4 +1,4 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance/db/services/firebase_auth.dart';
 import 'package:freelance/db/services/firebase_database.dart';
@@ -56,6 +56,13 @@ class BuildProfile extends StatelessWidget {
                       height: 30,
                     ),
                     TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return ' Name  is required';
+                        }
+                        return null;
+                      },
                       style: TextStyle(color: black),
                       controller: firstNameController,
                       decoration: InputDecoration(
@@ -65,7 +72,7 @@ class BuildProfile extends StatelessWidget {
                           filled: true,
                           fillColor: white,
                           hintText: 'First Name', //reached
-                          hintStyle: TextStyle(color: black),
+                          hintStyle: TextStyle(color: hintcolor),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15))),
                     ),
@@ -79,7 +86,7 @@ class BuildProfile extends StatelessWidget {
                           filled: true,
                           fillColor: white,
                           hintText: 'Last Name', //reached
-                          hintStyle: TextStyle(color: black),
+                          hintStyle: TextStyle(color: hintcolor),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15))),
                     ),
@@ -87,13 +94,20 @@ class BuildProfile extends StatelessWidget {
                       height: 10,
                     ),
                     TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Job title is required';
+                        }
+                        return null;
+                      },
                       style: TextStyle(color: black),
                       controller: jobtitleController,
                       decoration: InputDecoration(
                           filled: true,
                           fillColor: white,
                           hintText: 'Job Title', //reached
-                          hintStyle: TextStyle(color: black),
+                          hintStyle: TextStyle(color: hintcolor),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15))),
                     ),
@@ -111,7 +125,7 @@ class BuildProfile extends StatelessWidget {
                           fillColor: white,
                           hintText:
                               'Write a short description about you', //reached
-                          hintStyle: TextStyle(color: black),
+                          hintStyle: TextStyle(color: hintcolor),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15))),
                     ),
@@ -120,7 +134,13 @@ class BuildProfile extends StatelessWidget {
                     ),
                     IntlPhoneField(
                       style: TextStyle(color: black),
-
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Phone number is required';
+                        }
+                        return null;
+                      },
                       controller: phoneNumberController,
                       initialCountryCode: 'IN',
                       // languageCode: 'IN',
@@ -129,7 +149,7 @@ class BuildProfile extends StatelessWidget {
                           filled: true,
                           fillColor: white,
                           hintText: 'Phone Number', //reached
-                          hintStyle: TextStyle(color: black),
+                          hintStyle: TextStyle(color: hintcolor),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15))),
                     ),
@@ -158,7 +178,7 @@ class BuildProfile extends StatelessWidget {
                     ),
                     SkillAdding(
                       onUpdateSkills: (updatedSkills) {
-                        services=updatedSkills;
+                        services = updatedSkills;
                       },
                       services: const [],
                       skills: skills,
@@ -174,9 +194,8 @@ class BuildProfile extends StatelessWidget {
                       services: services,
                       onUpdateSkills: (_) {},
                       onUpdateServices: (updateServices) {
-                        services=updateServices;
+                        services = updateServices;
                       },
-                      
                     ),
                     const SizedBox(
                       height: 10,
@@ -184,9 +203,9 @@ class BuildProfile extends StatelessWidget {
                     TextButton(
                         style: ButtonStyle(
                             minimumSize:
-                                MaterialStateProperty.all(const Size(192, 50)),
-                            backgroundColor: MaterialStateProperty.all(white),
-                            foregroundColor: MaterialStatePropertyAll(black)),
+                            const WidgetStatePropertyAll(Size(192, 50)),
+                            backgroundColor: WidgetStatePropertyAll(white),
+                            foregroundColor: WidgetStatePropertyAll(black)),
                         onPressed: () {
                           submitUserDetails(context);
                         },
@@ -217,6 +236,7 @@ class BuildProfile extends StatelessWidget {
 
     final userDetails = UserDetailsModel(
         // profilePhoto: imagetoPo,
+        id: FirebaseAuth.instance.currentUser!.uid,
         firstName: firstName,
         lastName: secondName,
         phone: phone,
@@ -227,6 +247,7 @@ class BuildProfile extends StatelessWidget {
         dob: dob,
         skills: skills,
         services: services,
+        follow: [],
         description: description,
         jobTitle: jobTitle);
     storage.buildProflieSaving(userdetailsmodel: userDetails);

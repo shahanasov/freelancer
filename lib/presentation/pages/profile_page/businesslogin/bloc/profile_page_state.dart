@@ -18,4 +18,5 @@ class ProfileErrorState extends ProfilePageState {
   ProfileErrorState(this.message);
 }
 
-
+class PostLoadingState extends ProfilePageState{}
+class PostLoadedState extends ProfilePageState{}

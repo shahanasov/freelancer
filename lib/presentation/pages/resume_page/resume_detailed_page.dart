@@ -24,63 +24,65 @@ class ResumePage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Personal Informations',
-              style: TextStyle(
-                  color: white,
-                  decoration: TextDecoration.underline,
-                  fontSize: 25),
-            ),
-            Text(' ${userDetails.phone}', style: const TextStyle(fontSize: 18)),
-            Text(' ${userDetails.dob}',
-                style: const TextStyle(
-                  fontSize: 18,
-                )),
-            Text(' ${userDetails.gender}',
-                style: const TextStyle(fontSize: 18)),
-            Text(
-                ' ${userDetails.city}\n ${userDetails.state}\n${userDetails.country}',
-                style: const TextStyle(
-                  fontSize: 18,
-                )),
-                const SizedBox(height: 10,),
-            Text(
-              'About',
-              style: TextStyle(
-                  color: white,
-                  decoration: TextDecoration.underline,
-                  fontSize: 25),
-            ),
-            Text(userDetails.description,
-                style: const TextStyle(
-                  fontSize: 18,
-                )),
-                const SizedBox(height: 10,),
-            const Text(
-              'Skills',
-              style:
-                  TextStyle(decoration: TextDecoration.underline, fontSize: 20),
-            ),
-            Text(
-              userDetails.skills.join('\n *'),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 5,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 25,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Personal Informations',
+                style: TextStyle(
+                    color: white,
+                    decoration: TextDecoration.underline,
+                    fontSize: 25),
               ),
-            ),
-            const SizedBox(height: 10,),
-            const Text(
-              'Services',
-              style:
-                  TextStyle(decoration: TextDecoration.underline, fontSize: 25),
-            ),
-            Text(userDetails.services.join('\n *'))
-          ],
+              Text(' ${userDetails.phone}', style: const TextStyle(fontSize: 18)),
+              Text(' ${userDetails.dob}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                  )),
+              Text(' ${userDetails.gender}',
+                  style: const TextStyle(fontSize: 18)),
+              Text(
+                  ' ${userDetails.city}\n ${userDetails.state}\n${userDetails.country}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                  )),
+                  const SizedBox(height: 10,),
+              Text(
+                'About',
+                style: TextStyle(
+                    color: white,
+                    decoration: TextDecoration.underline,
+                    fontSize: 25),
+              ),
+              Text(userDetails.description,
+                  style: const TextStyle(
+                    fontSize: 18,
+                  )),
+                  const SizedBox(height: 10,),
+              const Text(
+                'Skills',
+                style:
+                    TextStyle(decoration: TextDecoration.underline, fontSize: 20),
+              ),
+              Text(
+                userDetails.skills.join('\n *'),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 5,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 25,
+                ),
+              ),
+              const SizedBox(height: 10,),
+              const Text(
+                'Services',
+                style:
+                    TextStyle(decoration: TextDecoration.underline, fontSize: 25),
+              ),
+              Text(userDetails.services.join('\n *'))
+            ],
+          ),
         ),
       ),
     );

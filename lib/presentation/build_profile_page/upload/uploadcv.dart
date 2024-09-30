@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/services/firebase_database.dart';
-import 'package:freelance/presentation/bottom_navigation_main/bottom_nav.dart';
 import 'package:freelance/theme/color.dart';
 import '../makingres.dart';
 import 'bloc/upload_resume_bloc.dart';
@@ -35,9 +34,9 @@ class UploadCv extends StatelessWidget {
                     TextButton(
                         style: ButtonStyle(
                             minimumSize:
-                                MaterialStateProperty.all(const Size(192, 50)),
-                            backgroundColor: MaterialStateProperty.all(white),
-                            foregroundColor: MaterialStatePropertyAll(black)),
+                                const WidgetStatePropertyAll(Size(192, 50)),
+                            backgroundColor: WidgetStatePropertyAll(white),
+                            foregroundColor: WidgetStatePropertyAll(black)),
                         onPressed: () {
                           context
                               .read<UploadResumeBloc>()
@@ -57,9 +56,9 @@ class UploadCv extends StatelessWidget {
                     TextButton(
                         style: ButtonStyle(
                             minimumSize:
-                                MaterialStateProperty.all(const Size(192, 50)),
-                            backgroundColor: MaterialStateProperty.all(white),
-                            foregroundColor: MaterialStatePropertyAll(black)),
+                                const WidgetStatePropertyAll(Size(192, 50)),
+                            backgroundColor: WidgetStatePropertyAll(white),
+                            foregroundColor: WidgetStatePropertyAll(black)),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
@@ -108,10 +107,10 @@ class UploadCv extends StatelessWidget {
                     const SizedBox(height: 30),
                     TextButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(white),
-                        foregroundColor: MaterialStatePropertyAll(black),
+                        backgroundColor: WidgetStatePropertyAll(white),
+                        foregroundColor: WidgetStatePropertyAll(black),
                         minimumSize:
-                            MaterialStateProperty.all(const Size(192, 50)),
+                            const WidgetStatePropertyAll(Size(192, 50)),
                       ),
                       onPressed: () {
                         UserDatabaseFunctions().uploadResumetoDb(resumeModel: state.resumeModel!);
@@ -138,9 +137,9 @@ class UploadCv extends StatelessWidget {
               TextButton(
                   style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all(const Size(192, 50)),
-                      backgroundColor: MaterialStateProperty.all(white),
-                      foregroundColor: MaterialStatePropertyAll(black)),
+                         const WidgetStatePropertyAll(Size(192, 50)),
+                      backgroundColor: WidgetStatePropertyAll(white),
+                      foregroundColor: WidgetStatePropertyAll(black)),
                   onPressed: () {
                     context.read<UploadResumeBloc>().add(UploadingEvent());
                   },
@@ -158,9 +157,9 @@ class UploadCv extends StatelessWidget {
               TextButton(
                   style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all(const Size(192, 50)),
-                      backgroundColor: MaterialStateProperty.all(white),
-                      foregroundColor: MaterialStatePropertyAll(black)),
+                          const WidgetStatePropertyAll(Size(192, 50)),
+                      backgroundColor: WidgetStatePropertyAll(white),
+                      foregroundColor: WidgetStatePropertyAll(black)),
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const ResposiveBuildProfile()));

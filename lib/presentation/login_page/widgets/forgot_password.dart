@@ -46,9 +46,9 @@ class ForgotPasswordPage extends StatelessWidget {
             ),
             TextButton(
                 style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(const Size(192, 50)),
-                    backgroundColor: MaterialStateProperty.all(white),
-                    foregroundColor: MaterialStatePropertyAll(black)),
+                    minimumSize: const WidgetStatePropertyAll(Size(192, 50)),
+                    backgroundColor: WidgetStatePropertyAll(white),
+                    foregroundColor: WidgetStatePropertyAll(black)),
                 onPressed: () {
                   passwordReset(emailController.text.trim(), context);
                 },

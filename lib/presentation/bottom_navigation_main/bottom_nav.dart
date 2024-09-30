@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bloc/bloc/bottomnavigation_bloc.dart';
 import 'package:freelance/presentation/pages/Home/home_page.dart';
 import 'package:freelance/presentation/pages/add_post_page/add_post_page.dart';
+import 'package:freelance/presentation/pages/notification_page/notification_page.dart';
 import 'package:freelance/presentation/pages/profile_page/profile.dart';
 import 'package:freelance/theme/color.dart';
 
@@ -22,9 +23,9 @@ List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
 List<Widget> pages = <Widget>[
   const HomePage(),
   const SearchPage(),
-   Container(),
-  const Center(child: Text('Notifications')),
-   const ProfilePage()
+  Container(),
+  const NotificationsPage(),
+  const ProfilePage()
 ];
 
 class BottomNav extends StatelessWidget {
@@ -32,7 +33,7 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark =Theme.of(context).colorScheme.brightness==Brightness.dark;
+    bool isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
     return BlocConsumer<BottomNavigationBloc, BottomNavigationState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -41,16 +42,21 @@ class BottomNav extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
             elevation: 1,
             items: bottomNav,
-          selectedItemColor: isDark? white: black,
-          showSelectedLabels: true,
-          unselectedItemColor: isDark? white: black,
-          currentIndex: state.tabIndex,
-          onTap: (index){
-            if(index==2){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>PostAddPage(),));
-            }
-            BlocProvider.of<BottomNavigationBloc>(context).add(TabChange(tabIndex: index));
-          },
+            selectedItemColor: isDark ? white : black,
+            showSelectedLabels: true,
+            unselectedItemColor: isDark ? white : black,
+            currentIndex: state.tabIndex,
+            onTap: (index) {
+              if (index == 2) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostAddPage(),
+                    ));
+              }
+              BlocProvider.of<BottomNavigationBloc>(context)
+                  .add(TabChange(tabIndex: index));
+            },
           ),
         );
       },

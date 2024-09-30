@@ -4,4 +4,8 @@ class ProfilePageEvent {}
 
 class ProfileLoadEvent extends ProfilePageEvent {}
 
+class PostLoadEvent extends ProfilePageEvent {
+ final String id;
 
+  PostLoadEvent({required this.id});
+}

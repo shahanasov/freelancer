@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance/db/model/user_and_post_model.dart';
 import 'package:freelance/presentation/pages/message_page/chat/personal_chat.dart';
+import 'package:freelance/presentation/pages/other_users_profile_page/widgets/follow.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/widgets/profile_body_scrollable.dart';
 import 'package:freelance/presentation/pages/profile_page/widgets/tab_container.dart';
 import 'package:freelance/theme/color.dart';
@@ -15,13 +17,14 @@ class OthersProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? userId = FirebaseAuth.instance.currentUser?.uid;
     return SafeArea(
       child: Scaffold(
           body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
             automaticallyImplyLeading: true,
-            expandedHeight: 350,
+            expandedHeight: 380,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
@@ -74,15 +77,35 @@ class OthersProfilePage extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ChatPage(
-                                    recieverEmail: userModel.postModel.userId!, recieverId: userModel.postModel.userId!, user: userModel.userDetailsModel,)));
-                          },
-                          child: const TabContainer(tabtext: 'Message'))
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FollowButton(
+                            userId: userModel.userDetailsModel.id,
+                            isfollowed: userModel.userDetailsModel.follow
+                                .contains(userId),
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ChatPage(
+                                          recieverEmail:
+                                              userModel.postModel.userId!,
+                                          recieverId:
+                                              userModel.postModel.userId!,
+                                          user: userModel.userDetailsModel,
+                                        )));
+                              },
+                              child: const TabContainer(tabtext: 'Message'))
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                          '${userModel.userDetailsModel.follow.length} followers')
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

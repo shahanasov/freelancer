@@ -19,11 +19,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       emit(HomePageLoading());
       final postModel = await PostFunctions().fetchPostAlongWithUser();
-      
-        emit(HomePageLoaded(posts:postModel ));
-      
+
+      emit(HomePageLoaded(posts: postModel));
     } on FirebaseException catch (e) {
       emit(HomePageError(error: e.message.toString()));
     }
   }
+
 }

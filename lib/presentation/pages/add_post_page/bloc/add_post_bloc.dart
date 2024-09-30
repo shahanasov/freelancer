@@ -15,7 +15,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
   AddPostBloc() : super(AddPostInitial()) {
     on<SelectImage>(selectImage);
     on<EditImage>(editImage);
-    // on<UploadEvent>(uploadpost);
+    on<UploadEvent>(uploadpost);
   }
 
   FutureOr<void> selectImage(
@@ -53,14 +53,15 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
     }
   }
 
-  // FutureOr<void> uploadpost(
-  //     UploadEvent event, Emitter<AddPostState> emit) async {
-  //       emit(UploadLoadingState());
-  //   try {
-  //     // final uploadedPostModel =
-  //     await PostFunctions().uploadDescriptionAndImage(postModel: postModel);
-  //   } catch (e) {
-  //     (e);
-  //   }
-  // }
+  FutureOr<void> uploadpost(
+      UploadEvent event, Emitter<AddPostState> emit) async {
+        emit(UploadLoadingState());
+    try {
+      // final uploadedPostModel =
+      await PostFunctions().uploadDescriptionAndImage(postModel: event.postModel);
+      emit(AddPostInitial());
+    } catch (e) {
+      (e);
+    }
+  }
 }

@@ -8,7 +8,7 @@ import 'package:freelance/db/model/post_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:social_share/social_share.dart';
+// import 'package:social_share/social_share.dart';
 import '../model/user_and_post_model.dart';
 import '../model/user_details.dart';
 
@@ -58,21 +58,6 @@ class PostFunctions {
     }
   }
 
-  getAllUsersPost() async {
-    try {
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection('Posts')
-          .orderBy('time', descending: true)
-          .get();
-
-      return querySnapshot.docs
-          .map((doc) => PostModel.fromSnapshot(doc))
-          .toList();
-    } on FirebaseException catch (e) {
-      // print(e);
-      return e;
-    }
-  }
 
   Future<void> uploadDescriptionAndImage({required PostModel postModel}) async {
     String? imagePathToSave;
@@ -106,8 +91,11 @@ class PostFunctions {
   }
 
   Future<List<PostWithUserDetailsModel>> fetchPostAlongWithUser() async {
-    QuerySnapshot<Map<String, dynamic>> postSnapshot =
-        await FirebaseFirestore.instance.collection('Posts').get();
+    QuerySnapshot<Map<String, dynamic>> postSnapshot = await FirebaseFirestore
+        .instance
+        .collection('Posts')
+        .orderBy('time', descending: true)
+        .get();
 
     List<PostWithUserDetailsModel> postswithUserDetails = [];
 
@@ -142,22 +130,24 @@ class PostFunctions {
         .update(updated);
   }
 
-  getSpecificUserPosts(String? id) async {
+ Future<List<PostModel>> getSpecificUserPosts(String? id) async {
     // FirebaseFirestore.instance.clearPersistence();
-    // print("current user $userId");
+    print("current user $id");
     try {
       final querySnapshot = await FirebaseFirestore.instance
           .collection("Posts")
           .where('userId', isEqualTo: id)
           .orderBy('time', descending: true)
           .get();
-
+      print(querySnapshot.docs
+          .map((doc) => PostModel.fromSnapshot(doc))
+          .toList());
       return querySnapshot.docs
           .map((doc) => PostModel.fromSnapshot(doc))
           .toList();
     } on FirebaseException catch (e) {
-      // print(e.toString());
-      return e;
+      print(e.toString());
+      return [];
     }
   }
 
@@ -173,17 +163,16 @@ class PostFunctions {
         await FirebaseFirestore.instance.collection('Posts').doc(postId).get();
 
     if (post.exists) {
-      String content =
-          "${post['imagePathofPost']}\n${post['postDescription']}"; // Assuming your post has a 'content' field
+      String content = "${post['imagePathofPost']}\n${post['postDescription']}";
       Share.share(content, subject: 'New Post!');
     } else {
       // print('Post not found');
     }
   }
 
-  postLike(bool isLiked, PostModel postModel) {
+  postLike(bool isLiked,String postId) {
     final postref =
-        FirebaseFirestore.instance.collection('Posts').doc(postModel.postId);
+        FirebaseFirestore.instance.collection('Posts').doc(postId);
     if (isLiked) {
       postref.update({
         'likes': FieldValue.arrayUnion([userId])
@@ -195,7 +184,7 @@ class PostFunctions {
     }
   }
 
-  void shareToChat(String content) {
-    SocialShare.shareOptions(content);
-  }
+  // void shareToChat(String content) {
+  //   SocialShare.shareOptions(content);
+  // }
 }

@@ -80,7 +80,7 @@ class _SkillAddingState extends State<SkillAdding> {
               filled: true,
               fillColor: white,
               hintText: hint,
-              hintStyle: TextStyle(color: black),
+              hintStyle: TextStyle(color: hintcolor),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
           controller: _itemController,

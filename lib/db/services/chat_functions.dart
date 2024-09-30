@@ -4,6 +4,7 @@ import 'package:freelance/db/model/message_model.dart';
 
 class ChatServices {
   final String userId = FirebaseAuth.instance.currentUser!.uid;
+
   Future<void> sendMessage(String recieverId, message) async {
     //get current user info
 
@@ -22,6 +23,24 @@ class ChatServices {
     List<String> ids = [userId, recieverId];
     ids.sort(); //sort the ids (to ensure chatroomid is the same for any 2 people)
     String chatroomId = ids.join('_');
+    await FirebaseFirestore.instance
+        .collection("chat_rooms")
+        .doc(chatroomId)
+        .set(
+            {
+          'participants': ids, // Ensure both participants are listed
+          'lastMessageTimestamp':
+              timestamp, // Optionally, track when the last message was sent
+        },
+            SetOptions(
+                merge:
+                    true)); // Merge to prevent overwriting any existing fields
+
+    // Add the new message to the messages sub-collection
+    // await FirebaseFirestore.instance
+    //     .collection("chat_rooms")
+    //     .doc(chatroomId)
+    //     .collection("messages");
     await FirebaseFirestore.instance
         .collection("chat_rooms")
         .doc(chatroomId)
@@ -44,22 +63,27 @@ class ChatServices {
   }
 
   // Fetch chat rooms for the current user
-  Stream<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getChatRooms() {
-    return FirebaseFirestore.instance
-        .collection('chat_rooms')
-        .where('senderId', isEqualTo: userId)
-        .snapshots()
-        .asyncMap((senderSnapshot) async {
-      QuerySnapshot<Map<String, dynamic>> receiverSnapshot =
-          await FirebaseFirestore.instance
-              .collection('chat_rooms')
-              .where('recieverId', isEqualTo: userId)
-              .get();
+  Future<List<String>> getMessagedUsers(String currentUserId) async {
+    List<String> messagedUserIds = [];
 
-      // Combine both lists of documents
-      final allDocs = [...senderSnapshot.docs, ...receiverSnapshot.docs];
-      return allDocs;
-    });
+    // Query chat_rooms collection where the current user is a participant
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('chat_rooms')
+        .where('participants', arrayContains: currentUserId)
+        .get();
+
+    // Iterate through the chat rooms and extract the other user IDs
+    for (var doc in querySnapshot.docs) {
+      List<String> participants = List<String>.from(doc['participants']);
+
+      // Remove the current user from the participants list to get the other user
+      participants.remove(currentUserId);
+
+      if (participants.isNotEmpty) {
+        messagedUserIds.add(participants.first); // Add the other user ID
+      }
+    }
+
+    return messagedUserIds;
   }
-  
 }

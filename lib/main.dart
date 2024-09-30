@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/services/firebase_auth.dart';
 import 'package:freelance/db/services/firebase_database.dart';
+import 'package:freelance/db/services/notification_functions.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bloc/bloc/bottomnavigation_bloc.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bottom_nav.dart';
 import 'package:freelance/presentation/build_profile_page/upload/bloc/upload_resume_bloc.dart';
@@ -14,11 +15,10 @@ import 'package:freelance/presentation/build_profile_page/upload/uploadcv.dart';
 import 'package:freelance/presentation/pages/Home/bloc/home_page_bloc.dart';
 import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/widgets/bloc/profile_tabs_bloc.dart';
-import 'package:freelance/presentation/pages/profile_page/tabs/bloc/tabs_bloc.dart';
 import 'package:freelance/presentation/pages/search_page/business_logic/bloc/search_bloc.dart';
 import 'package:freelance/presentation/welcome/businesslogic/bloc/bloc/splash_bloc.dart';
 import 'package:freelance/presentation/welcome/splash_screen.dart';
-
+  
 import 'db/services/firebase_options.dart';
 import 'presentation/login_page/login_page.dart';
 import 'presentation/login_page/widgets/bloc/toggle_bloc.dart';
@@ -29,6 +29,7 @@ Future main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await NotificationFunctions().initNotifications();
   runApp(const MyApp());
 }
 
@@ -54,10 +55,7 @@ class MyApp extends StatelessWidget {
           create: (context) => SplashBloc(),
           child: const SplashScreen(),
         ),
-        BlocProvider(
-          create: (context) => TabsBloc(),
-          child: Container(),
-        ),
+        
         BlocProvider(
           create: (context) => UploadResumeBloc(),
         ),

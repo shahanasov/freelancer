@@ -26,7 +26,7 @@ class ToggleBloc extends Bloc<ToggleEvent, ToggleState> {
 
   FutureOr<void> login(LoginSubmitted event, Emitter<ToggleState> emit) async {
     try {
-      await  auth.loginWithEmailAndPassword(event.email, event.password);
+      await  auth.loginWithEmailAndPassword( email:event.email, password: event.password, );
       emit(LoginSubmittedState());
     } catch (e) {
       emit(ErrorsignIn());

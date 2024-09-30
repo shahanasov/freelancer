@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserDetailsModel {
-  final String? id;
+  final String id;
   final String firstName;
   final String lastName;
   final String jobTitle;
@@ -14,10 +14,11 @@ class UserDetailsModel {
   final String dob;
   final List<String> skills;
   final List<String> services;
+  List<String> follow;
   // final String? profilePhoto;
 
   UserDetailsModel(
-      {this.id,
+      {required this.id,
       // required this.profilePhoto,
       required this.description,
       required this.firstName,
@@ -30,11 +31,15 @@ class UserDetailsModel {
       required this.city,
       required this.dob,
       required this.skills,
-      required this.services});
+      required this.services,
+      required this.follow
+      });
 
   static UserDetailsModel fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return UserDetailsModel(
+      id: snapshot.id,
+      follow: List<String>.from(snapshot.get('follow') as List<dynamic>) ,
       // profilePhoto: snapshot.get('profilePhoto') as String,
       firstName: snapshot.get('firstName') as String,
       lastName: snapshot.get('lastName') as String,
@@ -53,6 +58,7 @@ class UserDetailsModel {
 
   Map<String, dynamic> tojson() {
     return {
+      'id':id,
       'firstName': firstName,
       'lastName': lastName,
       // 'profilePhoto': profilePhoto,
@@ -65,7 +71,8 @@ class UserDetailsModel {
       'city': city,
       'dOB': dob,
       'skills': skills,
-      'services': services
+      'services': services,
+      'follow':follow
     };
   }
 }

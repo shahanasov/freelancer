@@ -29,7 +29,7 @@ late TextEditingController genderController;
                 OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
         hint: Text(
           'Gender',
-          style: TextStyle(color: black),
+          style: TextStyle(color: hintcolor),
         ),
         
         dropdownColor: white,

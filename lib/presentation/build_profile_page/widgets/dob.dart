@@ -27,7 +27,7 @@ class _DOBWidgetState extends State<DOBWidget> {
           filled: true,
           fillColor: white,
           hintText: 'Date Of Birth',
-          hintStyle: TextStyle(color: black),
+          hintStyle: TextStyle(color: hintcolor),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
       onTap: () {
         selectDate(context);

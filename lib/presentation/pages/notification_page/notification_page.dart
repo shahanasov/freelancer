@@ -7,10 +7,13 @@ class NotificationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(itemBuilder: (context,index){
+      appBar: AppBar(centerTitle: false,
+        title: const Text('SkillVerse'),),
+      body: ListView.builder(itemCount: 5,
+        itemBuilder: (context,index){
         return const ListTile(
           leading: Icon(Icons.message),
-          title: Text('hshhshshhshhsh'),
+          title: Text('Notifications'),
         );
       }),
     );

@@ -1,16 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:freelance/db/model/user_and_post_model.dart';
+import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/widgets/tabs/posts.dart';
 import 'package:freelance/presentation/pages/resume_page/resume_detailed_page.dart';
 
-class ScrollableAppBar extends StatelessWidget {
-  final PostWithUserDetailsModel userModel;
-  const ScrollableAppBar({super.key, required this.userModel});
+class UserDetailedProfile extends StatelessWidget {
+  final UserDetailsModel userModel;
+  const UserDetailedProfile({super.key, required this.userModel});
 
   @override
   Widget build(BuildContext context) {
-    
-    return Column(
+    return  Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -29,10 +29,10 @@ class ScrollableAppBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  '${userModel.userDetailsModel.firstName} ${userModel.userDetailsModel.lastName}'),
+                  '${userModel.firstName} ${userModel.lastName}'),
               Row(
                 children: [
-                  Text('${userModel.userDetailsModel.gender} '),
+                  Text('${userModel.gender} '),
                   const SizedBox(
                     width: 10,
                   ),
@@ -40,7 +40,7 @@ class ScrollableAppBar extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ResumePage( 
-                                userDetails: userModel.userDetailsModel, userId:userModel.postModel.userId!,)));
+                                userDetails: userModel, userId:FirebaseAuth.instance.currentUser!.uid,)));
                       },
                       child: const Text(
                         'read more....',
@@ -60,8 +60,8 @@ class ScrollableAppBar extends StatelessWidget {
               style: TextStyle(
                   decoration: TextDecoration.underline, fontSize: 25)),
         ),
-        PostsWidget(
-          postModelList: [userModel.postModel],
+        const PostsWidget(
+          postModelList: [],
         )
       ],
     );

@@ -18,20 +18,21 @@ class UserDatabaseFunctions {
     final userdetail = FirebaseFirestore.instance.collection("UsersDetails");
 
     final newUser = UserDetailsModel(
-      id: userId,
-      firstName: userdetailsmodel.firstName,
-      lastName: userdetailsmodel.lastName,
-      description: userdetailsmodel.description,
-      phone: userdetailsmodel.phone,
-      gender: userdetailsmodel.gender,
-      country: userdetailsmodel.country,
-      state: userdetailsmodel.state,
-      city: userdetailsmodel.city,
-      dob: userdetailsmodel.dob,
-      skills: userdetailsmodel.skills,
-      services: userdetailsmodel.services,
-      jobTitle: userdetailsmodel.jobTitle,
-    ).tojson();
+            id: userId!,
+            firstName: userdetailsmodel.firstName,
+            lastName: userdetailsmodel.lastName,
+            description: userdetailsmodel.description,
+            phone: userdetailsmodel.phone,
+            gender: userdetailsmodel.gender,
+            country: userdetailsmodel.country,
+            state: userdetailsmodel.state,
+            city: userdetailsmodel.city,
+            dob: userdetailsmodel.dob,
+            skills: userdetailsmodel.skills,
+            services: userdetailsmodel.services,
+            jobTitle: userdetailsmodel.jobTitle,
+            follow: userdetailsmodel.follow)
+        .tojson();
 
     userdetail.doc(userId).set(newUser);
   }
@@ -62,20 +63,21 @@ class UserDatabaseFunctions {
   editDetailsOfTheUser({required UserDetailsModel userdetailsmodel}) async {
     final userDetailDoc = FirebaseFirestore.instance;
     final updated = UserDetailsModel(
-      id: userId,
-      firstName: userdetailsmodel.firstName,
-      lastName: userdetailsmodel.lastName,
-      phone: userdetailsmodel.phone,
-      gender: userdetailsmodel.gender,
-      country: userdetailsmodel.country,
-      state: userdetailsmodel.state,
-      city: userdetailsmodel.city,
-      dob: userdetailsmodel.dob,
-      skills: userdetailsmodel.skills,
-      services: userdetailsmodel.services,
-      description: userdetailsmodel.description,
-      jobTitle: userdetailsmodel.jobTitle,
-    ).tojson();
+            id: userId!,
+            firstName: userdetailsmodel.firstName,
+            lastName: userdetailsmodel.lastName,
+            jobTitle: userdetailsmodel.jobTitle,
+            phone: userdetailsmodel.phone,
+            gender: userdetailsmodel.gender,
+            country: userdetailsmodel.country,
+            state: userdetailsmodel.state,
+            city: userdetailsmodel.city,
+            dob: userdetailsmodel.dob,
+            skills: userdetailsmodel.skills,
+            services: userdetailsmodel.services,
+            description: userdetailsmodel.description,
+            follow: userdetailsmodel.follow)
+        .tojson();
 
     await userDetailDoc.collection('UsersDetails').doc(userId).update(updated);
   }
@@ -159,6 +161,43 @@ class UserDatabaseFunctions {
       await posts.doc(postId).set(newPost);
     } catch (e) {
       // print('Error uploading new post: $e');
+    }
+  }
+
+  Future<UserDetailsModel?> userDetails(String user) async {
+    // print(userId);
+    if (user == null) {
+      throw Exception('User ID is null');
+    }
+
+    try {
+      final userDetailDoc = await FirebaseFirestore.instance
+          .collection('UsersDetails')
+          .doc(user)
+          .get();
+
+      if (userDetailDoc.exists) {
+        return UserDetailsModel.fromSnapshot(userDetailDoc);
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      // print(e.code);
+      return null;
+    }
+  }
+
+  follow(bool isfollowed,String postId) {
+    final ref =
+        FirebaseFirestore.instance.collection('UsersDetails').doc(postId);
+    if (isfollowed) {
+      ref.update({
+        'follow': FieldValue.arrayUnion([userId])
+      });
+    } else {
+      ref.update({
+        'follow': FieldValue.arrayRemove([userId])
+      });
     }
   }
 }

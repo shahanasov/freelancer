@@ -14,10 +14,12 @@ class LikeButton extends StatefulWidget {
 
 class _LikeButtonState extends State<LikeButton> {
   late bool isLiked;
+  late int likes;
 
   @override
   void initState() {
     isLiked = widget.isLiked;
+    likes = widget.postModel.likes.length;
     super.initState();
   }
 
@@ -27,12 +29,17 @@ class _LikeButtonState extends State<LikeButton> {
       onTap: () {
         setState(() {
           isLiked = !isLiked;
+          
         });
-        PostFunctions().postLike(isLiked, widget.postModel);
+        PostFunctions().postLike(isLiked, widget.postModel.postId!);
       },
       child: Icon(
-        isLiked ? Icons.favorite : Icons.favorite_border, // Use the updated state
-        color: isLiked ? Colors.red : Colors.grey, // Optional: change color based on state
+        isLiked
+            ? Icons.favorite
+            : Icons.favorite_border, // Use the updated state
+        color: isLiked
+            ? const Color.fromARGB(255, 93, 80, 79)
+            : Colors.grey, // Optional: change color based on state
       ),
     );
   }

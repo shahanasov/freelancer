@@ -12,3 +12,11 @@ class HomePageError extends HomePageState{
   String? error;
   HomePageError({this.error});
 }
+// class PostLikeUpdatedState extends HomePageState{
+//   final String postId;
+//   final int likeCount;
+
+//   PostLikeUpdatedState({required this.postId, required this.likeCount});
+  
+// }
+
