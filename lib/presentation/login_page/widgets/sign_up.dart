@@ -103,17 +103,17 @@ class SignUp extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Material(
-                        elevation: 4,
-                        shape: const CircleBorder(),
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: white,
-                          child: Image.asset(
-                            "assets/images/facelogo.png",
-                            fit: BoxFit.fill,
-                          ),
-                        )),
+                    // Material(
+                    //     elevation: 4,
+                    //     shape: const CircleBorder(),
+                    //     child: CircleAvatar(
+                    //       radius: 30,
+                    //       backgroundColor: white,
+                    //       child: Image.asset(
+                    //         "assets/images/facelogo.png",
+                    //         fit: BoxFit.fill,
+                    //       ),
+                    //     )),
                     InkWell(
                       onTap: () async {
                         context.read<ToggleBloc>().add(GoogleSignIn());

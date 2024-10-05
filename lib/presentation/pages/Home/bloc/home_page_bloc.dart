@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/db/model/user_and_post_model.dart';
 import 'package:freelance/db/services/post_functions.dart';
 
@@ -19,8 +20,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     try {
       emit(HomePageLoading());
       final postModel = await PostFunctions().fetchPostAlongWithUser();
-
-      emit(HomePageLoaded(posts: postModel));
+        final posts= await PostFunctions().getSpecificUserPosts(event.userId);
+      emit(HomePageLoaded(userandPost: postModel,posts: posts));
     } on FirebaseException catch (e) {
       emit(HomePageError(error: e.message.toString()));
     }

@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/db/model/user_details.dart';
+import 'package:freelance/presentation/build_profile_page/buildprofile/buildprofile.dart';
 import 'package:freelance/presentation/login_page/login_page.dart';
 import 'package:freelance/presentation/login_page/widgets/bloc/toggle_bloc.dart';
+import 'package:freelance/presentation/pages/add_post_page/add_post_page.dart';
 import 'package:freelance/presentation/pages/profile_page/widgets/profile_page_resume_post.dart';
-import 'package:freelance/presentation/pages/profile_page/widgets/tab_container.dart';
+import 'package:freelance/presentation/pages/settings_page/settings_page.dart';
 import 'package:freelance/theme/color.dart';
 
 class ProfilePageAppBar extends StatelessWidget {
   final UserDetailsModel? userDetailsModel;
-
+  final List<PostModel>? posts;
   const ProfilePageAppBar({
     super.key,
+    this.posts,
     this.userDetailsModel,
   });
 
@@ -69,16 +73,19 @@ class ProfilePageAppBar extends StatelessWidget {
                       title: Text('log out'),
                     ),
                   ),
-                   ListTile(
-                    onTap: (){
-                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      //     builder: (context) =>  BuildProfile()));
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => BuildProfile(
+                                userDetailsModel: userDetailsModel,
+                              )));
                     },
                     title: const Text('Edit Your profile'),
                   ),
                   ListTile(
                     onTap: () {
-                      
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const SettingsPage()));
                     },
                     title: const Text('Settings'),
                   )
@@ -86,6 +93,18 @@ class ProfilePageAppBar extends StatelessWidget {
               ),
             ),
           ),
+          floatingActionButton: FloatingActionButton.small(
+              tooltip: 'Add new post',
+              backgroundColor: white,
+              foregroundColor: black,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostAddPage(),
+                    ));
+              },
+              child: const Icon(Icons.add)),
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
@@ -148,8 +167,9 @@ class ProfilePageAppBar extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          Text(userDetailsModel==null ?'':
-                            '${userDetailsModel?.follow.length} followers')
+                          Text(userDetailsModel == null
+                              ? ''
+                              : '${userDetailsModel?.follow.length} followers')
                         ],
                       ),
                     ],
@@ -160,7 +180,10 @@ class ProfilePageAppBar extends StatelessWidget {
                 // here body of profilepage
                 child: userDetailsModel == null
                     ? Container()
-                    : UserDetailedProfile(userModel: userDetailsModel!),
+                    : UserDetailedProfile(
+                        userModel: userDetailsModel!,
+                        posts: posts,
+                      ),
               )
             ],
           )),

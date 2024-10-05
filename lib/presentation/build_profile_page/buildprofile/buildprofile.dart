@@ -15,7 +15,8 @@ import '../widgets/dob.dart';
 import '../widgets/gender_drop_down.dart';
 
 class BuildProfile extends StatelessWidget {
-  BuildProfile({super.key});
+  final UserDetailsModel? userDetailsModel;
+  BuildProfile({super.key, this.userDetailsModel});
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -30,14 +31,34 @@ class BuildProfile extends StatelessWidget {
   TextEditingController dobController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   // TextEditingController servicesController = TextEditingController();
-  List<String> skills = [];
-  List<String> services = [];
+  ValueNotifier<List<String>> skillsNotifier = ValueNotifier([]);
+  ValueNotifier<List<String>> servicesNotifier = ValueNotifier([]);
   XFile? imagetoPost;
   Authentication auth = Authentication();
   UserDatabaseFunctions storage = UserDatabaseFunctions();
 
   @override
   Widget build(BuildContext context) {
+    if (userDetailsModel != null) {
+      firstNameController =
+          TextEditingController(text: userDetailsModel!.firstName);
+      secondNameController =
+          TextEditingController(text: userDetailsModel!.lastName);
+      jobtitleController =
+          TextEditingController(text: userDetailsModel!.jobTitle);
+      phoneNumberController =
+          TextEditingController(text: '${userDetailsModel!.phone}');
+      genderController = TextEditingController(text: userDetailsModel!.gender);
+      countryController =
+          TextEditingController(text: userDetailsModel!.country);
+      stateController = TextEditingController(text: userDetailsModel!.state);
+      cityController = TextEditingController(text: userDetailsModel!.city);
+      dobController = TextEditingController(text: userDetailsModel!.dob);
+      descriptionController =
+          TextEditingController(text: userDetailsModel!.description);
+      skillsNotifier.value = List.from(userDetailsModel!.skills);
+      servicesNotifier.value = List.from(userDetailsModel!.services);
+    }
     return SafeArea(
       child: Scaffold(
         backgroundColor: black,
@@ -177,36 +198,30 @@ class BuildProfile extends StatelessWidget {
                       height: 10,
                     ),
                     SkillAdding(
-                      onUpdateSkills: (updatedSkills) {
-                        services = updatedSkills;
-                      },
-                      services: const [],
-                      skills: skills,
                       hintText: 'Enter a Skill',
-                      onUpdateServices: (_) {},
+                      skillsNotifier: skillsNotifier,
+                      servicesNotifier: servicesNotifier,
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     SkillAdding(
                       hintText: 'Enter Your Services',
-                      skills: const [],
-                      services: services,
-                      onUpdateSkills: (_) {},
-                      onUpdateServices: (updateServices) {
-                        services = updateServices;
-                      },
+                      skillsNotifier: skillsNotifier,
+                      servicesNotifier: servicesNotifier,
                     ),
+
                     const SizedBox(
                       height: 10,
                     ),
                     TextButton(
                         style: ButtonStyle(
                             minimumSize:
-                            const WidgetStatePropertyAll(Size(192, 50)),
+                                const WidgetStatePropertyAll(Size(192, 50)),
                             backgroundColor: WidgetStatePropertyAll(white),
                             foregroundColor: WidgetStatePropertyAll(black)),
                         onPressed: () {
+                          if (userDetailsModel != null) {
+                            editProfile(context);
+                          }
                           submitUserDetails(context);
                         },
                         child: const Text('Submit')),
@@ -233,6 +248,8 @@ class BuildProfile extends StatelessWidget {
     final description = descriptionController.text.trim();
     // PostFunctions().convertUint8ListToFile(imagetoPost);
     // storage.uploadProfilePhotoToFirebase(File(imagetoPost!.path));
+    final skills = skillsNotifier.value;
+    final services = servicesNotifier.value;
 
     final userDetails = UserDetailsModel(
         // profilePhoto: imagetoPo,
@@ -248,11 +265,48 @@ class BuildProfile extends StatelessWidget {
         skills: skills,
         services: services,
         follow: [],
+        posts: [],
         description: description,
         jobTitle: jobTitle);
     storage.buildProflieSaving(userdetailsmodel: userDetails);
 
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const BottomNav()));
+  }
+
+  editProfile(context) {
+    final firstName = firstNameController.text.trim();
+    final secondName = secondNameController.text.trim();
+    final jobTitle = jobtitleController.text.trim();
+    final phone = int.parse(phoneNumberController.text.trim());
+    final gender = genderController.text.trim();
+    final country = countryController.text.trim();
+    final state = stateController.text.trim();
+    final city = cityController.text.trim();
+    final dob = dobController.text.trim();
+    final description = descriptionController.text.trim();
+    // PostFunctions().convertUint8ListToFile(imagetoPost);
+    // storage.uploadProfilePhotoToFirebase(File(imagetoPost!.path));
+    final skills = skillsNotifier.value;
+    final services = servicesNotifier.value;
+
+    final userDetails = UserDetailsModel(
+        // profilePhoto: imagetoPo,
+        id: FirebaseAuth.instance.currentUser!.uid,
+        firstName: firstName,
+        lastName: secondName,
+        phone: phone,
+        gender: gender,
+        country: country,
+        state: state,
+        city: city,
+        dob: dob,
+        skills: skills,
+        services: services,
+        follow: userDetailsModel!.follow,
+        posts: userDetailsModel!.posts,
+        description: description,
+        jobTitle: jobTitle);
+    storage.editDetailsOfTheUser(userdetailsmodel: userDetails);
   }
 }

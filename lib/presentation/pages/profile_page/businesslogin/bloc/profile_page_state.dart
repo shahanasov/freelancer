@@ -18,5 +18,10 @@ class ProfileErrorState extends ProfilePageState {
   ProfileErrorState(this.message);
 }
 
-class PostLoadingState extends ProfilePageState{}
-class PostLoadedState extends ProfilePageState{}
+class PostLoadingState extends ProfilePageState {}
+
+class PostLoadedState extends ProfilePageState {
+  final List<PostModel> post;
+  final UserDetailsModel? profile;
+  PostLoadedState({required this.post, this.profile});
+}

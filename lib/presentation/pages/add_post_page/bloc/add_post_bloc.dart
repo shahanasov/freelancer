@@ -23,6 +23,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
     if (event is SelectImage) {
       try {
         final XFile? image = await PostFunctions().imageSelect();
+        print(image!.name);
         emit(ImageSelected(selectedImage: image));
       } catch (e) {
         return;
@@ -43,8 +44,9 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
         ),
       );
       if (editedImage != null) {
+        
         final editedImageFile =
-            await PostFunctions().convertUint8ListToFile(editedImage);
+            await PostFunctions().convertUint8ListToFile(editedImage,image:event.image);
         emit(EditingState(editedImage: editedImageFile));
       }
     } catch (e) {

@@ -6,7 +6,8 @@ import 'package:freelance/theme/color.dart';
 class ResumePage extends StatelessWidget {
   final String userId;
   final UserDetailsModel userDetails;
-  const ResumePage({super.key, required this.userDetails,required this.userId});
+  const ResumePage(
+      {super.key, required this.userDetails, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +15,6 @@ class ResumePage extends StatelessWidget {
       appBar: AppBar(
         elevation: 1,
         title: Text(userDetails.firstName),
-        actions: [
-          IconButton(onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        ChatPage(recieverEmail: userId, recieverId: userId, user: userDetails,)));
-          }, icon: const Icon(Icons.message))
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
@@ -28,26 +22,6 @@ class ResumePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Personal Informations',
-                style: TextStyle(
-                    color: white,
-                    decoration: TextDecoration.underline,
-                    fontSize: 25),
-              ),
-              Text(' ${userDetails.phone}', style: const TextStyle(fontSize: 18)),
-              Text(' ${userDetails.dob}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                  )),
-              Text(' ${userDetails.gender}',
-                  style: const TextStyle(fontSize: 18)),
-              Text(
-                  ' ${userDetails.city}\n ${userDetails.state}\n${userDetails.country}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                  )),
-                  const SizedBox(height: 10,),
               Text(
                 'About',
                 style: TextStyle(
@@ -59,28 +33,64 @@ class ResumePage extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 18,
                   )),
-                  const SizedBox(height: 10,),
+              Text(
+                'Personal Informations',
+                style: TextStyle(
+                    color: white,
+                    decoration: TextDecoration.underline,
+                    fontSize: 25),
+              ),
+              Text(' ${userDetails.phone}',
+                  style: const TextStyle(fontSize: 18)),
+              Text(' ${userDetails.dob}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                  )),
+              Text(' ${userDetails.gender}',
+                  style: const TextStyle(fontSize: 18)),
+              Text(
+                  ' ${userDetails.city}\n ${userDetails.state}\n${userDetails.country}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                  )),
+              const SizedBox(
+                height: 10,
+              ),
+              
+              const SizedBox(
+                height: 10,
+              ),
               const Text(
                 'Skills',
-                style:
-                    TextStyle(decoration: TextDecoration.underline, fontSize: 20),
+                style: TextStyle(
+                    decoration: TextDecoration.underline, fontSize: 25),
               ),
               Text(
-                userDetails.skills.join('\n *'),
+                userDetails.skills.join(' \n '),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 5,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 25,
+                  fontSize: 18,
                 ),
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               const Text(
                 'Services',
-                style:
-                    TextStyle(decoration: TextDecoration.underline, fontSize: 25),
+                style: TextStyle(
+                    decoration: TextDecoration.underline, fontSize: 25),
               ),
-              Text(userDetails.services.join('\n *'))
+              Text(
+                userDetails.services.join(' \n '),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 5,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
+              )
             ],
           ),
         ),

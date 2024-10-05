@@ -24,10 +24,11 @@ class PostFunctions {
     return pickedImage;
   }
 
-  Future<File> convertUint8ListToFile(Uint8List imageBytes) async {
+  Future<File> convertUint8ListToFile(Uint8List imageBytes,{required File image}) async {
     final tempDir = await getTemporaryDirectory();
-    imagetoPost = await File('${tempDir.path}/edited_image.png').create();
-    imagetoPost.writeAsBytesSync(imageBytes);
+  final extension =image.path.split('.').last; 
+    imagetoPost = File('${tempDir.path}/edited_image.$extension');
+    await imagetoPost.writeAsBytes(imageBytes);
     return imagetoPost;
   }
 
@@ -58,7 +59,6 @@ class PostFunctions {
     }
   }
 
-
   Future<void> uploadDescriptionAndImage({required PostModel postModel}) async {
     String? imagePathToSave;
     if (postModel.imagepathofPost != null &&
@@ -82,7 +82,7 @@ class PostFunctions {
         imagepathofPost: imagePathToSave, // Save the new image path
         postDescription: postModel.postDescription, // Save the description
       ).tojson();
-
+      // UserDatabaseFunctions().posts(true, postId);
       // Add the new post to Firestore under the user's ID
       await posts.doc(postId).set(newPost);
     } catch (e) {
@@ -130,7 +130,7 @@ class PostFunctions {
         .update(updated);
   }
 
- Future<List<PostModel>> getSpecificUserPosts(String? id) async {
+  Future<List<PostModel>> getSpecificUserPosts(String? id) async {
     // FirebaseFirestore.instance.clearPersistence();
     print("current user $id");
     try {
@@ -156,6 +156,7 @@ class PostFunctions {
         .collection('Posts')
         .doc(postModel.postId)
         .delete();
+    // UserDatabaseFunctions().posts(false, postModel.postId!);
   }
 
   void sharePost(String postId) async {
@@ -170,9 +171,8 @@ class PostFunctions {
     }
   }
 
-  postLike(bool isLiked,String postId) {
-    final postref =
-        FirebaseFirestore.instance.collection('Posts').doc(postId);
+  postLike(bool isLiked, String postId) {
+    final postref = FirebaseFirestore.instance.collection('Posts').doc(postId);
     if (isLiked) {
       postref.update({
         'likes': FieldValue.arrayUnion([userId])

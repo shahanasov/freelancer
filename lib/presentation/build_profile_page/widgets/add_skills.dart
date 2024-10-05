@@ -1,69 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:freelance/theme/color.dart';
 
-class SkillAdding extends StatefulWidget {
+class SkillAdding extends StatelessWidget {
   final String hintText;
-  List<String> services;
-  List<String> skills;
-  final Function(List<String>) onUpdateSkills; // Callback for skills
-  final Function(List<String>) onUpdateServices;
+  final ValueNotifier<List<String>> skillsNotifier;
+  final ValueNotifier<List<String>> servicesNotifier;
+  final TextEditingController _itemController = TextEditingController();
 
   SkillAdding({
     super.key,
     required this.hintText,
-    required this.skills,
-    required this.services,
-    required this.onUpdateSkills,
-    required this.onUpdateServices,
+    required this.skillsNotifier,
+    required this.servicesNotifier,
   });
-
-  @override
-  State<SkillAdding> createState() => _SkillAddingState();
-}
-
-class _SkillAddingState extends State<SkillAdding> {
-  final TextEditingController _itemController = TextEditingController();
-
-  late List<String> _skills;
-  late List<String> _services;
-
-  late String hint;
-  @override
-  void initState() {
-    hint = widget.hintText;
-    _skills = List<String>.from(widget.skills);
-    _services = List<String>.from(widget.services);
-    super.initState();
-  }
 
   void _addItem() {
     String item = _itemController.text.trim();
     if (item.isNotEmpty) {
-      setState(() {
-        if (widget.hintText.contains('Skill')) {
-          if (!_skills.contains(item)) _skills.add(item); // Add to skills list
-          widget.onUpdateSkills(_skills);
-        } else if (widget.hintText.contains('Service')) {
-          if (!_services.contains(item)) {
-            _services.add(item); // Add to services list
-          }
-            widget.onUpdateServices(_services);
+      if (hintText.contains('Skill')) {
+        if (!skillsNotifier.value.contains(item)) {
+          skillsNotifier.value = [...skillsNotifier.value, item];
         }
-      });
+      } else if (hintText.contains('Service')) {
+        if (!servicesNotifier.value.contains(item)) {
+          servicesNotifier.value = [...servicesNotifier.value, item];
+        }
+      }
     }
     _itemController.clear();
   }
 
   void _removeItem(String item) {
-    setState(() {
-      if (widget.hintText.contains('Skill')) {
-        _skills.remove(item);
-        widget.onUpdateSkills(_skills);
-      } else if (widget.hintText.contains('Service')) {
-        _services.remove(item);
-        widget.onUpdateServices(_services);
-      }
-    });
+    if (hintText.contains('Skill')) {
+      skillsNotifier.value = skillsNotifier.value.where((i) => i != item).toList();
+    } else if (hintText.contains('Service')) {
+      servicesNotifier.value = servicesNotifier.value.where((i) => i != item).toList();
+    }
   }
 
   @override
@@ -79,7 +51,7 @@ class _SkillAddingState extends State<SkillAdding> {
               ),
               filled: true,
               fillColor: white,
-              hintText: hint,
+              hintText: hintText,
               hintStyle: TextStyle(color: hintcolor),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
@@ -87,16 +59,23 @@ class _SkillAddingState extends State<SkillAdding> {
           onSubmitted: (_) => _addItem(),
         ),
         const SizedBox(height: 20),
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 4.0,
-          children: (hint.contains('Skill') ? _skills : _services).map((item) {
-            return Chip(
-              label: Text(item),
-              deleteIcon: const Icon(Icons.close),
-              onDeleted: () => _removeItem(item),
+        ValueListenableBuilder<List<String>>(
+          valueListenable: hintText.contains('Skill')
+              ? skillsNotifier
+              : servicesNotifier,
+          builder: (context, items, _) {
+            return Wrap(
+              spacing: 8.0,
+              runSpacing: 4.0,
+              children: items.map((item) {
+                return Chip(
+                  label: Text(item),
+                  deleteIcon: const Icon(Icons.close),
+                  onDeleted: () => _removeItem(item),
+                );
+              }).toList(),
             );
-          }).toList(),
+          },
         ),
       ],
     );

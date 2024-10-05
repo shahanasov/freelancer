@@ -18,6 +18,7 @@ class OthersProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? userId = FirebaseAuth.instance.currentUser?.uid;
+
     return SafeArea(
       child: Scaffold(
           body: CustomScrollView(
@@ -112,9 +113,7 @@ class OthersProfilePage extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             //here body of profilepage
-            child: ScrollableAppBar(
-              userModel: userModel,
-            ),
+            child: ScrollableAppBar(userModel: userModel, ),
           )
         ],
       )),

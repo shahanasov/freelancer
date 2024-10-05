@@ -6,13 +6,15 @@ import 'package:freelance/presentation/pages/profile_page/widgets/pofile_page_ap
 // import 'tabs/bloc/tabs_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
-  final String? id;
-  const ProfilePage({super.key, this.id});
+  final String id;
+  const ProfilePage({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
     context.read<ProfilePageBloc>().add(ProfileLoadEvent());
-    // context.read<TabsBloc>().add(PostTabEvent());
+
+    context.read<ProfilePageBloc>().add(PostLoadEvent(id: id));
+
     return BlocConsumer<ProfilePageBloc, ProfilePageState>(
       listener: (context, state) {},
       // buildWhen: (previous, current) => current is !PostTabState && current is !ResumeTabState && current is !WorkTabState,
@@ -21,12 +23,11 @@ class ProfilePage extends StatelessWidget {
           return const ProfilePageAppBar();
         } else if (state is ProfileErrorState) {
           return const ProfilePageAppBar();
-        } else if (state is ProfileLoadedState ) {
+        } else if (state is ProfileLoadedState) {
           return ProfilePageAppBar(userDetailsModel: state.profile);
-        }else if( state is PostLoadedState){
-          return const ProfilePageAppBar();
-        } 
-        else {
+        } else if (state is PostLoadedState) {
+          return ProfilePageAppBar(posts: state.post,userDetailsModel: state.profile,);
+        } else {
           return Container(
               // color: Colors.amberAccent,
               );

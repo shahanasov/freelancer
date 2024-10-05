@@ -15,6 +15,7 @@ class UserDetailsModel {
   final List<String> skills;
   final List<String> services;
   List<String> follow;
+  List<String> posts;
   // final String? profilePhoto;
 
   UserDetailsModel(
@@ -32,14 +33,16 @@ class UserDetailsModel {
       required this.dob,
       required this.skills,
       required this.services,
-      required this.follow
+      required this.follow,
+      required this.posts
       });
 
   static UserDetailsModel fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return UserDetailsModel(
       id: snapshot.id,
-      follow: List<String>.from(snapshot.get('follow') as List<dynamic>) ,
+      follow: List<String>.from(snapshot.get('follow') as List<dynamic>),
+      posts: List<String>.from(snapshot.get('posts') as List<dynamic>),
       // profilePhoto: snapshot.get('profilePhoto') as String,
       firstName: snapshot.get('firstName') as String,
       lastName: snapshot.get('lastName') as String,
@@ -58,6 +61,7 @@ class UserDetailsModel {
 
   Map<String, dynamic> tojson() {
     return {
+      'posts':posts,
       'id':id,
       'firstName': firstName,
       'lastName': lastName,

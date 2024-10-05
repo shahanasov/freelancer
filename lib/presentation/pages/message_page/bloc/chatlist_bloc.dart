@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 part 'chatlist_event.dart';
 part 'chatlist_state.dart';

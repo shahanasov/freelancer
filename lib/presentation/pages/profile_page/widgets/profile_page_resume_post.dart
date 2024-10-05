@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/widgets/tabs/posts.dart';
 import 'package:freelance/presentation/pages/resume_page/resume_detailed_page.dart';
 
 class UserDetailedProfile extends StatelessWidget {
   final UserDetailsModel userModel;
-  const UserDetailedProfile({super.key, required this.userModel});
+  final List<PostModel>? posts;
+  const UserDetailedProfile({super.key, required this.userModel,this.posts});
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +62,9 @@ class UserDetailedProfile extends StatelessWidget {
               style: TextStyle(
                   decoration: TextDecoration.underline, fontSize: 25)),
         ),
-        const PostsWidget(
-          postModelList: [],
+        posts==null? Container():
+        PostsWidget(
+          postModelList: posts!,
         )
       ],
     );

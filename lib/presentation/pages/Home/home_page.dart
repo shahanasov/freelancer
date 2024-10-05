@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/services/notification_functions.dart';
 import 'package:freelance/db/services/post_functions.dart';
 import 'package:freelance/presentation/pages/home/widgets/like_button.dart';
+import 'package:freelance/presentation/pages/other_users_profile_page/bloc/fetch_posts_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/others_profile_page.dart';
 import 'package:freelance/presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
 import 'package:freelance/theme/color.dart';
@@ -44,7 +45,7 @@ class HomePage extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: ListView.separated(
-                  itemCount: state.posts.length,
+                  itemCount: state.userandPost.length,
                   itemBuilder: (context, index) {
                     //  final likeNotif ValueNotifier(state.posts[index].postModel.likes.length);
                     return Column(
@@ -55,11 +56,12 @@ class HomePage extends StatelessWidget {
                           ),
                           ListTile(
                             onTap: () {
+                              context.read<FetchPostsBloc>().add(FetchAllPostsEvent(userId: state.userandPost[index].postModel.userId!));
                               if (userId !=
-                                  state.posts[index].postModel.userId) {
+                                  state.userandPost[index].postModel.userId) {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => OthersProfilePage(
-                                          userModel: state.posts[index],
+                                          userModel: state.userandPost[index],
                                         )));
                               }
                             },
@@ -73,21 +75,22 @@ class HomePage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            title: Text(
-                                state.posts[index].userDetailsModel.firstName),
-                            subtitle: Text(
-                                state.posts[index].userDetailsModel.jobTitle),
+                            title: Text(state
+                                .userandPost[index].userDetailsModel.firstName),
+                            subtitle: Text(state
+                                .userandPost[index].userDetailsModel.jobTitle),
                           ),
-                          state.posts[index].postModel.imagepathofPost == null
+                          state.userandPost[index].postModel.imagepathofPost ==
+                                  null
                               ? ListTile(
-                                  title: Text(state.posts[index].postModel
+                                  title: Text(state.userandPost[index].postModel
                                           .postDescription ??
                                       ''),
                                 )
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(state.posts[index].postModel
+                                    Text(state.userandPost[index].postModel
                                             .postDescription ??
                                         ''),
                                     const SizedBox(
@@ -95,7 +98,7 @@ class HomePage extends StatelessWidget {
                                     ),
                                     Center(
                                       child: Image.network(
-                                        state.posts[index].postModel
+                                        state.userandPost[index].postModel
                                             .imagepathofPost!,
                                         fit: BoxFit.cover,
                                       ),
@@ -107,20 +110,20 @@ class HomePage extends StatelessWidget {
                           ),
                           ListTile(
                             leading: LikeButton(
-                              isLiked: state.posts[index].postModel.likes
+                              isLiked: state.userandPost[index].postModel.likes
                                   .contains(userId),
-                              postModel: state.posts[index].postModel,
+                              postModel: state.userandPost[index].postModel,
                             ),
                             title: IconButton(
                               icon: const Icon(Icons.share),
                               onPressed: () {
                                 PostFunctions().sharePost(
-                                    state.posts[index].postModel.postId!);
+                                    state.userandPost[index].postModel.postId!);
                               },
                             ),
                             trailing: GestureDetector(
                                 onTap: () {
-                                  NotificationFunctions().initNotifications();
+                                  // NotificationFunctions().initNotifications();
                                   // PostFunctions().shareToChat(state
                                   // .posts[index].postModel.imagepathofPost!);
                                 },
@@ -130,7 +133,7 @@ class HomePage extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                              "${state.posts[index].postModel.likes.length} Likes"),
+                              "${state.userandPost[index].postModel.likes.length} Likes"),
                         ]);
                   },
                   separatorBuilder: (BuildContext context, int index) {

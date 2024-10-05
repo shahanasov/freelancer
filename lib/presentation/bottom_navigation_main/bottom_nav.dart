@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bloc/bloc/bottomnavigation_bloc.dart';
@@ -10,22 +11,32 @@ import 'package:freelance/theme/color.dart';
 import '../pages/search_page/search_page.dart';
 
 List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
-  const BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
-  const BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
   const BottomNavigationBarItem(
-      icon: Icon(Icons.add_box_outlined), label: 'Add'),
+      icon: Icon(Icons.home_outlined), label: 'Home', tooltip: 'Home'),
   const BottomNavigationBarItem(
-      icon: Icon(Icons.notifications_none), label: 'Notifications'),
+      icon: Icon(Icons.search), label: 'Search', tooltip: 'Search'),
+  // const BottomNavigationBarItem(
+  //     icon: Icon(Icons.add_box_outlined), label: 'Add'),
   const BottomNavigationBarItem(
-      icon: Icon(Icons.person_outline_sharp), label: 'Profile')
+      tooltip: 'Notifications',
+      icon: Icon(Icons.notifications_none),
+      label: 'Notifications'),
+  const BottomNavigationBarItem(
+      tooltip: 'Profile',
+      icon: Icon(Icons.person_outline_sharp),
+      label: 'Profile')
 ];
 
+
+String id = FirebaseAuth.instance.currentUser!.uid;
 List<Widget> pages = <Widget>[
   const HomePage(),
   const SearchPage(),
-  Container(),
+  // Container(),
   const NotificationsPage(),
-  const ProfilePage()
+  ProfilePage(
+    id: id,
+  )
 ];
 
 class BottomNav extends StatelessWidget {
@@ -43,17 +54,10 @@ class BottomNav extends StatelessWidget {
             elevation: 1,
             items: bottomNav,
             selectedItemColor: isDark ? white : black,
-            showSelectedLabels: true,
+            showSelectedLabels: false,
             unselectedItemColor: isDark ? white : black,
             currentIndex: state.tabIndex,
             onTap: (index) {
-              if (index == 2) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PostAddPage(),
-                    ));
-              }
               BlocProvider.of<BottomNavigationBloc>(context)
                   .add(TabChange(tabIndex: index));
             },

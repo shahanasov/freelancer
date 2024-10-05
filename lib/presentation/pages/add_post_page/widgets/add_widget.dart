@@ -28,7 +28,7 @@ class EditImageWidget extends StatelessWidget {
 
                   await PostFunctions()
                       .uploadDescriptionAndImage(postModel: postModel);
-                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const ProfilePage()));
+                   Navigator.of(context).pop();
                 },
                 child: const Text('Done'))
           ],

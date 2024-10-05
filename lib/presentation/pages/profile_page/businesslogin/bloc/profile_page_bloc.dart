@@ -42,9 +42,15 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
       PostLoadEvent event, Emitter<ProfilePageState> emit) async {
     try {
       emit(PostLoadingState());
-      List<PostModel> posts = await PostFunctions().getSpecificUserPosts(event.id);
+      final UserDetailsModel? userDetailsModel =
+          await storage.gettingDetailsOfTheUser();
+      List<PostModel> posts =
+          await PostFunctions().getSpecificUserPosts(event.id);
       if (posts.isNotEmpty) {
-        emit(PostLoadedState());
+        emit(PostLoadedState(
+          profile: userDetailsModel,
+          post: posts,
+        ));
       }
     } catch (e) {
       (e);

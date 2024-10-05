@@ -5,8 +5,9 @@ part of 'home_page_bloc.dart';
 final class HomePageInitial extends HomePageState {}
 class HomePageLoading extends HomePageState{}
 class HomePageLoaded extends HomePageState{
- final List<PostWithUserDetailsModel> posts;
-  HomePageLoaded({required this.posts,});
+ final List<PostWithUserDetailsModel> userandPost;
+ final List<PostModel>? posts;
+  HomePageLoaded({required this.userandPost,this.posts});
 }
 class HomePageError extends HomePageState{
   String? error;

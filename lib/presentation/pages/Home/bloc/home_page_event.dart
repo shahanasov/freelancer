@@ -2,11 +2,10 @@ part of 'home_page_bloc.dart';
 
 class HomePageEvent {}
 
-class UsersPostFetchEvent extends HomePageEvent {}
+class UsersPostFetchEvent extends HomePageEvent {
+  final String? userId;
 
-// class PostLikeEvent extends HomePageEvent {
-//   final String postId;
-//   final bool isLiked;
+  UsersPostFetchEvent({this.userId});
+}
 
-//   PostLikeEvent({required this.postId, required this.isLiked});
-// }
+class AllPostofTheUserFetchEvent extends HomePageEvent {}

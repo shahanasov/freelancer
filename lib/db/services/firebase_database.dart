@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:freelance/db/model/cv_pdf_model.dart';
 import 'package:freelance/db/model/user_details.dart';
+import 'package:freelance/presentation/pages/notification_page/bloc/notification_bloc.dart';
 
 class UserDatabaseFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -31,7 +31,8 @@ class UserDatabaseFunctions {
             skills: userdetailsmodel.skills,
             services: userdetailsmodel.services,
             jobTitle: userdetailsmodel.jobTitle,
-            follow: userdetailsmodel.follow)
+            follow: userdetailsmodel.follow,
+            posts: userdetailsmodel.posts)
         .tojson();
 
     userdetail.doc(userId).set(newUser);
@@ -76,7 +77,9 @@ class UserDatabaseFunctions {
             skills: userdetailsmodel.skills,
             services: userdetailsmodel.services,
             description: userdetailsmodel.description,
-            follow: userdetailsmodel.follow)
+            follow: userdetailsmodel.follow,
+            posts: userdetailsmodel.posts
+            )
         .tojson();
 
     await userDetailDoc.collection('UsersDetails').doc(userId).update(updated);
@@ -187,17 +190,36 @@ class UserDatabaseFunctions {
     }
   }
 
-  follow(bool isfollowed,String postId) {
+  following(bool isfollowed,String postId) {
     final ref =
         FirebaseFirestore.instance.collection('UsersDetails').doc(postId);
     if (isfollowed) {
       ref.update({
         'follow': FieldValue.arrayUnion([userId])
       });
+      //       NotificationBloc().add(SendFollowNotification(
+      //   followerId: postId,
+      //    userId: userId!,
+      // )
+      // );
+
     } else {
       ref.update({
         'follow': FieldValue.arrayRemove([userId])
       });
     }
   }
+  // posts(bool isPosted,String id) {
+  //   final ref =
+  //       FirebaseFirestore.instance.collection('UsersDetails').doc(id);
+  //   if (isPosted) {
+  //     ref.update({
+  //       'posts': FieldValue.arrayUnion([userId])
+  //     });
+  //   } else {
+  //     ref.update({
+  //       'posts': FieldValue.arrayRemove([userId])
+  //     });
+  //   }
+  // }
 }
