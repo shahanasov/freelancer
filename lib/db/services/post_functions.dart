@@ -139,14 +139,14 @@ class PostFunctions {
           .where('userId', isEqualTo: id)
           .orderBy('time', descending: true)
           .get();
-      print(querySnapshot.docs
-          .map((doc) => PostModel.fromSnapshot(doc))
-          .toList());
+      // print(querySnapshot.docs
+      //     .map((doc) => PostModel.fromSnapshot(doc))
+      //     .toList());
       return querySnapshot.docs
           .map((doc) => PostModel.fromSnapshot(doc))
           .toList();
     } on FirebaseException catch (e) {
-      print(e.toString());
+      // print(e.toString());
       return [];
     }
   }

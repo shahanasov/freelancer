@@ -121,7 +121,7 @@ class LoginForm extends StatelessWidget {
     // String message = 'login failed';
     if (formkey.currentState!.validate()) {
       // context.read<ToggleBloc>().add(LoginSubmitted(password: password, email: email));
-      print("${FirebaseAuth.instance.currentUser?.uid}....login");
+      // print("${FirebaseAuth.instance.currentUser?.uid}....login");
       // Validate username and password
       try {
         // final credential =

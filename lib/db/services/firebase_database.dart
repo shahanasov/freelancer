@@ -168,9 +168,9 @@ class UserDatabaseFunctions {
 
   Future<UserDetailsModel?> userDetails(String user) async {
     // print(userId);
-    if (user == null) {
-      throw Exception('User ID is null');
-    }
+    // if (user == null) {
+    //   throw Exception('User ID is null');
+    // }
 
     try {
       final userDetailDoc = await FirebaseFirestore.instance

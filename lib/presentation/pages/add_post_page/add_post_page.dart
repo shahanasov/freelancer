@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/model/post_model.dart';
-import 'package:freelance/presentation/bottom_navigation_main/bottom_nav.dart';
 import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.dart';
 import 'package:freelance/presentation/pages/add_post_page/widgets/add_widget.dart';
 import 'package:freelance/presentation/pages/add_post_page/widgets/share_thoughts_widget.dart';

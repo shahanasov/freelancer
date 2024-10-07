@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:freelance/presentation/pages/notification_page/bloc/notification_bloc.dart';
-import 'package:freelance/theme/color.dart';
 
 // UI for Notification Page
 class NotificationsPage extends StatelessWidget {

@@ -9,3 +9,5 @@ class PostLoadEvent extends ProfilePageEvent {
 
   PostLoadEvent({required this.id});
 }
+
+class PostEditEvent extends ProfilePageEvent{}

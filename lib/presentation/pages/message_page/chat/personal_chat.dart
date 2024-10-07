@@ -10,13 +10,15 @@ class ChatPage extends StatelessWidget {
   final UserDetailsModel user;
   final String recieverEmail;
   final String recieverId;
+  final String? message;
   ChatPage(
       {super.key,
+      this.message,
       required this.recieverEmail,
       required this.recieverId,
       required this.user});
 
-  final TextEditingController messageController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
   final ChatServices chatServices = ChatServices();
   final Authentication auth = Authentication();
 
@@ -32,6 +34,9 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(message!=null){
+      messageController=TextEditingController(text: message);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(user.firstName),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/presentation/pages/add_post_page/widgets/share_thoughts_widget.dart';
-import 'package:freelance/presentation/pages/profile_page/profile.dart';
 import '../../../../db/services/post_functions.dart';
 
 class EditImageWidget extends StatelessWidget {

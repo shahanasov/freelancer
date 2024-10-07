@@ -5,8 +5,12 @@ import 'package:freelance/db/services/post_functions.dart';
 class LikeButton extends StatefulWidget {
   final bool isLiked;
   final PostModel postModel;
-
-  const LikeButton({super.key, required this.isLiked, required this.postModel});
+  final VoidCallback onLikeToggled;
+  const LikeButton(
+      {super.key,
+      required this.isLiked,
+      required this.postModel,
+      required this.onLikeToggled});
 
   @override
   State<LikeButton> createState() => _LikeButtonState();
@@ -14,12 +18,11 @@ class LikeButton extends StatefulWidget {
 
 class _LikeButtonState extends State<LikeButton> {
   late bool isLiked;
-  late int likes;
 
   @override
   void initState() {
     isLiked = widget.isLiked;
-    likes = widget.postModel.likes.length;
+
     super.initState();
   }
 
@@ -29,8 +32,8 @@ class _LikeButtonState extends State<LikeButton> {
       onTap: () {
         setState(() {
           isLiked = !isLiked;
-          
         });
+        widget.onLikeToggled();
         PostFunctions().postLike(isLiked, widget.postModel.postId!);
       },
       child: Icon(

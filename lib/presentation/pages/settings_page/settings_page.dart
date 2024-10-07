@@ -30,6 +30,11 @@ class SettingsPage extends StatelessWidget {
               child: ListTile(
                 title: Text('App info'),
               ),
+            ),
+            const Card(
+              child: ListTile(
+                title: Text('Privacy Policy'),
+              ),
             )
           ],
         ),

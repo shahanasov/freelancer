@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bloc/bloc/bottomnavigation_bloc.dart';
 import 'package:freelance/presentation/pages/Home/home_page.dart';
-import 'package:freelance/presentation/pages/add_post_page/add_post_page.dart';
 import 'package:freelance/presentation/pages/notification_page/notification_page.dart';
 import 'package:freelance/presentation/pages/profile_page/profile.dart';
 import 'package:freelance/theme/color.dart';

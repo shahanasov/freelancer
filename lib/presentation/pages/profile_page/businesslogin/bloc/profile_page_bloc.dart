@@ -20,6 +20,7 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
 
     on<ProfileLoadEvent>(getuserDetails);
     on<PostLoadEvent>(postFetch);
+    on<PostEditEvent>(editPost);
   }
 
   Future<void> getuserDetails(
@@ -46,6 +47,25 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
           await storage.gettingDetailsOfTheUser();
       List<PostModel> posts =
           await PostFunctions().getSpecificUserPosts(event.id);
+      if (posts.isNotEmpty) {
+        emit(PostLoadedState(
+          profile: userDetailsModel,
+          post: posts,
+        ));
+      }
+    } catch (e) {
+      (e);
+    }
+  }
+
+  FutureOr<void> editPost(PostEditEvent event, Emitter<ProfilePageState> emit) async{
+    try {
+      emit(PostLoadingState());
+      final UserDetailsModel? userDetailsModel =
+          await storage.gettingDetailsOfTheUser();
+          // PostFunctions().editPost(editedPost);
+      List<PostModel> posts =
+          await PostFunctions().getCurrentUserPosts();
       if (posts.isNotEmpty) {
         emit(PostLoadedState(
           profile: userDetailsModel,

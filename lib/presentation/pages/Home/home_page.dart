@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/services/post_functions.dart';
 import 'package:freelance/presentation/pages/home/widgets/like_button.dart';
+import 'package:freelance/presentation/pages/message_page/chat/personal_chat.dart';
 import 'package:freelance/presentation/pages/message_page/message_list.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/others_profile_page.dart';
@@ -29,7 +30,6 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.message),
               onPressed: () {
-                
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const ChatListPage()));
               },
@@ -48,7 +48,8 @@ class HomePage extends StatelessWidget {
                 child: ListView.separated(
                   itemCount: state.userandPost.length,
                   itemBuilder: (context, index) {
-                    //  final likeNotif ValueNotifier(state.posts[index].postModel.likes.length);
+                    final likeCountNotifier = ValueNotifier<int>(
+                        state.userandPost[index].postModel.likes.length);
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -57,7 +58,10 @@ class HomePage extends StatelessWidget {
                           ),
                           ListTile(
                             onTap: () {
-                              context.read<PostRelatedBloc>().add(AllPostsFetchEvent(userId: state.userandPost[index].postModel.userId!));
+                              context.read<PostRelatedBloc>().add(
+                                  AllPostsFetchEvent(
+                                      userId: state.userandPost[index].postModel
+                                          .userId!));
                               if (userId !=
                                   state.userandPost[index].postModel.userId) {
                                 Navigator.of(context).push(MaterialPageRoute(
@@ -114,6 +118,16 @@ class HomePage extends StatelessWidget {
                               isLiked: state.userandPost[index].postModel.likes
                                   .contains(userId),
                               postModel: state.userandPost[index].postModel,
+                              onLikeToggled: () {
+                                final currentLikes = state
+                                    .userandPost[index].postModel.likes.length;
+                                if (state.userandPost[index].postModel.likes
+                                    .contains(userId)) {
+                                  likeCountNotifier.value = currentLikes - 1;
+                                } else {
+                                  likeCountNotifier.value = currentLikes + 1;
+                                }
+                              },
                             ),
                             title: IconButton(
                               icon: const Icon(Icons.share),
@@ -127,14 +141,30 @@ class HomePage extends StatelessWidget {
                                   // NotificationFunctions().initNotifications();
                                   // PostFunctions().shareToChat(state
                                   // .posts[index].postModel.imagepathofPost!);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => ChatPage(
+                                            recieverEmail: state
+                                                .userandPost[index]
+                                                .postModel
+                                                .userId!,
+                                            recieverId: state.userandPost[index]
+                                                .postModel.userId!,
+                                            user: state.userandPost[index]
+                                                .userDetailsModel,
+                                            message:
+                                                'I like to request about your services',
+                                          )));
                                 },
                                 child: const Icon(Icons.question_answer)),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
-                          Text(
-                              "${state.userandPost[index].postModel.likes.length} Likes"),
+                          ValueListenableBuilder<int>(
+                              valueListenable: likeCountNotifier,
+                              builder: (context, likeCount, child) {
+                                return Text("$likeCount Likes");
+                              }),
                         ]);
                   },
                   separatorBuilder: (BuildContext context, int index) {

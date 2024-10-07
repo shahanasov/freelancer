@@ -50,7 +50,7 @@ class ToggleBloc extends Bloc<ToggleEvent, ToggleState> {
 
   FutureOr<void> googleSignin(GoogleSignIn event, Emitter<ToggleState> emit) async{
     try{
-      print(await auth.signInWithGoogle());
+      await auth.signInWithGoogle();
     }catch(e){
       emit(ErrorsignIn());
     }
