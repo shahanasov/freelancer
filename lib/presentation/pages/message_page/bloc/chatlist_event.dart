@@ -1,3 +1,4 @@
 part of 'chatlist_bloc.dart';
 
-class ChatlistEvent {}
+class ChatListEvent {}
+class GetChatList extends ChatListEvent{}

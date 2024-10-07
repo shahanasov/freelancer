@@ -1,12 +1,41 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:freelance/db/model/user_details.dart';
+import 'package:freelance/db/services/chat_functions.dart';
+import 'package:freelance/db/services/firebase_database.dart';
 
 part 'chatlist_event.dart';
 part 'chatlist_state.dart';
 
-class ChatlistBloc extends Bloc<ChatlistEvent, ChatlistState> {
-  ChatlistBloc() : super(ChatlistInitial()) {
-    on<ChatlistEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
+  ChatListBloc() : super(ChatListInitial()) {
+    on<ChatListEvent>((event, emit) {});
+    on<GetChatList>(getChatList);
+  }
+
+  FutureOr<void> getChatList(
+      GetChatList event, Emitter<ChatListState> emit) async {
+    try {
+      emit(ChatListLoading());
+
+      // Fetch chat users
+      final chatList = await ChatServices()
+          .getMessagedUsers(FirebaseAuth.instance.currentUser!.uid);
+
+      List<UserDetailsModel> userList = [];
+
+      for (String userId in chatList) {
+        final userDetails = await UserDatabaseFunctions().userDetails(userId);
+        if (userDetails != null) {
+          userList.add(userDetails);
+        }
+      }
+
+      emit(ChatListed(user: userList));
+    } catch (e) {
+      emit(ChatListError(error: e.toString()));
+    }
   }
 }

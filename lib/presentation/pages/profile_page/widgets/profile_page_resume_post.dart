@@ -62,7 +62,19 @@ class UserDetailedProfile extends StatelessWidget {
               style: TextStyle(
                   decoration: TextDecoration.underline, fontSize: 25)),
         ),
-        posts==null? Container():
+        posts==null? Padding(
+          padding: const EdgeInsets.all(30.0),
+          child:  Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text('No Posts'),
+            SizedBox(height: 200,
+              child: Image.asset
+            ("assets/images/download.png")),
+            ],
+          ),
+        ):
         PostsWidget(
           postModelList: posts!,
         )

@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance/db/services/notification_functions.dart';
 import 'package:freelance/db/services/post_functions.dart';
 import 'package:freelance/presentation/pages/home/widgets/like_button.dart';
-import 'package:freelance/presentation/pages/other_users_profile_page/bloc/fetch_posts_bloc.dart';
+import 'package:freelance/presentation/pages/message_page/message_list.dart';
+import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/others_profile_page.dart';
 import 'package:freelance/presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
 import 'package:freelance/theme/color.dart';
@@ -29,8 +29,9 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.message),
               onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => ChatUsersListPage()));
+                
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ChatListPage()));
               },
             ),
             const SizedBox(
@@ -56,7 +57,7 @@ class HomePage extends StatelessWidget {
                           ),
                           ListTile(
                             onTap: () {
-                              context.read<FetchPostsBloc>().add(FetchAllPostsEvent(userId: state.userandPost[index].postModel.userId!));
+                              context.read<PostRelatedBloc>().add(AllPostsFetchEvent(userId: state.userandPost[index].postModel.userId!));
                               if (userId !=
                                   state.userandPost[index].postModel.userId) {
                                 Navigator.of(context).push(MaterialPageRoute(

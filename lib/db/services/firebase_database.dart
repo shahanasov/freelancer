@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:freelance/db/model/cv_pdf_model.dart';
 import 'package:freelance/db/model/user_details.dart';
-import 'package:freelance/presentation/pages/notification_page/bloc/notification_bloc.dart';
 
 class UserDatabaseFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -14,7 +13,7 @@ class UserDatabaseFunctions {
 
   Future buildProflieSaving(
       {required UserDetailsModel userdetailsmodel}) async {
-    print(userId);
+    // print(userId);
     final userdetail = FirebaseFirestore.instance.collection("UsersDetails");
 
     final newUser = UserDetailsModel(

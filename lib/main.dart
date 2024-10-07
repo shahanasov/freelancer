@@ -13,11 +13,12 @@ import 'package:freelance/presentation/build_profile_page/upload/bloc/upload_res
 import 'package:freelance/presentation/build_profile_page/upload/uploadcv.dart';
 import 'package:freelance/presentation/pages/Home/bloc/home_page_bloc.dart';
 import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.dart';
-import 'package:freelance/presentation/pages/other_users_profile_page/bloc/fetch_posts_bloc.dart';
+import 'package:freelance/presentation/pages/message_page/bloc/chatlist_bloc.dart';
+import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
 import 'package:freelance/presentation/pages/search_page/business_logic/bloc/search_bloc.dart';
 import 'package:freelance/presentation/welcome/businesslogic/bloc/bloc/splash_bloc.dart';
 import 'package:freelance/presentation/welcome/splash_screen.dart';
-  
+
 import 'db/services/firebase_options.dart';
 import 'presentation/login_page/login_page.dart';
 import 'presentation/login_page/widgets/bloc/toggle_bloc.dart';
@@ -53,13 +54,12 @@ class MyApp extends StatelessWidget {
           create: (context) => SplashBloc(),
           child: const SplashScreen(),
         ),
-        
         BlocProvider(
           create: (context) => UploadResumeBloc(),
         ),
-        // BlocProvider(
-        //   create: (context) => ProfileTabsBloc(),
-        // ),
+        BlocProvider(
+          create: (context) => ChatListBloc(),
+        ),
         BlocProvider(
           create: (context) => AddPostBloc(),
         ),
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
           create: (context) => HomePageBloc(),
         ),
         BlocProvider(
-          create: (context) =>FetchPostsBloc(),
+          create: (context) => PostRelatedBloc(),
         ),
       ],
       child: MaterialApp(

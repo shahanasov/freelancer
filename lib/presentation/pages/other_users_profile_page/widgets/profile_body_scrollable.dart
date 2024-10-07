@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/model/user_and_post_model.dart';
-import 'package:freelance/presentation/pages/other_users_profile_page/bloc/fetch_posts_bloc.dart';
+import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/widgets/tabs/posts.dart';
 import 'package:freelance/presentation/pages/resume_page/resume_detailed_page.dart';
 
@@ -64,7 +64,7 @@ class ScrollableAppBar extends StatelessWidget {
               style: TextStyle(
                   decoration: TextDecoration.underline, fontSize: 25)),
         ),
-        BlocBuilder<FetchPostsBloc, FetchPostsState>(
+        BlocBuilder<PostRelatedBloc, PostRelatedState>(
           builder: (context, state) {
             if(state is PostLoadingState){
               return const Center(child: CircularProgressIndicator());
