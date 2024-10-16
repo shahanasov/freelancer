@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bloc/bloc/bottomnavigation_bloc.dart';
 import 'package:freelance/presentation/pages/Home/home_page.dart';
 import 'package:freelance/presentation/pages/notification_page/notification_page.dart';
+import 'package:freelance/presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
 import 'package:freelance/presentation/pages/profile_page/profile.dart';
 import 'package:freelance/theme/color.dart';
 
@@ -26,15 +27,15 @@ List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
       label: 'Profile')
 ];
 
-
-String id = FirebaseAuth.instance.currentUser!.uid;
-List<Widget> pages = <Widget>[
+  // String? id = FirebaseAuth.instance.currentUser?.uid;  
+  
+  List<Widget> pages = <Widget>[
   const HomePage(),
   const SearchPage(),
   // Container(),
-  const NotificationsPage(),
-  ProfilePage(
-    id: id,
+  const NotificationPage(),
+  const ProfilePage(
+    // id: id!,
   )
 ];
 
@@ -43,6 +44,7 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<ProfilePageBloc>().add(PostLoadEvent(id: FirebaseAuth.instance.currentUser!.uid));
     bool isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
     return BlocConsumer<BottomNavigationBloc, BottomNavigationState>(
       listener: (context, state) {},

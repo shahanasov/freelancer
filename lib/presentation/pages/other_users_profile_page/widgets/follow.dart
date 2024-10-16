@@ -28,9 +28,10 @@ class _FollowButtonState extends State<FollowButton> {
             isfollowed = !isfollowed;
           });
           UserDatabaseFunctions().following(isfollowed, widget.userId);
+          
         },
         child: isfollowed
-            ? const TabContainer(tabtext: 'Followed')
+            ? const TabContainer(tabtext: 'followed')
             : const TabContainer(tabtext: 'Follow'));
   }
 }

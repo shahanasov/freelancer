@@ -22,6 +22,7 @@ class PostAddPage extends StatelessWidget {
               leading: IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () {
+                  context.read<AddPostBloc>().add(CloseImage());
                   Navigator.of(context).pop();
                 },
               ),
@@ -59,16 +60,22 @@ class PostAddPage extends StatelessWidget {
                     onPressed: () async {
                       final postDescription =
                           sharethoughtsController.text.trim();
-                      final postModel = PostModel(
-                        time: DateTime.now(),
-                        likes: [],
-                        postDescription: postDescription,
-                        imagepathofPost: state.editedImage.path,
-                      );
-                      context
-                          .read<AddPostBloc>()
-                          .add(UploadEvent(postModel: postModel));
-                     Navigator.of(context).pop();
+                      if (postDescription.isNotEmpty) {
+                        final postModel = PostModel(
+                          time: DateTime.now(),
+                          likes: [],
+                          postDescription: postDescription,
+                          imagepathofPost: state.editedImage.path,
+                        );
+
+                        context
+                            .read<AddPostBloc>()
+                            .add(UploadEvent(postModel: postModel));
+                      } else {
+                        Navigator.of(context).pop();
+                      }
+
+                      Navigator.of(context).pop();
                       sharethoughtsController.clear();
                     },
                     child: const Text('Done'))
@@ -99,9 +106,7 @@ class PostAddPage extends StatelessWidget {
           );
         } else if (state is UploadLoadingState) {
           return const Center(child: CircularProgressIndicator());
-        } else
-        
-        {
+        } else {
           return const EditImageWidget();
         }
       },

@@ -6,14 +6,14 @@ import 'package:freelance/presentation/pages/profile_page/widgets/pofile_page_ap
 // import 'tabs/bloc/tabs_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
-  final String id;
-  const ProfilePage({super.key, required this.id});
+  // final String id;
+  const ProfilePage({super.key,});
 
   @override
   Widget build(BuildContext context) {
-    context.read<ProfilePageBloc>().add(ProfileLoadEvent());
+    // context.read<ProfilePageBloc>().add(ProfileLoadEvent());
 
-    context.read<ProfilePageBloc>().add(PostLoadEvent(id: id));
+    // context.read<ProfilePageBloc>().add(PostLoadEvent(id: id));
 
     return BlocConsumer<ProfilePageBloc, ProfilePageState>(
       listener: (context, state) {},

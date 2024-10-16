@@ -4,7 +4,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:freelance/db/model/cv_pdf_model.dart';
+import 'package:freelance/db/model/notification_model.dart';
 import 'package:freelance/db/model/user_details.dart';
+import 'package:freelance/db/services/notification_functions.dart';
 
 class UserDatabaseFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -77,8 +79,7 @@ class UserDatabaseFunctions {
             services: userdetailsmodel.services,
             description: userdetailsmodel.description,
             follow: userdetailsmodel.follow,
-            posts: userdetailsmodel.posts
-            )
+            posts: userdetailsmodel.posts)
         .tojson();
 
     await userDetailDoc.collection('UsersDetails').doc(userId).update(updated);
@@ -115,14 +116,15 @@ class UserDatabaseFunctions {
     }
   }
 
-  Future<List<UserDetailsModel>?> getSearchResult(
-      {DocumentSnapshot? start, required String querySearch}) async {
-    Query user = FirebaseFirestore.instance
-        .collection('UsersDetails')
-        .where('jobTitle', isGreaterThanOrEqualTo: querySearch.toLowerCase())
-        .where('jobTitle',
-            isLessThanOrEqualTo: '${querySearch.toLowerCase()}\uf8ff');
+  Future<List<UserDetailsModel>?> getSearchResult({
+    DocumentSnapshot? start,
+    required String querySearch,
+  }) async {
+    // Fetching data from Firestore
+    Query user = FirebaseFirestore.instance.collection('UsersDetails');
     QuerySnapshot queryResult = await user.get();
+
+    // Mapping Firestore documents to UserDetailsModel
     List<UserDetailsModel> userList =
         queryResult.docs.map((DocumentSnapshot document) {
       DocumentSnapshot<Map<String, dynamic>> doc =
@@ -130,9 +132,25 @@ class UserDatabaseFunctions {
       return UserDetailsModel.fromSnapshot(doc);
     }).toList();
 
-    //to sort
-    userList.sort((b, a) => a.firstName.compareTo(b.firstName));
-    return userList;
+    // Filtering based on the search query
+    List<UserDetailsModel> filteredList = userList.where((user) {
+      final nameMatch =
+          user.firstName.toLowerCase().contains(querySearch.toLowerCase());
+      final jobMatch =
+          user.jobTitle.toLowerCase().contains(querySearch.toLowerCase());
+      final skillsMatch = user.skills.any(
+          (skill) => skill.toLowerCase().contains(querySearch.toLowerCase()));
+      final servicesMatch = user.services.any((services) =>
+          services.toLowerCase().contains(querySearch.toLowerCase()));
+      // Add other fields like skills or services if needed
+      return nameMatch || jobMatch || skillsMatch || servicesMatch;
+    }).toList();
+
+    // Sorting the filtered list by firstName in descending order
+    filteredList.sort((a, b) => a.firstName.compareTo(b.firstName));
+
+    // Returning the sorted, filtered list
+    return filteredList;
   }
 
   Future<String> uploadProfilePhotoToFirebase(File imageFile) async {
@@ -189,36 +207,30 @@ class UserDatabaseFunctions {
     }
   }
 
-  following(bool isfollowed,String postId) {
+  following(bool isfollowed, String postId) {
     final ref =
         FirebaseFirestore.instance.collection('UsersDetails').doc(postId);
     if (isfollowed) {
       ref.update({
-        'follow': FieldValue.arrayUnion([userId])
+        'follow': FieldValue.arrayUnion([userId]),
       });
-      //       NotificationBloc().add(SendFollowNotification(
-      //   followerId: postId,
-      //    userId: userId!,
-      // )
-      // );
-
+      final request = FollowRequest(
+          followerId: postId,
+          fromUserName: '',
+          userId: FirebaseAuth.instance.currentUser!.uid,
+          timestamp: DateTime.now());
+      NotificationFunctions().followRequest(request);
     } else {
       ref.update({
         'follow': FieldValue.arrayRemove([userId])
       });
     }
   }
-  // posts(bool isPosted,String id) {
-  //   final ref =
-  //       FirebaseFirestore.instance.collection('UsersDetails').doc(id);
-  //   if (isPosted) {
-  //     ref.update({
-  //       'posts': FieldValue.arrayUnion([userId])
-  //     });
-  //   } else {
-  //     ref.update({
-  //       'posts': FieldValue.arrayRemove([userId])
-  //     });
-  //   }
-  // }
+}
+
+extension on String {
+  String capitalize(String s) {
+    if (s.isEmpty) return s;
+    return s[0].toUpperCase() + s.substring(1).toLowerCase();
+  }
 }

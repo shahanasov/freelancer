@@ -8,11 +8,11 @@ import 'package:freelance/presentation/pages/resume_page/resume_detailed_page.da
 class UserDetailedProfile extends StatelessWidget {
   final UserDetailsModel userModel;
   final List<PostModel>? posts;
-  const UserDetailedProfile({super.key, required this.userModel,this.posts});
+  const UserDetailedProfile({super.key, required this.userModel, this.posts});
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -30,8 +30,7 @@ class UserDetailedProfile extends StatelessWidget {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                  '${userModel.firstName} ${userModel.lastName}'),
+              Text('${userModel.firstName} ${userModel.lastName}'),
               Row(
                 children: [
                   Text('${userModel.gender} '),
@@ -41,8 +40,11 @@ class UserDetailedProfile extends StatelessWidget {
                   GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ResumePage( 
-                                userDetails: userModel, userId:FirebaseAuth.instance.currentUser!.uid,)));
+                            builder: (context) => ResumePage(
+                                  userDetails: userModel,
+                                  userId:
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                )));
                       },
                       child: const Text(
                         'read more....',
@@ -62,22 +64,24 @@ class UserDetailedProfile extends StatelessWidget {
               style: TextStyle(
                   decoration: TextDecoration.underline, fontSize: 25)),
         ),
-        posts==null? Padding(
-          padding: const EdgeInsets.all(30.0),
-          child:  Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text('No Posts'),
-            SizedBox(height: 200,
-              child: Image.asset
-            ("assets/images/download.png")),
-            ],
-          ),
-        ):
-        PostsWidget(
-          postModelList: posts!,
-        )
+        posts == null
+            ? Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text('No Posts'),
+                    SizedBox(
+                        height: 200,
+                        child: Image.asset("assets/images/download.png")),
+                  ],
+                ),
+              )
+            : PostsWidget(
+                userDetailsModel: userModel,
+                postModelList: posts!,
+              )
       ],
     );
   }

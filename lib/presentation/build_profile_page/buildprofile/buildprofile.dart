@@ -5,6 +5,7 @@ import 'package:freelance/db/services/firebase_database.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bottom_nav.dart';
 import 'package:freelance/presentation/build_profile_page/widgets/profile_photo_add.dart';
+import 'package:freelance/presentation/widgets/textform_field.dart';
 import 'package:freelance/theme/color.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -20,6 +21,7 @@ class BuildProfile extends StatelessWidget {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+// controllers
   TextEditingController firstNameController = TextEditingController();
   TextEditingController secondNameController = TextEditingController();
   TextEditingController jobtitleController = TextEditingController();
@@ -30,10 +32,15 @@ class BuildProfile extends StatelessWidget {
   TextEditingController cityController = TextEditingController();
   TextEditingController dobController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  // TextEditingController servicesController = TextEditingController();
+
+  // valueNotifiers
   ValueNotifier<List<String>> skillsNotifier = ValueNotifier([]);
   ValueNotifier<List<String>> servicesNotifier = ValueNotifier([]);
+
+  // Image
   XFile? imagetoPost;
+
+  //services
   Authentication auth = Authentication();
   UserDatabaseFunctions storage = UserDatabaseFunctions();
 
@@ -59,6 +66,7 @@ class BuildProfile extends StatelessWidget {
       skillsNotifier.value = List.from(userDetailsModel!.skills);
       servicesNotifier.value = List.from(userDetailsModel!.services);
     }
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: black,
@@ -76,27 +84,17 @@ class BuildProfile extends StatelessWidget {
                     const SizedBox(
                       height: 30,
                     ),
-                    TextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    buildTextField(
+                      controller: firstNameController,
+                      hintText: 'First Name',
                       validator: (value) {
                         if (value!.isEmpty) {
                           return ' Name  is required';
                         }
                         return null;
                       },
-                      style: TextStyle(color: black),
-                      controller: firstNameController,
-                      decoration: InputDecoration(
-                          // focusedBorder: OutlineInputBorder(
-                          //     borderSide: BorderSide(color: white)),
-                          focusColor: white,
-                          filled: true,
-                          fillColor: white,
-                          hintText: 'First Name', //reached
-                          hintStyle: TextStyle(color: hintcolor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15))),
                     ),
+
                     const SizedBox(
                       height: 10,
                     ),

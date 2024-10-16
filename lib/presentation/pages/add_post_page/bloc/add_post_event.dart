@@ -3,6 +3,7 @@ part of 'add_post_bloc.dart';
 class AddPostEvent {}
 
 class SelectImage extends AddPostEvent {}
+class CloseImage extends AddPostEvent{}
 
 class EditImage extends AddPostEvent {
   final File image;

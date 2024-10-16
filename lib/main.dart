@@ -14,6 +14,7 @@ import 'package:freelance/presentation/build_profile_page/upload/uploadcv.dart';
 import 'package:freelance/presentation/pages/Home/bloc/home_page_bloc.dart';
 import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.dart';
 import 'package:freelance/presentation/pages/message_page/bloc/chatlist_bloc.dart';
+import 'package:freelance/presentation/pages/notification_page/bloc/notification_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
 import 'package:freelance/presentation/pages/search_page/business_logic/bloc/search_bloc.dart';
 import 'package:freelance/presentation/welcome/businesslogic/bloc/bloc/splash_bloc.dart';
@@ -72,6 +73,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => PostRelatedBloc(),
         ),
+        BlocProvider(
+          create: (context) => NotificationBloc(),
+        ),
       ],
       child: MaterialApp(
         themeMode: ThemeMode.system,
@@ -82,7 +86,16 @@ class MyApp extends StatelessWidget {
         home: StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
-              log((snapshot.data?.email).toString());
+              
+              // all events call
+              context.read<ProfilePageBloc>().add(ProfileLoadEvent());
+              context.read<HomePageBloc>().add(UsersPostFetchEvent());
+              context.read<NotificationBloc>().add(NotificationFetch());
+              context.read<ProfilePageBloc>().add(ProfileLoadEvent());
+            
+              // all events call 
+
+              // log((snapshot.data?.email).toString());
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator(); // Or a splash screen
               } else if (snapshot.hasData) {

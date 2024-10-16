@@ -2,15 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/model/post_model.dart';
+import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/db/services/post_functions.dart';
 import 'package:freelance/presentation/pages/edit_post/edit_post.dart';
 import 'package:freelance/presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
+import 'package:freelance/presentation/widgets/Post_icons.dart';
 import 'package:freelance/theme/color.dart';
 import 'package:intl/intl.dart';
 
 class PostsWidget extends StatelessWidget {
   final List<PostModel> postModelList;
-  const PostsWidget({super.key, required this.postModelList});
+  final UserDetailsModel userDetailsModel;
+  const PostsWidget({super.key, required this.postModelList, required this.userDetailsModel});
 
   @override
   Widget build(BuildContext context) {
@@ -121,23 +124,11 @@ class PostsWidget extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                const Row(
-                  children: [
-                    Icon(Icons.favorite),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(Icons.share),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(Icons.add)
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text("${postModelList[index].likes.length} likes"),
+                 PostIcons(
+                  userDetailsModel: userDetailsModel,
+                              postModel:
+                                  postModelList[index],
+                              userId: postModelList[index].userId!)
               ],
             );
           }),

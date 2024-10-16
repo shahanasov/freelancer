@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -8,7 +9,6 @@ import 'package:freelance/db/model/post_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-// import 'package:social_share/social_share.dart';
 import '../model/user_and_post_model.dart';
 import '../model/user_details.dart';
 
@@ -24,11 +24,15 @@ class PostFunctions {
     return pickedImage;
   }
 
-  Future<File> convertUint8ListToFile(Uint8List imageBytes,{required File image}) async {
+  Future<File> convertUint8ListToFile(Uint8List imageBytes,
+      {required File image}) async {
+        log('inside convert to file');
     final tempDir = await getTemporaryDirectory();
-  final extension =image.path.split('.').last; 
+    final extension = image.path.split('.').last;
+    log(extension);
     imagetoPost = File('${tempDir.path}/edited_image.$extension');
     await imagetoPost.writeAsBytes(imageBytes);
+    log('converted');
     return imagetoPost;
   }
 

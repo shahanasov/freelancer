@@ -70,6 +70,7 @@ class ScrollableAppBar extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }else if(state is PostLoadedState){
               return  PostsWidget(
+                userDetailsModel: userModel.userDetailsModel,
               postModelList: state.posts,
             );
             }else if(state is PostEmptyState){

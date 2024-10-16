@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
@@ -16,6 +17,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
     on<SelectImage>(selectImage);
     on<EditImage>(editImage);
     on<UploadEvent>(uploadpost);
+    on<CloseImage>(closing);
   }
 
   FutureOr<void> selectImage(
@@ -23,7 +25,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
     if (event is SelectImage) {
       try {
         final XFile? image = await PostFunctions().imageSelect();
-        print(image!.name);
+        // print(image!.name);
         emit(ImageSelected(selectedImage: image));
       } catch (e) {
         return;
@@ -35,21 +37,28 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
     emit(UploadLoadingState());
     try {
       // Pass the File directly to the ImageEditor
-      final Uint8List? editedImage = await Navigator.push(
+      var image=await event.image.readAsBytes();
+      final  editedImage = await Navigator.push(
         event.context,
         MaterialPageRoute(
-          builder: (context) => ImageEditor(
-            image: event.image, // <-- Uint8List of image
-          ),
+          builder: (context) {
+            log('edited image');
+            return ImageEditor(
+            image: image, // <-- Uint8List of image
+          );
+          },
         ),
       );
       if (editedImage != null) {
-        
+        log(editedImage.runtimeType.toString());
+        log(event.image.runtimeType.toString());
         final editedImageFile =
             await PostFunctions().convertUint8ListToFile(editedImage,image:event.image);
+
         emit(EditingState(editedImage: editedImageFile));
       }
     } catch (e) {
+      log('error: $e');
       // emit(AddPostError("Failed to edit image"));
       // print(e);
     }
@@ -65,5 +74,9 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
     } catch (e) {
       (e);
     }
+  }
+
+  FutureOr<void> closing(CloseImage event, Emitter<AddPostState> emit) {
+    emit(AddPostInitial());
   }
 }

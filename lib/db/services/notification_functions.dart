@@ -1,65 +1,75 @@
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
+import 'dart:async';
 
-// class NotificationService {
-//   final String _serverKey = "f0qKaFm1T52bSae-9lBFel:APA91bH2Ur_8M2q0TcB2YXFx9cnorAzx83nTcZNkGfpPywEeLvuV88Zg84MzqEGsdHlGN3fWuE5tcSLEucK68lqHajxkn7HBoa3ncVaPJFeC7PgBaE24XIqU7JZkzQfB7HL2LVhLUvJI"; // Replace with your FCM server key"
-//   final String _fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:freelance/db/model/notification_model.dart';
+import 'package:freelance/db/model/user_details.dart';
 
-//   Future<void> sendMessageNotification({
-//     required String recipientToken,
-//     required String title,
-//     required String body,
-//   }) async {
-//     try {
-//       final response = await http.post(
-//         Uri.parse(_fcmUrl),
-//         headers: <String, String>{
-//           'Content-Type': 'application/json',
-//           'Authorization': 'key=$_serverKey',
-//         },
-//         body: jsonEncode({
-//           'to': recipientToken,
-//           'notification': {
-//             'title': title,
-//             'body': body,
-//             'sound': 'default',
-//           },
-//           'data': {
-//             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-//           },
-//         }),
-//       );
+class NotificationFunctions {
+  final String userId = FirebaseAuth.instance.currentUser!.uid;
 
-//       if (response.statusCode == 200) {
-//         print('Notification sent successfully');
-//       } else {
-//         print('Failed to send notification. Error: ${response.body}');
-//       }
-//     } catch (e) {
-//       print('Error sending notification: $e');
-//     }
-//   }
+  // Function to send a follow request
+  followRequest(FollowRequest request) {
+    final requests = FirebaseFirestore.instance.collection("Notifications");
+    final id = FirebaseFirestore.instance
+        .collection("Notifications")
+        .doc(request.followerId)
+        .collection('followRequests')
+        .doc()
+        .id;
 
-//   Future<void> sendFollowNotification({
-//     required String recipientToken,
-//     required String followerId,
-//   }) async {
-//     await sendMessageNotification(
-//       recipientToken: recipientToken,
-//       title: 'New Follower',
-//       body: '$followerId started following you',
-//     );
-//   }
+    final newfollow = FollowRequest(
+      followerId: request.followerId,
+      userId: request.userId,
+      fromUserName: request.fromUserName,
+      timestamp: request.timestamp,
+    ).tojson();
 
-//   Future<void> sendChatNotification({
-//     required String recipientToken,
-//     required String senderId,
-//     required String messageText,
-//   }) async {
-//     await sendMessageNotification(
-//       recipientToken: recipientToken,
-//       title: 'New Message',
-//       body: 'You received a message from $senderId: $messageText',
-//     );
-//   }
-// }
+    // Store follow request under the followerId and current userId
+    requests
+        .doc(request.followerId)
+        .collection('followRequests')
+        .doc(id) // Current user's ID as doc ID
+        .set(newfollow);
+  }
+
+  // Function to fetch all follow requests for the current user
+  Future<List<UserDetailsModel?>> getAllFollow() async {
+    // print(userId);
+    // Get all follow requests for the current user (userId)
+    final notificationsSnapshot = await FirebaseFirestore.instance
+        .collection("Notifications")
+        .doc(userId) // Current user's ID
+        .collection('followRequests')
+        // .orderBy('timestamp', descending: true)
+        .get();
+
+    List<UserDetailsModel?> users = [];
+    print("${notificationsSnapshot.docs} doc");
+
+    for (var follow in notificationsSnapshot.docs) {
+      print("$follow....");
+      final not = FollowRequest.fromDocument(follow);
+      print("${not.userId}.....");
+      // Fetch the user details of the follower
+      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+          await FirebaseFirestore.instance
+              .collection('UsersDetails')
+              .doc(not.userId)
+              .get();
+      print("$userSnapshot usersnapshot");
+      if (userSnapshot.exists) {
+        print(userSnapshot);
+        UserDetailsModel userData = UserDetailsModel.fromSnapshot(userSnapshot);
+        print(userData);
+        // Add the user data to the list
+        users.add(userData);
+      } else {
+        // Handle the case if the user does not exist
+        // users.add(null);  // Add null or handle the missing user data
+      }
+    }
+    print(users);
+    return users;
+  }
+}
