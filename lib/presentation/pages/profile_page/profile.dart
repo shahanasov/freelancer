@@ -11,7 +11,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // context.read<ProfilePageBloc>().add(ProfileLoadEvent());
+    context.read<ProfilePageBloc>().add(ProfileLoadEvent());
 
     // context.read<ProfilePageBloc>().add(PostLoadEvent(id: id));
 
@@ -27,7 +27,10 @@ class ProfilePage extends StatelessWidget {
           return ProfilePageAppBar(userDetailsModel: state.profile);
         } else if (state is PostLoadedState) {
           return ProfilePageAppBar(posts: state.post,userDetailsModel: state.profile,);
-        } else {
+        } else if(state is PostLoadingState){
+          return const Center(child: CircularProgressIndicator());
+        }else
+        {
           return Container(
               // color: Colors.amberAccent,
               );

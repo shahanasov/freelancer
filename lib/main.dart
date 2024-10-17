@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/services/firebase_auth.dart';
-import 'package:freelance/db/services/firebase_database.dart';
+import 'package:freelance/db/services/firebase_database_usersaving_functions.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bloc/bloc/bottomnavigation_bloc.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bottom_nav.dart';
 import 'package:freelance/presentation/build_profile_page/upload/bloc/upload_resume_bloc.dart';
@@ -16,9 +15,11 @@ import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.da
 import 'package:freelance/presentation/pages/message_page/bloc/chatlist_bloc.dart';
 import 'package:freelance/presentation/pages/notification_page/bloc/notification_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
+import 'package:freelance/presentation/pages/resume_page/bloc/resume_pdf_bloc.dart';
 import 'package:freelance/presentation/pages/search_page/business_logic/bloc/search_bloc.dart';
 import 'package:freelance/presentation/welcome/businesslogic/bloc/bloc/splash_bloc.dart';
 import 'package:freelance/presentation/welcome/splash_screen.dart';
+import 'package:freelance/presentation/widgets/suggestions_widget/bloc/suggestions_widget_bloc.dart';
 
 import 'db/services/firebase_options.dart';
 import 'presentation/login_page/login_page.dart';
@@ -75,6 +76,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => NotificationBloc(),
+        ),
+         BlocProvider(
+          create: (context) => SuggestionsWidgetBloc(),
+        ),
+         BlocProvider(
+          create: (context) => ResumePdfBloc(),
         ),
       ],
       child: MaterialApp(

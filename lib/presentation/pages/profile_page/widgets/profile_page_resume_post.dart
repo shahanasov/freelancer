@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/widgets/tabs/posts.dart';
+import 'package:freelance/presentation/pages/resume_page/bloc/resume_pdf_bloc.dart';
 import 'package:freelance/presentation/pages/resume_page/resume_detailed_page.dart';
 
 class UserDetailedProfile extends StatelessWidget {
@@ -39,6 +41,7 @@ class UserDetailedProfile extends StatelessWidget {
                   ),
                   GestureDetector(
                       onTap: () {
+                        context.read<ResumePdfBloc>().add(ResumePdfFetch(userId: FirebaseAuth.instance.currentUser!.uid));
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ResumePage(
                                   userDetails: userModel,
@@ -65,19 +68,21 @@ class UserDetailedProfile extends StatelessWidget {
                   decoration: TextDecoration.underline, fontSize: 25)),
         ),
         posts == null
-            ? Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            ? Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text('No Posts'),
-                    SizedBox(
-                        height: 200,
-                        child: Image.asset("assets/images/download.png")),
+                    Image.asset(
+                      "assets/images/download.png",
+                      height: 200,
+                      width: 200,
+                      alignment: Alignment.center,
+                    ),
                   ],
                 ),
-              )
+            )
             : PostsWidget(
                 userDetailsModel: userModel,
                 postModelList: posts!,

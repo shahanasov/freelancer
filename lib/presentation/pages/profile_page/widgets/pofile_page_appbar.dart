@@ -5,7 +5,6 @@ import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/presentation/build_profile_page/buildprofile/buildprofile.dart';
 import 'package:freelance/presentation/login_page/login_page.dart';
 import 'package:freelance/presentation/login_page/widgets/bloc/toggle_bloc.dart';
-import 'package:freelance/presentation/pages/add_post_page/add_post_page.dart';
 import 'package:freelance/presentation/pages/profile_page/widgets/add_post_button.dart';
 import 'package:freelance/presentation/pages/profile_page/widgets/profile_page_resume_post.dart';
 import 'package:freelance/presentation/pages/settings_page/settings_page.dart';
@@ -22,9 +21,7 @@ class ProfilePageAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      
         drawer: Drawer(
           child: BlocListener<ToggleBloc, ToggleState>(
             listener: (context, state) {
@@ -35,7 +32,7 @@ class ProfilePageAppBar extends StatelessWidget {
             },
             child: ListView(
               children: [
-                const DrawerHeader(child:Text('Others')),
+                const DrawerHeader(child: Text('Others')),
                 InkWell(
                   onTap: () {
                     showDialog(
@@ -91,8 +88,6 @@ class ProfilePageAppBar extends StatelessWidget {
             ),
           ),
         ),
-        //! everywhere
-        floatingActionButton: const AddPostButton(),
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -119,15 +114,16 @@ class ProfilePageAppBar extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: CircleAvatar(
-                                radius: 60,
-                                child: Image.asset(
-                                  "assets/images/profilenew.jpg",
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                            ),
+                                borderRadius: BorderRadius.circular(100),
+                                child: CircleAvatar( radius: 60,
+                                  backgroundImage: userDetailsModel != null &&
+                                          userDetailsModel!.profilePhoto != null
+                                      ? NetworkImage(
+                                          userDetailsModel!.profilePhoto!)
+                                      : const AssetImage(
+                                              "assets/images/profilenew.jpg")
+                                          as ImageProvider,
+                                )),
                           ],
                         ),
                         const SizedBox(

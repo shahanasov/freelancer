@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/model/user_and_post_model.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/widgets/tabs/posts.dart';
+import 'package:freelance/presentation/pages/resume_page/bloc/resume_pdf_bloc.dart';
 import 'package:freelance/presentation/pages/resume_page/resume_detailed_page.dart';
 
 class ScrollableAppBar extends StatelessWidget {
@@ -40,6 +41,7 @@ class ScrollableAppBar extends StatelessWidget {
                   ),
                   GestureDetector(
                       onTap: () {
+                         context.read<ResumePdfBloc>().add(ResumePdfFetch(userId: userModel.postModel.userId!));
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ResumePage(
                                   userDetails: userModel.userDetailsModel,

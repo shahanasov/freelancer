@@ -16,7 +16,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? userId = FirebaseAuth.instance.currentUser?.uid;
-    
 
     return Scaffold(
         appBar: AppBar(
@@ -67,15 +66,18 @@ class HomePage extends StatelessWidget {
                               }
                             },
                             leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: CircleAvatar(
-                                radius: 20,
-                                child: Image.asset(
-                                  "assets/images/profilenew.jpg",
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                            ),
+                                borderRadius: BorderRadius.circular(100),
+                                child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage: state.userandPost[index]
+                                              .userDetailsModel.profilePhoto !=
+                                          null
+                                      ? NetworkImage(state.userandPost[index]
+                                          .userDetailsModel.profilePhoto!)
+                                      : const AssetImage(
+                                              "assets/images/profilenew.jpg")
+                                          as ImageProvider,
+                                )),
                             title: Text(state
                                 .userandPost[index].userDetailsModel.firstName),
                             subtitle: Text(state
@@ -111,10 +113,11 @@ class HomePage extends StatelessWidget {
                           ),
                           //  here row
                           PostIcons(
-                            userDetailsModel: state.userandPost[index].userDetailsModel,
-                              postModel:
-                                  state.userandPost[index].postModel,
-                              userId: state.userandPost[index].postModel.userId!)
+                              userDetailsModel:
+                                  state.userandPost[index].userDetailsModel,
+                              postModel: state.userandPost[index].postModel,
+                              userId:
+                                  state.userandPost[index].postModel.userId!)
                         ]);
                   },
                   separatorBuilder: (BuildContext context, int index) {

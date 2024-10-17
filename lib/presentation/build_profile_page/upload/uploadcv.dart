@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freelance/db/services/firebase_database.dart';
+import 'package:freelance/db/services/firebase_database_usersaving_functions.dart';
 import 'package:freelance/theme/color.dart';
 import '../makingres.dart';
 import 'bloc/upload_resume_bloc.dart';

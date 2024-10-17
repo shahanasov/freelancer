@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:freelance/db/model/user_and_post_model.dart';
+import 'package:freelance/db/model/user_details.dart';
 
 class SuggestionsWidget extends StatelessWidget {
-  const SuggestionsWidget({super.key});
+  final List<UserDetailsModel> user;
+  final List<PostWithUserDetailsModel> posts;
+  const SuggestionsWidget({super.key, required this.user, required this.posts});
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10.0),

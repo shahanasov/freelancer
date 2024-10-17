@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.dart';
 import 'package:freelance/presentation/pages/add_post_page/widgets/add_widget.dart';
-import 'package:freelance/presentation/pages/add_post_page/widgets/share_thoughts_widget.dart';
+import 'package:freelance/presentation/pages/add_post_page/share_thoughts_widget.dart';
 
-class PostAddPage extends StatelessWidget {
-  PostAddPage({super.key});
+class PostAddWidget extends StatelessWidget {
+  PostAddWidget({super.key});
 
   final TextEditingController sharethoughtsController = TextEditingController();
   @override
@@ -41,7 +41,7 @@ class PostAddPage extends StatelessWidget {
                     ? Image.file(File(state.selectedImage!.path))
                     : Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: Body(
+                        child: AddPostPage(
                           sharethoughtsController: sharethoughtsController,
                         ),
                       )),

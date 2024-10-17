@@ -1,14 +1,15 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:freelance/db/services/firebase_auth.dart';
-import 'package:freelance/db/services/firebase_database.dart';
+import 'package:freelance/db/services/firebase_database_usersaving_functions.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bottom_nav.dart';
 import 'package:freelance/presentation/build_profile_page/widgets/profile_photo_add.dart';
 import 'package:freelance/presentation/widgets/textform_field.dart';
 import 'package:freelance/theme/color.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../widgets/add_skills.dart';
 import '../widgets/select_city.dart';
@@ -80,6 +81,10 @@ class BuildProfile extends StatelessWidget {
                   children: [
                     ProfilePhoto(
                       imagetoPost: imagetoPost,
+                      onImageSelected: (XFile? selectedImage) {
+                        imagetoPost =
+                            selectedImage; // Update the imagetoPost variable when an image is selected
+                      },
                     ),
                     const SizedBox(
                       height: 30,
@@ -98,80 +103,32 @@ class BuildProfile extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      style: TextStyle(color: black),
-                      controller: secondNameController,
-                      decoration: InputDecoration(
-                          filled: true,
-                          fillColor: white,
-                          hintText: 'Last Name', //reached
-                          hintStyle: TextStyle(color: hintcolor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15))),
-                    ),
+                    buildTextField(
+                        controller: secondNameController,
+                        hintText: 'Last Name',
+                        validator: null),
+
                     const SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                    buildTextField(
+                      controller: jobtitleController,
+                      hintText: 'Job Title',
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Job title is required';
+                          return ' Job title is required';
                         }
                         return null;
                       },
-                      style: TextStyle(color: black),
-                      controller: jobtitleController,
-                      decoration: InputDecoration(
-                          filled: true,
-                          fillColor: white,
-                          hintText: 'Job Title', //reached
-                          hintStyle: TextStyle(color: hintcolor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15))),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      minLines: 1,
-                      maxLines: 5,
-                      style: TextStyle(color: black),
-                      controller: descriptionController,
-                      decoration: InputDecoration(
-                          focusColor: white,
-                          filled: true,
-                          fillColor: white,
-                          hintText:
-                              'Write a short description about you', //reached
-                          hintStyle: TextStyle(color: hintcolor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15))),
-                    ),
+                    buildDescriptionFeild(controller: descriptionController),
                     const SizedBox(
                       height: 10,
                     ),
-                    IntlPhoneField(
-                      style: TextStyle(color: black),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Phone number is required';
-                        }
-                        return null;
-                      },
-                      controller: phoneNumberController,
-                      initialCountryCode: 'IN',
-                      // languageCode: 'IN',
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                          filled: true,
-                          fillColor: white,
-                          hintText: 'Phone Number', //reached
-                          hintStyle: TextStyle(color: hintcolor),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15))),
-                    ),
+                    buildPhoneNumberField(controller: phoneNumberController),
                     const SizedBox(
                       height: 10,
                     ),
@@ -234,6 +191,17 @@ class BuildProfile extends StatelessWidget {
   }
 
   Future submitUserDetails(context) async {
+    String? profilePic;
+    File? image;
+    print("${imagetoPost?.path} ..in submitting");
+    if (imagetoPost != null) {
+      print("${imagetoPost!.path} ..in submitting");
+      image = File(imagetoPost!.path);
+
+      profilePic =
+          await UserDatabaseFunctions().uploadProfilePhotoToFirebase(image);
+      print("$profilePic profilepic path which is uploaded");
+    }
     final firstName = firstNameController.text.trim();
     final secondName = secondNameController.text.trim();
     final jobTitle = jobtitleController.text.trim();
@@ -244,13 +212,11 @@ class BuildProfile extends StatelessWidget {
     final city = cityController.text.trim();
     final dob = dobController.text.trim();
     final description = descriptionController.text.trim();
-    // PostFunctions().convertUint8ListToFile(imagetoPost);
-    // storage.uploadProfilePhotoToFirebase(File(imagetoPost!.path));
     final skills = skillsNotifier.value;
     final services = servicesNotifier.value;
 
     final userDetails = UserDetailsModel(
-        // profilePhoto: imagetoPo,
+        profilePhoto: profilePic,
         id: FirebaseAuth.instance.currentUser!.uid,
         firstName: firstName,
         lastName: secondName,
@@ -289,7 +255,7 @@ class BuildProfile extends StatelessWidget {
     final services = servicesNotifier.value;
 
     final userDetails = UserDetailsModel(
-        // profilePhoto: imagetoPo,
+        profilePhoto: userDetailsModel!.profilePhoto,
         id: FirebaseAuth.instance.currentUser!.uid,
         firstName: firstName,
         lastName: secondName,

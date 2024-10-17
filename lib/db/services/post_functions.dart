@@ -136,7 +136,7 @@ class PostFunctions {
 
   Future<List<PostModel>> getSpecificUserPosts(String? id) async {
     // FirebaseFirestore.instance.clearPersistence();
-    print("current user $id");
+    // print("current user $id");
     try {
       final querySnapshot = await FirebaseFirestore.instance
           .collection("Posts")
@@ -150,7 +150,7 @@ class PostFunctions {
           .map((doc) => PostModel.fromSnapshot(doc))
           .toList();
     } on FirebaseException catch (e) {
-      // print(e.toString());
+      log(e.toString());
       return [];
     }
   }

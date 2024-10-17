@@ -1,16 +1,19 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/others_profile_page.dart';
 import 'package:freelance/presentation/pages/search_page/business_logic/bloc/search_bloc.dart';
-import 'package:freelance/presentation/widgets/sugessions_widget.dart';
+import 'package:freelance/presentation/widgets/suggestions_widget/sugessions_widget.dart';
 
 class SearchResultWidget extends StatelessWidget {
   const SearchResultWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final String? userId = FirebaseAuth.instance.currentUser?.uid;
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
         log(state.runtimeType.toString());
@@ -26,10 +29,16 @@ class SearchResultWidget extends StatelessWidget {
                 return Card(
                   child: ListTile(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => OthersProfilePage(
-                                userModel: postsWithUser[index],
-                              )));
+                      context.read<PostRelatedBloc>().add(AllPostsFetchEvent(
+                          userId:
+                              state.postsWithUser![index].postModel.userId!));
+                      if (userId !=
+                          state.postsWithUser![index].postModel.userId!) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => OthersProfilePage(
+                                  userModel: postsWithUser[index],
+                                )));
+                      }
                     },
                     title: Text(state.user![index].firstName),
                     subtitle: Text(state.user![index].jobTitle),
@@ -50,7 +59,10 @@ class SearchResultWidget extends StatelessWidget {
           );
         } else {
           //  here write codes for starting an ui
-          return const SuggestionsWidget();
+          return const SuggestionsWidget(
+            user: [],
+            posts: [],
+          );
         }
       },
     );

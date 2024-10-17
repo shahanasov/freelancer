@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:freelance/presentation/pages/add_post_page/add_post_page.dart';
+import 'package:freelance/presentation/pages/add_post_page/widgets/add_post_page.dart';
 
 class AddPostButton extends StatelessWidget {
   const AddPostButton({super.key});
@@ -15,7 +15,7 @@ class AddPostButton extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PostAddPage(),
+              builder: (context) => PostAddWidget(),
             ));
       },
       // child: const Icon(Icons.add)

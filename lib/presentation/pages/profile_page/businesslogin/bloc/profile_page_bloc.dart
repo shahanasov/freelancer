@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/db/services/firebase_auth.dart';
-import 'package:freelance/db/services/firebase_database.dart';
+import 'package:freelance/db/services/firebase_database_usersaving_functions.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/db/services/post_functions.dart';
 
@@ -58,14 +58,14 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
     }
   }
 
-  FutureOr<void> editPost(PostEditEvent event, Emitter<ProfilePageState> emit) async{
+  FutureOr<void> editPost(
+      PostEditEvent event, Emitter<ProfilePageState> emit) async {
     try {
       emit(PostLoadingState());
       final UserDetailsModel? userDetailsModel =
           await storage.gettingDetailsOfTheUser();
-          // PostFunctions().editPost(editedPost);
-      List<PostModel> posts =
-          await PostFunctions().getCurrentUserPosts();
+      // PostFunctions().editPost(editedPost);
+      List<PostModel> posts = await PostFunctions().getCurrentUserPosts();
       if (posts.isNotEmpty) {
         emit(PostLoadedState(
           profile: userDetailsModel,

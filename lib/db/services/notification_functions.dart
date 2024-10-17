@@ -11,12 +11,12 @@ class NotificationFunctions {
   // Function to send a follow request
   followRequest(FollowRequest request) {
     final requests = FirebaseFirestore.instance.collection("Notifications");
-    final id = FirebaseFirestore.instance
-        .collection("Notifications")
-        .doc(request.followerId)
-        .collection('followRequests')
-        .doc()
-        .id;
+    // final id = FirebaseFirestore.instance
+    //     .collection("Notifications")
+    //     .doc(request.followerId)
+    //     .collection('followRequests')
+    //     .doc()
+    //     .id;
 
     final newfollow = FollowRequest(
       followerId: request.followerId,
@@ -29,7 +29,7 @@ class NotificationFunctions {
     requests
         .doc(request.followerId)
         .collection('followRequests')
-        .doc(id) // Current user's ID as doc ID
+        .doc(userId) // Current user's ID as doc ID
         .set(newfollow);
   }
 
@@ -45,28 +45,32 @@ class NotificationFunctions {
         .get();
 
     List<UserDetailsModel?> users = [];
-    print("${notificationsSnapshot.docs} doc");
+    // print("${notificationsSnapshot.docs} doc");
 
     for (var follow in notificationsSnapshot.docs) {
-      print("$follow....");
+      // print("$follow....");
       final not = FollowRequest.fromDocument(follow);
-      print("${not.userId}.....");
+      // print("${not.userId}.....");
       // Fetch the user details of the follower
-      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
-          await FirebaseFirestore.instance
-              .collection('UsersDetails')
-              .doc(not.userId)
-              .get();
-      print("$userSnapshot usersnapshot");
-      if (userSnapshot.exists) {
-        print(userSnapshot);
-        UserDetailsModel userData = UserDetailsModel.fromSnapshot(userSnapshot);
-        print(userData);
-        // Add the user data to the list
-        users.add(userData);
-      } else {
-        // Handle the case if the user does not exist
-        // users.add(null);  // Add null or handle the missing user data
+      if (not.followerId != userId) {
+        DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+            await FirebaseFirestore.instance
+                .collection('UsersDetails')
+                .doc(not.userId)
+                .get();
+        // print("$userSnapshot usersnapshot");
+        if (userSnapshot.exists) {
+          // print(userSnapshot);
+          UserDetailsModel userData =
+              UserDetailsModel.fromSnapshot(userSnapshot);
+          // print(userData);
+          // Add the user data to the list
+
+          users.add(userData);
+        } else {
+          // Handle the case if the user does not exist
+          // users.add(null);  // Add null or handle the missing user data
+        }
       }
     }
     print(users);

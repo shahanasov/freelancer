@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -5,8 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:freelance/db/model/cv_pdf_model.dart';
 import 'package:freelance/db/model/notification_model.dart';
+import 'package:freelance/db/model/user_and_post_model.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/db/services/notification_functions.dart';
+import 'package:freelance/db/services/post_functions.dart';
 
 class UserDatabaseFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -15,11 +18,14 @@ class UserDatabaseFunctions {
 
   Future buildProflieSaving(
       {required UserDetailsModel userdetailsmodel}) async {
+    // String? profilePic;
+
     // print(userId);
     final userdetail = FirebaseFirestore.instance.collection("UsersDetails");
 
     final newUser = UserDetailsModel(
             id: userId!,
+            profilePhoto: userdetailsmodel.profilePhoto,
             firstName: userdetailsmodel.firstName,
             lastName: userdetailsmodel.lastName,
             description: userdetailsmodel.description,
@@ -37,6 +43,15 @@ class UserDatabaseFunctions {
         .tojson();
 
     userdetail.doc(userId).set(newUser);
+  }
+
+  Future<String> uploadProfilePhotoToFirebase(File imageFile) async {
+    print("${imageFile.path} imageuploading");
+    final storageRef =
+        FirebaseStorage.instance.ref().child('profilephoto/$userId.jpg');
+    // final uploadTask =
+    await storageRef.putFile(imageFile);
+    return await storageRef.getDownloadURL(); // Return the image download URL
   }
 
   Future<UserDetailsModel?> gettingDetailsOfTheUser() async {
@@ -57,7 +72,7 @@ class UserDatabaseFunctions {
         return null;
       }
     } on FirebaseException catch (e) {
-      // print(e.code);
+      log(e.code);
       return null;
     }
   }
@@ -66,6 +81,7 @@ class UserDatabaseFunctions {
     final userDetailDoc = FirebaseFirestore.instance;
     final updated = UserDetailsModel(
             id: userId!,
+            profilePhoto: userdetailsmodel.profilePhoto,
             firstName: userdetailsmodel.firstName,
             lastName: userdetailsmodel.lastName,
             jobTitle: userdetailsmodel.jobTitle,
@@ -116,7 +132,7 @@ class UserDatabaseFunctions {
     }
   }
 
-  Future<List<UserDetailsModel>?> getSearchResult({
+   Future<List<UserDetailsModel>?> getSearchResult({
     DocumentSnapshot? start,
     required String querySearch,
   }) async {
@@ -153,18 +169,10 @@ class UserDatabaseFunctions {
     return filteredList;
   }
 
-  Future<String> uploadProfilePhotoToFirebase(File imageFile) async {
-    final storageRef =
-        FirebaseStorage.instance.ref().child('profilephoto/$userId.jpg');
-    // final uploadTask =
-    await storageRef.putFile(imageFile);
-    return await storageRef.getDownloadURL(); // Return the image download URL
-  }
-
   Future<void> uploadResumetoDb({required ResumeModel resumeModel}) async {
     // Upload the image and get the path
 
-    final postId = FirebaseFirestore.instance.collection('Resume').doc().id;
+    // final postId = FirebaseFirestore.instance.collection('Resume').doc().id;
 
     final posts = FirebaseFirestore.instance.collection("Resume");
 
@@ -178,9 +186,28 @@ class UserDatabaseFunctions {
           .tojson();
 
       // Add the new post to Firestore under the user's ID
-      await posts.doc(postId).set(newPost);
+      await posts.doc(userId).set(newPost);
     } catch (e) {
       // print('Error uploading new post: $e');
+    }
+  }
+
+  Future<ResumeModel?> getResume(String userId) async {
+    try {
+      final resumeDoc = await FirebaseFirestore.instance
+          .collection('Resume')
+          .doc(userId)
+          .get();
+      if (resumeDoc.exists) {
+        final resume = ResumeModel.fromSnapshot(resumeDoc);
+
+        return resume;
+      } else {
+        return null;
+      }
+    } on FirebaseException catch (e) {
+      log(e.code);
+      return null;
     }
   }
 
@@ -202,7 +229,7 @@ class UserDatabaseFunctions {
         return null;
       }
     } on FirebaseException catch (e) {
-      // print(e.code);
+      log(e.code);
       return null;
     }
   }
@@ -225,12 +252,5 @@ class UserDatabaseFunctions {
         'follow': FieldValue.arrayRemove([userId])
       });
     }
-  }
-}
-
-extension on String {
-  String capitalize(String s) {
-    if (s.isEmpty) return s;
-    return s[0].toUpperCase() + s.substring(1).toLowerCase();
   }
 }

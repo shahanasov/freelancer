@@ -48,12 +48,15 @@ class OthersProfilePage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(100),
                             child: CircleAvatar(
                               radius: 60,
-                              child: Image.asset(
-                                "assets/images/profilenew.jpg",
-                                fit: BoxFit.fitWidth,
-                              ),
+                              backgroundImage: userModel
+                                          .userDetailsModel.profilePhoto !=
+                                      null
+                                  ? NetworkImage(userModel.userDetailsModel
+                                      .profilePhoto!) 
+                                  : const AssetImage("assets/images/profilenew.jpg")
+                                      as ImageProvider, 
                             ),
-                          ),
+                          )
                         ],
                       ),
                       const SizedBox(
@@ -113,7 +116,9 @@ class OthersProfilePage extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             //here body of profilepage
-            child: ScrollableAppBar(userModel: userModel, ),
+            child: ScrollableAppBar(
+              userModel: userModel,
+            ),
           )
         ],
       )),

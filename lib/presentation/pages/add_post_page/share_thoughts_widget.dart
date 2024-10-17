@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/pages/add_post_page/bloc/add_post_bloc.dart';
 
-class Body extends StatelessWidget {
+class AddPostPage extends StatelessWidget {
   TextEditingController sharethoughtsController;
-   Body({super.key,required this.sharethoughtsController});
+   AddPostPage({super.key,required this.sharethoughtsController});
 
   @override
   Widget build(BuildContext context) {

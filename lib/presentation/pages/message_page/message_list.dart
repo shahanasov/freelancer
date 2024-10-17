@@ -26,18 +26,21 @@ class ChatListPage extends StatelessWidget {
                     final user = state.user[index];
                     return Card(
                       child: ListTile(
-                        leading: const CircleAvatar(),
-                        title: Text(user
-                            .firstName), 
-                        subtitle: Text(user
-                            .lastName), 
+                        leading: CircleAvatar(
+                          backgroundImage: user.profilePhoto != null
+                              ? NetworkImage(user.profilePhoto!)
+                              : const AssetImage("assets/images/profilenew.jpg")
+                                  as ImageProvider,
+                        ),
+                        title: Text(user.firstName),
+                        subtitle: Text(user.lastName),
                         onTap: () {
-                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChatPage(
-                                  recieverId: state.user[index].id,
-                                  recieverEmail: state.user[index].firstName,
-                                  user: state.user[index],
-                                )));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ChatPage(
+                                    recieverId: state.user[index].id,
+                                    recieverEmail: state.user[index].firstName,
+                                    user: state.user[index],
+                                  )));
                         },
                       ),
                     );
@@ -47,7 +50,7 @@ class ChatListPage extends StatelessWidget {
             } else if (state is ChatListError) {
               return Center(child: Text('Error: ${state.error}'));
             }
-            return Container();
+            return const Center(child: Text('No Messages'));
           },
         ));
   }

@@ -55,7 +55,7 @@ class Authentication {
 
       return FirebaseAuth.instance.signInWithCredential(cred);
     } on FirebaseException catch (e) {
-      // log(e.code);
+      log(e.code);
       return null;
     }
   }

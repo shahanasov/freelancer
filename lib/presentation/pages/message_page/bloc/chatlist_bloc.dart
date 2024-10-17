@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/db/services/chat_functions.dart';
-import 'package:freelance/db/services/firebase_database.dart';
+import 'package:freelance/db/services/firebase_database_usersaving_functions.dart';
 
 part 'chatlist_event.dart';
 part 'chatlist_state.dart';
