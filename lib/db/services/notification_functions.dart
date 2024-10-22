@@ -11,12 +11,6 @@ class NotificationFunctions {
   // Function to send a follow request
   followRequest(FollowRequest request) {
     final requests = FirebaseFirestore.instance.collection("Notifications");
-    // final id = FirebaseFirestore.instance
-    //     .collection("Notifications")
-    //     .doc(request.followerId)
-    //     .collection('followRequests')
-    //     .doc()
-    //     .id;
 
     final newfollow = FollowRequest(
       followerId: request.followerId,
@@ -73,7 +67,27 @@ class NotificationFunctions {
         }
       }
     }
-    print(users);
+
     return users;
+  }
+
+  requstedService(FollowRequest request) {
+    final requests = FirebaseFirestore.instance.collection("Notifications");
+    final docId =
+        FirebaseFirestore.instance.collection("Notifications").doc().id;
+
+    final newfollow = FollowRequest(
+      followerId: request.followerId,
+      userId: request.userId,
+      fromUserName: request.fromUserName,
+      timestamp: request.timestamp,
+    ).tojson();
+
+    // Store  request  and current userId
+    requests
+        .doc(request.followerId)
+        .collection('ServiceRequests')
+        .doc(docId) // Current user's ID as doc ID
+        .set(newfollow);
   }
 }

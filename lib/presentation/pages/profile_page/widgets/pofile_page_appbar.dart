@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/db/model/user_details.dart';
+import 'package:freelance/db/services/firebase_database_usersaving_functions.dart';
 import 'package:freelance/presentation/build_profile_page/buildprofile/buildprofile.dart';
 import 'package:freelance/presentation/login_page/login_page.dart';
 import 'package:freelance/presentation/login_page/widgets/bloc/toggle_bloc.dart';
+import 'package:freelance/presentation/pages/other_users_profile_page/widgets/followers_list.dart';
 import 'package:freelance/presentation/pages/profile_page/widgets/add_post_button.dart';
 import 'package:freelance/presentation/pages/profile_page/widgets/profile_page_resume_post.dart';
 import 'package:freelance/presentation/pages/settings_page/settings_page.dart';
@@ -27,12 +29,17 @@ class ProfilePageAppBar extends StatelessWidget {
             listener: (context, state) {
               if (state is SignOutState) {
                 Navigator.pop(context);
-                //have to check once more
               }
             },
             child: ListView(
               children: [
-                const DrawerHeader(child: Text('Others')),
+                const DrawerHeader(
+                    child: Center(
+                  child: Text(
+                    'SkillVerse',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                )),
                 InkWell(
                   onTap: () {
                     showDialog(
@@ -113,17 +120,40 @@ class ProfilePageAppBar extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: CircleAvatar( radius: 60,
-                                  backgroundImage: userDetailsModel != null &&
-                                          userDetailsModel!.profilePhoto != null
-                                      ? NetworkImage(
-                                          userDetailsModel!.profilePhoto!)
-                                      : const AssetImage(
-                                              "assets/images/profilenew.jpg")
-                                          as ImageProvider,
-                                )),
+                            GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Container(
+                                          child: userDetailsModel != null &&
+                                                  userDetailsModel!
+                                                          .profilePhoto !=
+                                                      null
+                                              ? Image.network(userDetailsModel!
+                                                  .profilePhoto!)
+                                              : Image.asset(
+                                                  "assets/images/profilenew.jpg"),
+                                        ),
+                                        
+                                      );
+                                    });
+                              },
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: CircleAvatar(
+                                    radius: 60,
+                                    backgroundImage: userDetailsModel != null &&
+                                            userDetailsModel!.profilePhoto !=
+                                                null
+                                        ? NetworkImage(
+                                            userDetailsModel!.profilePhoto!)
+                                        : const AssetImage(
+                                                "assets/images/profilenew.jpg")
+                                            as ImageProvider,
+                                  )),
+                            ),
                           ],
                         ),
                         const SizedBox(
@@ -152,9 +182,18 @@ class ProfilePageAppBar extends StatelessWidget {
                         const SizedBox(
                           height: 20,
                         ),
-                        Text(userDetailsModel == null
-                            ? ''
-                            : '${userDetailsModel?.follow.length} followers')
+                        GestureDetector(
+                          onTap: () async {
+                            List<UserDetailsModel?> followers =
+                                await UserDatabaseFunctions().followersList();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    FollowersList(users: followers)));
+                          },
+                          child: Text(userDetailsModel == null
+                              ? ''
+                              : '${userDetailsModel?.follow.length} followers'),
+                        )
                       ],
                     ),
                   ],

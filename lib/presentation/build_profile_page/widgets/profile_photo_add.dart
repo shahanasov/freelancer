@@ -8,7 +8,7 @@ class ProfilePhoto extends StatefulWidget {
   final Function(XFile?)
       onImageSelected; // Callback function to communicate with parent widget
 
-  ProfilePhoto({super.key, this.imagetoPost, required this.onImageSelected});
+  const ProfilePhoto({super.key, this.imagetoPost, required this.onImageSelected});
 
   @override
   State<ProfilePhoto> createState() => _ProfilePhotoState();

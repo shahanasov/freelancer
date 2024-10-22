@@ -6,10 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:freelance/db/model/cv_pdf_model.dart';
 import 'package:freelance/db/model/notification_model.dart';
-import 'package:freelance/db/model/user_and_post_model.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/db/services/notification_functions.dart';
-import 'package:freelance/db/services/post_functions.dart';
 
 class UserDatabaseFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -46,7 +44,6 @@ class UserDatabaseFunctions {
   }
 
   Future<String> uploadProfilePhotoToFirebase(File imageFile) async {
-    print("${imageFile.path} imageuploading");
     final storageRef =
         FirebaseStorage.instance.ref().child('profilephoto/$userId.jpg');
     // final uploadTask =
@@ -132,7 +129,7 @@ class UserDatabaseFunctions {
     }
   }
 
-   Future<List<UserDetailsModel>?> getSearchResult({
+  Future<List<UserDetailsModel>?> getSearchResult({
     DocumentSnapshot? start,
     required String querySearch,
   }) async {
@@ -154,12 +151,15 @@ class UserDatabaseFunctions {
           user.firstName.toLowerCase().contains(querySearch.toLowerCase());
       final jobMatch =
           user.jobTitle.toLowerCase().contains(querySearch.toLowerCase());
-      final skillsMatch = user.skills.any(
-          (skill) => skill.toLowerCase().contains(querySearch.toLowerCase()));
-      final servicesMatch = user.services.any((services) =>
-          services.toLowerCase().contains(querySearch.toLowerCase()));
-      // Add other fields like skills or services if needed
-      return nameMatch || jobMatch || skillsMatch || servicesMatch;
+      // final skillsMatch = user.skills.any(
+      //     (skill) => skill.toLowerCase().contains(querySearch.toLowerCase()));
+      // final servicesMatch = user.services.any((services) =>
+      //     services.toLowerCase().contains(querySearch.toLowerCase()));
+
+      return nameMatch || jobMatch
+
+          //  || skillsMatch || servicesMatch
+          ;
     }).toList();
 
     // Sorting the filtered list by firstName in descending order
@@ -252,5 +252,44 @@ class UserDatabaseFunctions {
         'follow': FieldValue.arrayRemove([userId])
       });
     }
+  }
+
+  Future<List<UserDetailsModel?>> getAllUsers() async {
+    Query user = FirebaseFirestore.instance.collection('UsersDetails');
+    QuerySnapshot queryResult = await user.get();
+
+    // Mapping Firestore documents to UserDetailsModel
+    List<UserDetailsModel> userList =
+        queryResult.docs.map((DocumentSnapshot document) {
+      DocumentSnapshot<Map<String, dynamic>> doc =
+          document as DocumentSnapshot<Map<String, dynamic>>;
+      return UserDetailsModel.fromSnapshot(doc);
+    }).toList();
+    return userList;
+  }
+
+  void requestedService(postId) {
+    final request = FollowRequest(
+        followerId: postId,
+        fromUserName: '',
+        userId: FirebaseAuth.instance.currentUser!.uid,
+        timestamp: DateTime.now());
+    NotificationFunctions().requstedService(request);
+  }
+
+  Future<List<UserDetailsModel?>> followersList() async {
+    final user = await userDetails(FirebaseAuth.instance.currentUser!.uid);
+    List<String> followersuserIds = [];
+    List<UserDetailsModel> followersList = [];
+    if (user != null) {
+      followersuserIds = user.follow;
+    }
+    for (String person in followersuserIds) {
+      final follower = await userDetails(person);
+      if (follower != null) {
+        followersList.add(follower);
+      }
+    }
+    return followersList;
   }
 }

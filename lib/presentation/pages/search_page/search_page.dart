@@ -8,6 +8,7 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return const Scaffold(
       appBar: PreferredSize(
           preferredSize: Size(double.infinity, 150), child: SearchPageAppbar()),

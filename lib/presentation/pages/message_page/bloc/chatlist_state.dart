@@ -6,8 +6,8 @@ final class ChatListInitial extends ChatListState {}
 final class ChatListLoading extends ChatListState{}
 final class ChatListed extends ChatListState{
   final List<UserDetailsModel> user;
-
-  ChatListed({required this.user});
+ final List<Timestamp> time;
+  ChatListed({required this.user, required this.time});
 }
 final class ChatListError extends ChatListState{
   final String error;

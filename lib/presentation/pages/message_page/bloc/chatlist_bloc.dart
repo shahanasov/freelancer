@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/db/services/chat_functions.dart';
@@ -23,7 +24,8 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
       // Fetch chat users
       final chatList = await ChatServices()
           .getMessagedUsers(FirebaseAuth.instance.currentUser!.uid);
-
+      final time = await ChatServices()
+          .lastMessaged(FirebaseAuth.instance.currentUser!.uid);
       List<UserDetailsModel> userList = [];
 
       for (String userId in chatList) {
@@ -33,7 +35,7 @@ class ChatListBloc extends Bloc<ChatListEvent, ChatListState> {
         }
       }
 
-      emit(ChatListed(user: userList));
+      emit(ChatListed(user: userList, time: time));
     } catch (e) {
       emit(ChatListError(error: e.toString()));
     }

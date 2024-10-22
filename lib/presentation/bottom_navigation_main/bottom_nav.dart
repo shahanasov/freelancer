@@ -6,6 +6,7 @@ import 'package:freelance/presentation/pages/Home/home_page.dart';
 import 'package:freelance/presentation/pages/notification_page/notification_page.dart';
 import 'package:freelance/presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
 import 'package:freelance/presentation/pages/profile_page/profile.dart';
+import 'package:freelance/presentation/widgets/suggestions_widget/bloc/suggestions_widget_bloc.dart';
 import 'package:freelance/theme/color.dart';
 
 import '../pages/search_page/search_page.dart';
@@ -45,6 +46,8 @@ class BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<ProfilePageBloc>().add(PostLoadEvent(id: FirebaseAuth.instance.currentUser!.uid));
+     context.read<ProfilePageBloc>().add(ProfileLoadEvent());
+      context.read<SuggestionsWidgetBloc>().add(ShowAllUsers());
     bool isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
     return BlocConsumer<BottomNavigationBloc, BottomNavigationState>(
       listener: (context, state) {},

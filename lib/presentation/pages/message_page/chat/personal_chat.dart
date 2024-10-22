@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/db/services/chat_functions.dart';
 import 'package:freelance/db/services/firebase_auth.dart';
+import 'package:freelance/db/services/firebase_database_usersaving_functions.dart';
 import 'package:freelance/theme/color.dart';
+import 'package:intl/intl.dart';
 
 class ChatPage extends StatelessWidget {
   final UserDetailsModel user;
@@ -34,12 +36,12 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(message!=null){
-      messageController=TextEditingController(text: message);
+    if (message != null) {
+      messageController = TextEditingController(text: message);
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.firstName),
+        title: Text("${user.firstName} ${user.lastName}"),
       ),
       body: Column(
         children: [
@@ -64,13 +66,13 @@ class ChatPage extends StatelessWidget {
           }
           return ListView(
             children: snapshot.data!.docs
-                .map((doc) => buildMessageItem(doc))
+                .map((doc) => buildMessageItem(doc, context))
                 .toList(),
           );
         });
   }
 
-  Widget buildMessageItem(DocumentSnapshot doc) {
+  Widget buildMessageItem(DocumentSnapshot doc, context) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
     // is current user align to right is the current user,otherwise left
@@ -78,23 +80,63 @@ class ChatPage extends StatelessWidget {
         data['senderId'] == FirebaseAuth.instance.currentUser!.uid;
     var alignment =
         isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
-    return Container(
-        alignment: alignment,
-        child: Column(
-          crossAxisAlignment:
-              isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(12),
-                  color: isCurrentUser ? Colors.blueGrey : Colors.grey),
-              padding: const EdgeInsets.all(10),
-              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-              child: Text(data["message"]),
-            ),
-          ],
-        ));
+
+    DateTime timestamp = (data['timestamp'] as Timestamp).toDate();
+    String formattedTime = DateFormat('h:mm a').format(timestamp);
+
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width *
+              0.7, // Limit the width to 70% of the screen
+        ),
+        child: Container(
+            alignment: alignment,
+            child: Column(
+              crossAxisAlignment: isCurrentUser
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              children: [
+                IntrinsicWidth(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(12),
+                            topRight: const Radius.circular(12),
+                            bottomLeft: isCurrentUser
+                                ? const Radius.circular(12)
+                                : Radius.zero,
+                            bottomRight: isCurrentUser
+                                ? Radius.zero
+                                : const Radius.circular(12)),
+                        color: isCurrentUser ? Colors.blueGrey : Colors.grey),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 25),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data["message"],
+                          softWrap: true,
+                        ),
+                        const SizedBox(),
+                        Align(
+                            alignment: Alignment.bottomRight,
+                            child: Text(
+                              formattedTime,
+                              style: const TextStyle(fontSize: 12),
+                            ))
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )),
+      ),
+    );
   }
 
   Widget buildUserInput() {
@@ -108,6 +150,8 @@ class ChatPage extends StatelessWidget {
             autocorrect: true,
             // scrollPadding: EdgeInsets.all(10),
             style: TextStyle(color: black),
+            maxLines: 5,
+            minLines: 1,
             decoration: InputDecoration(
                 focusColor: white,
                 filled: true,
@@ -126,6 +170,9 @@ class ChatPage extends StatelessWidget {
             decoration: BoxDecoration(color: white, shape: BoxShape.circle),
             child: IconButton(
                 onPressed: () {
+                  if (message != null) {
+                    UserDatabaseFunctions().requestedService(user.id);
+                  }
                   sendMessage();
                 },
                 icon: Icon(

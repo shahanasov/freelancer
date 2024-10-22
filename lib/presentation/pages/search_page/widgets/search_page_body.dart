@@ -59,10 +59,7 @@ class SearchResultWidget extends StatelessWidget {
           );
         } else {
           //  here write codes for starting an ui
-          return const SuggestionsWidget(
-            user: [],
-            posts: [],
-          );
+          return const SuggestionsWidget();
         }
       },
     );

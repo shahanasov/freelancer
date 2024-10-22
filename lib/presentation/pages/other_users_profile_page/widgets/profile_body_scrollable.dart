@@ -13,6 +13,7 @@ class ScrollableAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -41,11 +42,11 @@ class ScrollableAppBar extends StatelessWidget {
                   ),
                   GestureDetector(
                       onTap: () {
-                         context.read<ResumePdfBloc>().add(ResumePdfFetch(userId: userModel.postModel.userId!));
+                         context.read<ResumePdfBloc>().add(ResumePdfFetch(userId: userModel.userDetailsModel.id));
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ResumePage(
                                   userDetails: userModel.userDetailsModel,
-                                  userId: userModel.postModel.userId!,
+                                  userId: userModel.userDetailsModel.id,
                                 )));
                       },
                       child: const Text(

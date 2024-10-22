@@ -174,10 +174,13 @@ class BuildProfile extends StatelessWidget {
                             backgroundColor: WidgetStatePropertyAll(white),
                             foregroundColor: WidgetStatePropertyAll(black)),
                         onPressed: () {
-                          if (userDetailsModel != null) {
-                            editProfile(context);
+                          if (formKey.currentState!.validate()) {
+                            if (userDetailsModel != null) {
+                              editProfile(context);
+                            } else {
+                              submitUserDetails(context);
+                            }
                           }
-                          submitUserDetails(context);
                         },
                         child: const Text('Submit')),
                   ],
@@ -193,14 +196,12 @@ class BuildProfile extends StatelessWidget {
   Future submitUserDetails(context) async {
     String? profilePic;
     File? image;
-    print("${imagetoPost?.path} ..in submitting");
+
     if (imagetoPost != null) {
-      print("${imagetoPost!.path} ..in submitting");
       image = File(imagetoPost!.path);
 
       profilePic =
           await UserDatabaseFunctions().uploadProfilePhotoToFirebase(image);
-      print("$profilePic profilepic path which is uploaded");
     }
     final firstName = firstNameController.text.trim();
     final secondName = secondNameController.text.trim();
@@ -249,8 +250,6 @@ class BuildProfile extends StatelessWidget {
     final city = cityController.text.trim();
     final dob = dobController.text.trim();
     final description = descriptionController.text.trim();
-    // PostFunctions().convertUint8ListToFile(imagetoPost);
-    // storage.uploadProfilePhotoToFirebase(File(imagetoPost!.path));
     final skills = skillsNotifier.value;
     final services = servicesNotifier.value;
 
@@ -272,5 +271,7 @@ class BuildProfile extends StatelessWidget {
         description: description,
         jobTitle: jobTitle);
     storage.editDetailsOfTheUser(userdetailsmodel: userDetails);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const BottomNav()));
   }
 }

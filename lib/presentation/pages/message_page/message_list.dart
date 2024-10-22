@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/presentation/pages/message_page/bloc/chatlist_bloc.dart';
 import 'package:freelance/presentation/pages/message_page/chat/personal_chat.dart';
+import 'package:intl/intl.dart';
 
 class ChatListPage extends StatelessWidget {
   const ChatListPage({super.key});
@@ -23,6 +24,9 @@ class ChatListPage extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: state.user.length,
                   itemBuilder: (context, index) {
+                    DateTime timestamp = (state.time[index]).toDate();
+                    String formattedTime =
+                        DateFormat('h:mm a').format(timestamp);
                     final user = state.user[index];
                     return Card(
                       child: ListTile(
@@ -33,7 +37,7 @@ class ChatListPage extends StatelessWidget {
                                   as ImageProvider,
                         ),
                         title: Text(user.firstName),
-                        subtitle: Text(user.lastName),
+                        subtitle: Text(" $formattedTime "),
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ChatPage(

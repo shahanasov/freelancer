@@ -6,7 +6,6 @@ import 'package:freelance/presentation/login_page/widgets/bloc/toggle_bloc.dart'
 import 'package:freelance/presentation/login_page/widgets/forgot_password.dart';
 import 'package:freelance/presentation/login_page/widgets/show_password.dart';
 import 'package:freelance/theme/color.dart';
-import '../../pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({super.key});
@@ -127,7 +126,7 @@ class LoginForm extends StatelessWidget {
         // final credential =
          await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
-        context.read<ProfilePageBloc>().add(ProfileLoadEvent());
+       
 
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => const BottomNav()));

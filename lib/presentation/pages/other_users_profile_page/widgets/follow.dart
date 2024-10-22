@@ -31,7 +31,7 @@ class _FollowButtonState extends State<FollowButton> {
           
         },
         child: isfollowed
-            ? const TabContainer(tabtext: 'followed')
+            ? const TabContainer(tabtext: 'Followed')
             : const TabContainer(tabtext: 'Follow'));
   }
 }

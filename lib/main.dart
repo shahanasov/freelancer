@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,11 +16,9 @@ import 'package:freelance/presentation/pages/notification_page/bloc/notification
 import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
 import 'package:freelance/presentation/pages/resume_page/bloc/resume_pdf_bloc.dart';
 import 'package:freelance/presentation/pages/search_page/business_logic/bloc/search_bloc.dart';
-import 'package:freelance/presentation/welcome/businesslogic/bloc/bloc/splash_bloc.dart';
-import 'package:freelance/presentation/welcome/splash_screen.dart';
 import 'package:freelance/presentation/widgets/suggestions_widget/bloc/suggestions_widget_bloc.dart';
 
-import 'db/services/firebase_options.dart';
+import 'firebase_options.dart';
 import 'presentation/login_page/login_page.dart';
 import 'presentation/login_page/widgets/bloc/toggle_bloc.dart';
 import 'presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
@@ -53,10 +50,6 @@ class MyApp extends StatelessWidget {
           create: (context) => ProfilePageBloc(auth: auth, storage: storage),
         ),
         BlocProvider(
-          create: (context) => SplashBloc(),
-          child: const SplashScreen(),
-        ),
-        BlocProvider(
           create: (context) => UploadResumeBloc(),
         ),
         BlocProvider(
@@ -77,10 +70,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => NotificationBloc(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => SuggestionsWidgetBloc(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => ResumePdfBloc(),
         ),
       ],
@@ -93,14 +86,14 @@ class MyApp extends StatelessWidget {
         home: StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
-              
               // all events call
               context.read<ProfilePageBloc>().add(ProfileLoadEvent());
               context.read<HomePageBloc>().add(UsersPostFetchEvent());
               context.read<NotificationBloc>().add(NotificationFetch());
-              context.read<ProfilePageBloc>().add(ProfileLoadEvent());
-            
-              // all events call 
+
+              // context.read<PostRelatedBloc>().add(AllPostsFetchEvent(userId: FirebaseAuth.instance.currentUser!.uid));
+
+              // all events call
 
               // log((snapshot.data?.email).toString());
               if (snapshot.connectionState == ConnectionState.waiting) {

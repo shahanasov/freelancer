@@ -87,4 +87,29 @@ class ChatServices {
 
     return messagedUserIds;
   }
+
+      Future<List<Timestamp>> lastMessaged(String currentUserId) async {
+    List<Timestamp> messagedTime = [];
+    
+    // Query chat_rooms collection where the current user is a participant
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('chat_rooms')
+        .where('participants', arrayContains: currentUserId)
+        .get();
+
+    // Iterate through the chat rooms and extract the last message timestamp
+    for (var doc in querySnapshot.docs) {
+      var data = doc.data() as Map<String, dynamic>?;  // Safely cast to a Map
+      if (data != null && data.containsKey('lastMessageTimestamp')) {
+        Timestamp time = data['lastMessageTimestamp'];
+        messagedTime.add(time);
+      }
+    }
+
+    // Return the list of message timestamps sorted in descending order (latest first)
+    messagedTime.sort((a, b) => b.compareTo(a));
+    
+    return messagedTime;
+  }
+
 }

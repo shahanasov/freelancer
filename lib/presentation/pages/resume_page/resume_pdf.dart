@@ -15,25 +15,23 @@ class PDFPreviewCard extends StatelessWidget {
     return BlocBuilder<ResumePdfBloc, ResumePdfState>(
       builder: (context, state) {
         if (state is ResumeLoaded) {
-          return 
-          
-          Padding(
+          return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
-              shape:
-                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               elevation: 4,
               child: ListTile(
-                leading:
-                    const Icon(Icons.picture_as_pdf, size: 40, color: Colors.red),
+                leading: const Icon(Icons.picture_as_pdf,
+                    size: 40, color: Colors.red),
                 title: Text(state.resume.resumeName!),
                 subtitle: const Text('pageCount pages • pdfSize • PDF'),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        PDFViewerPage(name:state.resume.resumeName!,
-                          pdfFile: File(state.resume.resumeUrl!)),
+                    builder: (context) => PDFViewerPage(
+                        name: state.resume.resumeName!,
+                        pdfFile: File(state.resume.resumeUrl!)),
                   ),
                 ),
               ),
@@ -46,4 +44,3 @@ class PDFPreviewCard extends StatelessWidget {
     );
   }
 }
-

@@ -46,64 +46,70 @@ class PostsWidget extends StatelessWidget {
                               showBottomSheet(
                                   context: context,
                                   builder: (context) {
-                                    return Column(
-                                      children: [
-                                        ListTile(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EditPost(
-                                                            postModel:
-                                                                postModelList[
-                                                                    index])));
-                                          },
-                                          leading: const Icon(Icons.edit),
-                                          title: const Text('Edit Post'),
-                                        ),
-                                        ListTile(
-                                          onTap: () {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: const Text(
-                                                        'Do you wanna delete the post'),
-                                                    actions: [
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                          child: const Text(
-                                                              'Cancel')),
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            PostFunctions()
-                                                                .deletePost(
+                                    return Padding(
+                                      padding: const EdgeInsets.all(30.0),
+                                      child: SizedBox(
+                                        height: 200,
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditPost(
+                                                                postModel:
                                                                     postModelList[
-                                                                        index]);
-                                                            context
-                                                                .read<
-                                                                    ProfilePageBloc>()
-                                                                .add(
-                                                                    PostEditEvent());
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                          child: const Text(
-                                                              'Delete'))
-                                                    ],
-                                                  );
-                                                });
-                                          },
-                                          leading: const Icon(Icons.delete),
-                                          title: const Text('Delete this Post'),
-                                        )
-                                      ],
+                                                                        index])));
+                                              },
+                                              leading: const Icon(Icons.edit),
+                                              title: const Text('Edit Post'),
+                                            ),
+                                            ListTile(
+                                              onTap: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                            'Do you wanna delete the post'),
+                                                        actions: [
+                                                          TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                              child: const Text(
+                                                                  'Cancel')),
+                                                          TextButton(
+                                                              onPressed: () {
+                                                                PostFunctions()
+                                                                    .deletePost(
+                                                                        postModelList[
+                                                                            index]);
+                                                                context
+                                                                    .read<
+                                                                        ProfilePageBloc>()
+                                                                    .add(
+                                                                        PostEditEvent());
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                              child: const Text(
+                                                                  'Delete'))
+                                                        ],
+                                                      );
+                                                    });
+                                              },
+                                              leading: const Icon(Icons.delete),
+                                              title: const Text('Delete this Post'),
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     );
                                   });
                             },
