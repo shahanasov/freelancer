@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:freelance/theme/color.dart';
@@ -72,13 +73,13 @@ class _ProfilePhotoState extends State<ProfilePhoto> {
       final XFile? pickedImage =
           await imagePicker.pickImage(source: ImageSource.gallery);
       if (pickedImage != null) {
-        print('Image selected: ${pickedImage.path}');
+        log('Image selected: ${pickedImage.path}');
       } else {
-        print('No image selected.');
+        log('No image selected.');
       }
       return pickedImage;
     } catch (e) {
-      print('Error picking image: $e');
+      log('Error picking image: $e');
       return null;
     }
   }

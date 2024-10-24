@@ -54,8 +54,7 @@ class LoginForm extends StatelessWidget {
               ),
               TextButton(
                   style: ButtonStyle(
-                      minimumSize:
-                        const WidgetStatePropertyAll(Size(192, 50)),
+                      minimumSize: const WidgetStatePropertyAll(Size(192, 50)),
                       backgroundColor: WidgetStatePropertyAll(black),
                       foregroundColor: WidgetStatePropertyAll(white)),
                   onPressed: () {
@@ -113,56 +112,50 @@ class LoginForm extends StatelessWidget {
   }
 
   Future login(BuildContext context) async {
-    // FirebaseAuth auth = FirebaseAuth.instance;
+     final navigatorContext = Navigator.of(context);
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
-    // String message = 'login failed';
     if (formkey.currentState!.validate()) {
-      // context.read<ToggleBloc>().add(LoginSubmitted(password: password, email: email));
-      // print("${FirebaseAuth.instance.currentUser?.uid}....login");
-      // Validate username and password
       try {
         // final credential =
-         await FirebaseAuth.instance
+        await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
-       
 
-        Navigator.of(context)
+        navigatorContext
             .push(MaterialPageRoute(builder: (context) => const BottomNav()));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: const Text('No user found for that email'),
-                content: const Text('No user found for that email'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
-                  ),
-                ],
-              ));
-          
+              // ignore: use_build_context_synchronously
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: const Text('No user found for that email'),
+                    content: const Text('No user found for that email'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ));
         } else if (e.code == 'wrong-password') {
           showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: const Text('Wrong password provided for that user.'),
-                content: const Text('Wrong password provided for that user.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
-                  ),
-                ],
-              ));
-       
+              // ignore: use_build_context_synchronously
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: const Text('Wrong password provided for that user.'),
+                    content:
+                        const Text('Wrong password provided for that user.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ));
         }
       }
-
-      
     }
   }
 }

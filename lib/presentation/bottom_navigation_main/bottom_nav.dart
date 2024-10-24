@@ -13,31 +13,39 @@ import '../pages/search_page/search_page.dart';
 
 List<BottomNavigationBarItem> bottomNav = <BottomNavigationBarItem>[
   const BottomNavigationBarItem(
-      icon: Icon(Icons.home_outlined), label: 'Home', tooltip: 'Home'),
+    icon: Icon(Icons.home_outlined),
+    label: 'Home',
+    tooltip: 'Home',
+    activeIcon: Icon(Icons.home_rounded, size: 30,),
+  ),
   const BottomNavigationBarItem(
-      icon: Icon(Icons.search), label: 'Search', tooltip: 'Search'),
-  // const BottomNavigationBarItem(
-  //     icon: Icon(Icons.add_box_outlined), label: 'Add'),
+    icon: Icon(Icons.search_outlined),
+    label: 'Search',
+    tooltip: 'Search',
+    activeIcon: Icon(
+      Icons.search_rounded,
+      size: 30,
+    ),
+  ),
   const BottomNavigationBarItem(
+      activeIcon: Icon(Icons.notifications, size: 30,),
       tooltip: 'Notifications',
       icon: Icon(Icons.notifications_none),
       label: 'Notifications'),
   const BottomNavigationBarItem(
       tooltip: 'Profile',
+      activeIcon: Icon(Icons.person, size: 30,),
       icon: Icon(Icons.person_outline_sharp),
       label: 'Profile')
 ];
 
-  // String? id = FirebaseAuth.instance.currentUser?.uid;  
-  
-  List<Widget> pages = <Widget>[
+
+
+List<Widget> pages = <Widget>[
   const HomePage(),
   const SearchPage(),
-  // Container(),
   const NotificationPage(),
-  const ProfilePage(
-    // id: id!,
-  )
+  const ProfilePage()
 ];
 
 class BottomNav extends StatelessWidget {
@@ -45,9 +53,11 @@ class BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<ProfilePageBloc>().add(PostLoadEvent(id: FirebaseAuth.instance.currentUser!.uid));
-     context.read<ProfilePageBloc>().add(ProfileLoadEvent());
-      context.read<SuggestionsWidgetBloc>().add(ShowAllUsers());
+    context
+        .read<ProfilePageBloc>()
+        .add(PostLoadEvent(id: FirebaseAuth.instance.currentUser!.uid));
+    context.read<ProfilePageBloc>().add(ProfileLoadEvent());
+    context.read<SuggestionsWidgetBloc>().add(ShowAllUsers());
     bool isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
     return BlocConsumer<BottomNavigationBloc, BottomNavigationState>(
       listener: (context, state) {},

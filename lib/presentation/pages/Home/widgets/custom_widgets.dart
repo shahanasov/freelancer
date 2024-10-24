@@ -5,6 +5,7 @@ import 'package:freelance/db/model/post_model.dart';
 import 'package:freelance/db/model/user_and_post_model.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/business_logic/bloc/post_related_bloc.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/others_profile_page.dart';
+import 'package:freelance/theme/color.dart';
 
 Widget showallUsersWidget(state) {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -44,6 +45,7 @@ Widget showallUsersWidget(state) {
                     ClipRRect(
                         borderRadius: BorderRadius.circular(100),
                         child: CircleAvatar(
+                          backgroundColor: white,
                           radius: 30,
                           backgroundImage: state.users[index]!.profilePhoto !=
                                   null

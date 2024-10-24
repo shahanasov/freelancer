@@ -24,7 +24,7 @@ class ResumePdfBloc extends Bloc<ResumePdfEvent, ResumePdfState> {
       }
       emit(ResumeLoaded(resume: resume!));
     } on FirebaseException catch (e) {
-      print(e);
+      (e);
     }
   }
 }

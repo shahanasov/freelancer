@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:freelance/db/model/user_details.dart';
@@ -25,7 +26,7 @@ class SuggestionsWidgetBloc
       emit(AllUsersDataLoaded(users: users));
      }
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
     }
   }
 }

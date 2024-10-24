@@ -5,6 +5,7 @@ import 'package:freelance/presentation/pages/other_users_profile_page/business_l
 import 'package:freelance/presentation/pages/other_users_profile_page/widgets/tabs/posts.dart';
 import 'package:freelance/presentation/pages/resume_page/bloc/resume_pdf_bloc.dart';
 import 'package:freelance/presentation/pages/resume_page/resume_detailed_page.dart';
+import 'package:freelance/presentation/widgets/empty_post.dart';
 
 class ScrollableAppBar extends StatelessWidget {
   final PostWithUserDetailsModel userModel;
@@ -77,7 +78,7 @@ class ScrollableAppBar extends StatelessWidget {
               postModelList: state.posts,
             );
             }else if(state is PostEmptyState){
-             return const Center(child: Text('No Posts'),);
+             return  postEmpty(context);
             }
             else{
               return Container();
@@ -89,3 +90,4 @@ class ScrollableAppBar extends StatelessWidget {
     );
   }
 }
+

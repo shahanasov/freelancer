@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:freelance/presentation/other_settings/appinfo_page.dart';
+import 'package:freelance/presentation/other_settings/privacy_policy_page.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -21,19 +23,28 @@ class SettingsPage extends StatelessWidget {
                     'Email Address : ${FirebaseAuth.instance.currentUser?.email}'),
               ),
             ),
-            const Card(
+            // const Card(
+
+            //   child: ListTile(
+            //     title: Text('Delete Profile'),
+            //   ),
+            // ),
+            Card(
               child: ListTile(
-                title: Text('Delete Profile'),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const AppInfoPage()));
+                },
+                title: const Text('App info'),
               ),
             ),
-            const Card(
+            Card(
               child: ListTile(
-                title: Text('App info'),
-              ),
-            ),
-            const Card(
-              child: ListTile(
-                title: Text('Privacy Policy'),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const PrivacyPolicy()));
+                },
+                title: const Text('Privacy Policy'),
               ),
             )
           ],

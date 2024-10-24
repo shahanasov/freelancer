@@ -6,6 +6,7 @@ import 'package:freelance/db/model/user_details.dart';
 import 'package:freelance/presentation/pages/other_users_profile_page/widgets/tabs/posts.dart';
 import 'package:freelance/presentation/pages/resume_page/bloc/resume_pdf_bloc.dart';
 import 'package:freelance/presentation/pages/resume_page/resume_detailed_page.dart';
+import 'package:freelance/presentation/widgets/empty_post.dart';
 
 class UserDetailedProfile extends StatelessWidget {
   final UserDetailsModel userModel;
@@ -41,7 +42,8 @@ class UserDetailedProfile extends StatelessWidget {
                   ),
                   GestureDetector(
                       onTap: () {
-                        context.read<ResumePdfBloc>().add(ResumePdfFetch(userId: FirebaseAuth.instance.currentUser!.uid));
+                        context.read<ResumePdfBloc>().add(ResumePdfFetch(
+                            userId: FirebaseAuth.instance.currentUser!.uid));
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ResumePage(
                                   userDetails: userModel,
@@ -68,21 +70,7 @@ class UserDetailedProfile extends StatelessWidget {
                   decoration: TextDecoration.underline, fontSize: 25)),
         ),
         posts == null
-            ? Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text('No Posts'),
-                    Image.asset(
-                      "assets/images/download.png",
-                      height: 200,
-                      width: 200,
-                      alignment: Alignment.center,
-                    ),
-                  ],
-                ),
-            )
+            ? postEmpty(context)
             : PostsWidget(
                 userDetailsModel: userModel,
                 postModelList: posts!,
@@ -91,3 +79,5 @@ class UserDetailedProfile extends StatelessWidget {
     );
   }
 }
+
+

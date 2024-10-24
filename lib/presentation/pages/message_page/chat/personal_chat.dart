@@ -8,6 +8,7 @@ import 'package:freelance/db/services/firebase_database_usersaving_functions.dar
 import 'package:freelance/theme/color.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class ChatPage extends StatelessWidget {
   final UserDetailsModel user;
   final String recieverEmail;

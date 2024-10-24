@@ -16,6 +16,7 @@ import '../widgets/select_city.dart';
 import '../widgets/dob.dart';
 import '../widgets/gender_drop_down.dart';
 
+// ignore: must_be_immutable
 class BuildProfile extends StatelessWidget {
   final UserDetailsModel? userDetailsModel;
   BuildProfile({super.key, this.userDetailsModel});
@@ -271,7 +272,6 @@ class BuildProfile extends StatelessWidget {
         description: description,
         jobTitle: jobTitle);
     storage.editDetailsOfTheUser(userdetailsmodel: userDetails);
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const BottomNav()));
+    Navigator.of(context).pop();
   }
 }

@@ -38,6 +38,7 @@ class AddPostBloc extends Bloc<AddPostEvent, AddPostState> {
       // Pass the File directly to the ImageEditor
       var image=await event.image.readAsBytes();
       final  editedImage = await Navigator.push(
+        // ignore: use_build_context_synchronously
         event.context,
         MaterialPageRoute(
           builder: (context) {

@@ -42,6 +42,7 @@ class ProfilePageAppBar extends StatelessWidget {
                 )),
                 InkWell(
                   onTap: () {
+                    final navigatorContext = Navigator.of(context);
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -59,7 +60,7 @@ class ProfilePageAppBar extends StatelessWidget {
                                     // ProgressIndicatorTheme(data: , child: child)
                                     Future.delayed(const Duration(seconds: 2),
                                         () {
-                                      Navigator.of(context).pushReplacement(
+                                      navigatorContext.pushReplacement(
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 const LoginPage()),
@@ -77,7 +78,7 @@ class ProfilePageAppBar extends StatelessWidget {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => BuildProfile(
                               userDetailsModel: userDetailsModel,
                             )));
@@ -126,7 +127,8 @@ class ProfilePageAppBar extends StatelessWidget {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Container(
+                                        title: ClipRRect(
+                                          borderRadius:  BorderRadius.circular(15),
                                           child: userDetailsModel != null &&
                                                   userDetailsModel!
                                                           .profilePhoto !=
@@ -136,7 +138,6 @@ class ProfilePageAppBar extends StatelessWidget {
                                               : Image.asset(
                                                   "assets/images/profilenew.jpg"),
                                         ),
-                                        
                                       );
                                     });
                               },
@@ -184,9 +185,10 @@ class ProfilePageAppBar extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () async {
+                            final navigatorContext = Navigator.of(context);
                             List<UserDetailsModel?> followers =
                                 await UserDatabaseFunctions().followersList();
-                            Navigator.of(context).push(MaterialPageRoute(
+                            navigatorContext.push(MaterialPageRoute(
                                 builder: (context) =>
                                     FollowersList(users: followers)));
                           },

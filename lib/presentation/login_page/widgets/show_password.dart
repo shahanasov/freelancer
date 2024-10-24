@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:freelance/theme/color.dart';
 
 class ShowPassword extends StatefulWidget {
-  TextEditingController passwordController;
-  ShowPassword({super.key, required this.passwordController});
+ final TextEditingController passwordController;
+ const ShowPassword({super.key, required this.passwordController});
 
   @override
   State<ShowPassword> createState() => _ShowPasswordState();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freelance/theme/color.dart';
 
+// ignore: must_be_immutable
 class DOBWidget extends StatefulWidget {
    TextEditingController dob;
    DOBWidget({super.key,required this.dob});

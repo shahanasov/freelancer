@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freelance/db/model/post_model.dart';
@@ -60,7 +61,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       }
     } catch (e) {
       emit(SearchErrorState(error: e.toString()));
-      print("Error occurred while searching: $e"); 
+      log("Error occurred while searching: $e"); 
     }
   }
 }
