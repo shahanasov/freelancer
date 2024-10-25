@@ -12,7 +12,20 @@
           "package_name": "com.example.freelance"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "343562754685-e6hpl5130c487hdnjcul84fokj8lu1p2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.freelance",
+            "certificate_hash": "551edffd420f47c6eddecb66cf4e6525d9a1b247"
+          }
+        },
+        {
+          "client_id": "343562754685-28rh5oi1j9t7u6b92l9hh2p0sneol0hq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAVYoDNBusAPcywOu2-UhKshszqiYqJ3H8"
@@ -20,7 +33,41 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343562754685-28rh5oi1j9t7u6b92l9hh2p0sneol0hq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343562754685:android:58c461e42879e30a1c2f14",
+        "android_client_info": {
+          "package_name": "in.freelance.skill_verse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343562754685-28rh5oi1j9t7u6b92l9hh2p0sneol0hq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVYoDNBusAPcywOu2-UhKshszqiYqJ3H8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343562754685-28rh5oi1j9t7u6b92l9hh2p0sneol0hq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:freelance/presentation/bottom_navigation_main/bottom_nav.dart';
-import 'package:freelance/presentation/login_page/login_page.dart';
 import 'package:freelance/theme/color.dart';
 
 class SplashScreen extends StatefulWidget {
