@@ -16,20 +16,23 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppBar(context),
-        body: BlocBuilder<HomePageBloc, HomePageState>(
-          builder: (context, state) {
-            // print(state.toString());
-            if (state is HomePageLoaded) {
-              return customPostList(context, state);
-            } else if (state is HomePageLoading) {
-              return Center(
-                  child: CircularProgressIndicator(
-                color: white,
-              ));
-            } else {
-              return Container();
-            }
-          },
+        body: LayoutBuilder(builder: (context, constaints) {
+        return BlocBuilder<HomePageBloc, HomePageState>(
+              builder: (context, state) {
+                // print(state.toString());
+                if (state is HomePageLoaded) {
+                  return customPostList(context, state,constaints.maxWidth < 1000);
+                } else if (state is HomePageLoading) {
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: white,
+                  ));
+                } else {
+                  return Container();
+                }
+              },
+            );
+          }
         ));
   }
 }
@@ -37,10 +40,12 @@ class HomePage extends StatelessWidget {
 Widget customPostList(
   BuildContext context,
   HomePageLoaded state,
+  bool web
 ) {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
   return Padding(
-    padding: const EdgeInsets.all(15.0),
+    padding:web? EdgeInsets.all(15.0):
+     const EdgeInsets.only(left:300.0,right: 300),
     child: ListView.separated(
       itemCount: state.userandPost.length,
       itemBuilder: (context, index) {

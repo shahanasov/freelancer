@@ -1,1 +1,37 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"feelancingplatform","appId":"1:343562754685:android:68aeda2fca7177a41c2f14","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"feelancingplatform","configurations":{"android":"1:343562754685:android:68aeda2fca7177a41c2f14","web":"1:343562754685:web:e9bff5295a4e9e501c2f14","windows":"1:343562754685:web:53485cb8d69859f11c2f14"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "feelancingplatform",
+          "appId": "1:343562754685:android:68aeda2fca7177a41c2f14",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "feelancingplatform",
+          "configurations": {
+            "android": "1:343562754685:android:68aeda2fca7177a41c2f14",
+            "web": "1:343562754685:web:e9bff5295a4e9e501c2f14",
+            "windows": "1:343562754685:web:53485cb8d69859f11c2f14"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

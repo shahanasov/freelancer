@@ -56,6 +56,7 @@ class ChatPage extends StatelessWidget {
 
   Widget _buildMessageList() {
     String senderId = FirebaseAuth.instance.currentUser!.uid;
+    String? previousDate;
     return StreamBuilder(
         stream: chatServices.getMessages(senderId, recieverId),
         builder: (context, snapshot) {
@@ -65,16 +66,32 @@ class ChatPage extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Text('Loading..');
           }
-          return ListView(
-            children: snapshot.data!.docs
-                .map((doc) => buildMessageItem(doc, context))
-                .toList(),
+          var messages = snapshot.data!.docs;
+          return ListView.builder(
+            itemCount: messages.length,
+            reverse: false,
+            itemBuilder: (context, index) {
+              var data = messages[index].data() as Map<String, dynamic>;
+              DateTime timestamp = (data['timestamp'] as Timestamp).toDate();
+              String currentDate = DateFormat('yyyy-MM-dd').format(timestamp);
+
+              // Show date label if current message date differs from previous message date
+              bool showDateLabel = (previousDate != currentDate);
+              previousDate = currentDate; // Update after check
+              return Column(children: [
+                if (showDateLabel) buildDateLabel(currentDate),
+                buildMessageItem(data, context)
+              ]);
+            },
+            // children: snapshot.data!.docs
+            //     .map((doc) => buildMessageItem(doc, context))
+            //     .toList(),
           );
         });
   }
 
-  Widget buildMessageItem(DocumentSnapshot doc, context) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+  Widget buildMessageItem(Map<String, dynamic> data, context) {
+    // Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
     // is current user align to right is the current user,otherwise left
     bool isCurrentUser =
@@ -85,58 +102,57 @@ class ChatPage extends StatelessWidget {
     DateTime timestamp = (data['timestamp'] as Timestamp).toDate();
     String formattedTime = DateFormat('h:mm a').format(timestamp);
 
-    return SingleChildScrollView(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width *
-              0.7, // Limit the width to 70% of the screen
-        ),
-        child: Container(
-            alignment: alignment,
-            child: Column(
-              crossAxisAlignment: isCurrentUser
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
-              children: [
-                IntrinsicWidth(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.only(
-                            topLeft: const Radius.circular(12),
-                            topRight: const Radius.circular(12),
-                            bottomLeft: isCurrentUser
-                                ? const Radius.circular(12)
-                                : Radius.zero,
-                            bottomRight: isCurrentUser
-                                ? Radius.zero
-                                : const Radius.circular(12)),
-                        color: isCurrentUser ? Colors.blueGrey : Colors.grey),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 15),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 25),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          data["message"],
-                          softWrap: true,
-                        ),
-                        const SizedBox(),
-                        Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              formattedTime,
-                              style: const TextStyle(fontSize: 12),
-                            ))
-                      ],
-                    ),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        // maxWidth: MediaQuery.of(context).size.width *
+        //     0.7, // Limit the width to 70% of the screen
+      ),
+      child: Container(
+          alignment: alignment,
+          child: Column(
+            crossAxisAlignment: isCurrentUser
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: [
+              // showDateLabel ? buildDateLabel(currentDate) : SizedBox(),
+              IntrinsicWidth(
+                child: Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(12),
+                          topRight: const Radius.circular(12),
+                          bottomLeft: isCurrentUser
+                              ? const Radius.circular(12)
+                              : Radius.zero,
+                          bottomRight: isCurrentUser
+                              ? Radius.zero
+                              : const Radius.circular(12)),
+                      color: isCurrentUser ? Colors.blueGrey : Colors.grey),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10, horizontal: 15),
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 10, horizontal: 25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data["message"],
+                        softWrap: true,
+                      ),
+                      const SizedBox(),
+                      Align(
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            formattedTime,
+                            style: const TextStyle(fontSize: 12),
+                          ))
+                    ],
                   ),
                 ),
-              ],
-            )),
-      ),
+              ),
+            ],
+          )),
     );
   }
 
@@ -182,6 +198,27 @@ class ChatPage extends StatelessWidget {
                 )),
           )
         ],
+      ),
+    );
+  }
+
+  Widget buildDateLabel(String date) {
+    DateTime dateTime = DateFormat('yyyy-MM-dd').parse(date);
+    String formattedDate = DateFormat('EEE, MMM d, yyyy').format(dateTime);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            formattedDate,
+            style: const TextStyle(color: Colors.black87, fontSize: 12),
+          ),
+        ),
       ),
     );
   }

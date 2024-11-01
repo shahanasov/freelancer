@@ -10,17 +10,24 @@ class SuggestionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
-      body: BlocBuilder<SuggestionsWidgetBloc, SuggestionsWidgetState>(
-        builder: (context, state) {
-          if (state is AllUsersDataLoaded) {
-            return showallUsersWidget(state);
-          } else {
-            return Container();
-          }
-        },
-      ),
+      body: LayoutBuilder(builder: (context, constaints) {
+        return BlocBuilder<SuggestionsWidgetBloc, SuggestionsWidgetState>(
+          builder: (context, state) {
+            if (state is AllUsersDataLoaded) {
+              if (constaints.maxWidth > 1000) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 300, right: 300),
+                  child: showallUsersWidget(state, constaints.maxWidth < 600),
+                );
+              }
+              return showallUsersWidget(state, constaints.maxWidth < 600);
+            } else {
+              return Container();
+            }
+          },
+        );
+      }),
     );
   }
 }

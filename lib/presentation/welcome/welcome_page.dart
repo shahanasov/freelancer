@@ -20,12 +20,17 @@ class WelcomePage extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  "Welcome to SkillVerse, where connections spark opportunities. Share, inspire, and grow your journey with us—one post at a time.",
-                  style:GoogleFonts.playfairDisplay(fontSize: 20),
+                  "Welcome to HireArti, where connections spark opportunities. Share, inspire, and grow your journey with us—one post at a time.",
+                  style: GoogleFonts.playfairDisplay(fontSize: 20),
                 ),
-                TextButton(onPressed: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const UploadCv()));
-                }, child: const Text("Next"))
+                Align(
+                    alignment: Alignment.bottomRight,
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const UploadCv()));
+                        },
+                        child: const Text("Next")))
               ],
             ),
           ),

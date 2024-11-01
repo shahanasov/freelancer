@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../model/user_and_post_model.dart';
 import '../model/user_details.dart';
+import 'package:http/http.dart' as http;
 
 class PostFunctions {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
@@ -168,11 +169,27 @@ class PostFunctions {
         await FirebaseFirestore.instance.collection('Posts').doc(postId).get();
 
     if (post.exists) {
-      String content = "${post['imagePathofPost']}\n${post['postDescription']}";
-      Share.share(content, subject: 'New Post!');
-    } else {
-      // print('Post not found');
-    }
+       // Extract image URL, description, and app link
+    String imageUrl = post['imagePathofPost'];
+    String description = post['postDescription'];
+    String appLink = "https://www.amazon.com/gp/product/B0DKXM4K5F"; 
+
+    // Download the image to local storage
+    final response = await http.get(Uri.parse(imageUrl));
+    final documentDirectory = await getApplicationDocumentsDirectory();
+    final imagePath = '${documentDirectory.path}/temp_image.jpg';
+    File imageFile = File(imagePath);
+    await imageFile.writeAsBytes(response.bodyBytes);
+
+    // Combine the description and app link
+    String content = "$description\n\n$appLink";
+
+    // Create XFile for sharing
+    XFile xFile = XFile(imageFile.path);
+
+    // Share the image and content together using shareXFiles
+    await Share.shareXFiles([xFile], text: content, subject: 'Check out this post!');
+    } 
   }
 
   postLike(bool isLiked, String postId) {

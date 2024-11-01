@@ -38,7 +38,17 @@ class NotificationPage extends StatelessWidget {
                 ),
               );
             }
-            return notificationWidget(state);
+            return LayoutBuilder(builder: (context, constaints) {
+               if (constaints.maxWidth > 1000 ) {
+                return Padding(
+                  padding: EdgeInsets.only(left: 300, right: 300),
+                  child: notificationWidget(state),
+                );
+               }
+                return
+                 notificationWidget(state);
+              }
+            );
           } else if (state is NotificationLoading) {
             // Center the loading spinner
             return const Center(

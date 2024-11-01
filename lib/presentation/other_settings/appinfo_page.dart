@@ -7,7 +7,7 @@ class AppInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('About SkillVerse'),
+        title: const Text('About HireArti'),
       ),
       body: const SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -16,7 +16,7 @@ class AppInfoPage extends StatelessWidget {
           children: [
             // App Name
             Text(
-              'SkillVerse',
+              'HireArti',
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
@@ -26,7 +26,7 @@ class AppInfoPage extends StatelessWidget {
 
             // App Description
             Text(
-              'SkillVerse is a dynamic freelancing platform designed to connect businesses and individuals with top-notch independent contractors and agencies. It offers a seamless marketplace where employers can efficiently find talent for various projects. Whether you’re a client looking for skilled freelancers or a freelancer seeking projects, SkillVerse provides a platform to make collaboration easy and secure.',
+              'HireArti is a dynamic freelancing platform designed to connect businesses and individuals with top-notch independent contractors and agencies. It offers a seamless marketplace where employers can efficiently find talent for various projects. Whether you’re a client looking for skilled freelancers or a freelancer seeking projects, HireArti provides a platform to make collaboration easy and secure.',
               style: TextStyle(fontSize: 16.0),
             ),
             SizedBox(height: 16.0),

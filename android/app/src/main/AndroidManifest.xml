@@ -7,7 +7,7 @@
     
      
     <application
-        android:label="SkillVerse"
+        android:label="HireArti"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

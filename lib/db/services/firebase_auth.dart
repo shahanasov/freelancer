@@ -1,12 +1,10 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Authentication {
   FirebaseAuth auth = FirebaseAuth.instance;
-  DatabaseReference ref = FirebaseDatabase.instance.ref();
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
 
   Future<User?> addUsersWithEmail(String email, String password) async {

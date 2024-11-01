@@ -36,7 +36,7 @@ class ProfilePageAppBar extends StatelessWidget {
                 const DrawerHeader(
                     child: Center(
                   child: Text(
-                    'SkillVerse',
+                    'HireArti',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 )),

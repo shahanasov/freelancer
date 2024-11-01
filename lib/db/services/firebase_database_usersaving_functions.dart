@@ -292,4 +292,49 @@ class UserDatabaseFunctions {
     }
     return followersList;
   }
+
+  Future<void> deleteUser() async {
+    if (userId == null) {
+      log("No user is currently signed in.");
+      return;
+    }
+
+    try {
+      // Step 1: Delete all posts related to the user
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection("Posts")
+          .where("userId", isEqualTo: userId)
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+      log("All posts related to user $userId have been deleted.");
+
+      // Step 2: Delete all chat rooms related to the user
+      final chatRoomQuerySnapshot = await FirebaseFirestore.instance
+          .collection("chat_rooms")
+          .where("participants", arrayContains: userId)
+          .get();
+
+      for (var doc in chatRoomQuerySnapshot.docs) {
+        await doc.reference.delete();
+        log("Chat room with ID ${doc.id} deleted successfully.");
+      }
+      log("All chat rooms related to user $userId have been deleted.");
+
+      // Step 3: Delete user's document from UsersDetails collection
+      await FirebaseFirestore.instance
+          .collection('UsersDetails')
+          .doc(userId)
+          .delete();
+      log("User document with ID $userId deleted successfully from UsersDetails.");
+
+      // Step 4: Delete Firebase Authentication user
+      await FirebaseAuth.instance.currentUser?.delete();
+      log("User authentication account deleted successfully.");
+    } catch (e) {
+      log("Error during user deletion process: $e");
+    }
+  }
 }

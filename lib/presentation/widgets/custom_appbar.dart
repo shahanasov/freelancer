@@ -6,7 +6,7 @@ AppBar customAppBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
       toolbarOpacity: 1,
-      title: const Text('SkillVerse'),
+      title: const Text('HireArti'),
       actions: [
         const AddPostButton(),
         IconButton(

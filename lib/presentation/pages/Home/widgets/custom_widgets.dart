@@ -7,15 +7,15 @@ import 'package:freelance/presentation/pages/other_users_profile_page/business_l
 import 'package:freelance/presentation/pages/other_users_profile_page/others_profile_page.dart';
 import 'package:freelance/theme/color.dart';
 
-Widget showallUsersWidget(state) {
+Widget showallUsersWidget(state, bool web) {
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
   return Padding(
     padding: const EdgeInsets.all(10.0),
     child: GridView.builder(
         itemCount: state.users.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
           mainAxisSpacing: 10,
-          crossAxisCount: 2,
+          crossAxisCount: web? 2:4,
           crossAxisSpacing: 5,
         ),
         itemBuilder: (context, index) {
@@ -39,7 +39,8 @@ Widget showallUsersWidget(state) {
             },
             child: Card(
               child: Padding(
-                padding: const EdgeInsets.all(25.0),
+                padding: web? EdgeInsets.all(25):
+                const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
                     ClipRRect(

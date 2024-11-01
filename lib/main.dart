@@ -19,7 +19,6 @@ import 'package:freelance/presentation/welcome/splash_screen.dart';
 import 'package:freelance/presentation/welcome/welcome_page.dart';
 import 'package:freelance/presentation/widgets/suggestions_widget/bloc/suggestions_widget_bloc.dart';
 
-import 'firebase_options.dart';
 import 'presentation/login_page/login_page.dart';
 import 'presentation/login_page/widgets/bloc/toggle_bloc.dart';
 import 'presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dart';
@@ -27,7 +26,14 @@ import 'presentation/pages/profile_page/businesslogin/bloc/profile_page_bloc.dar
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: FirebaseOptions(
+      apiKey: "AIzaSyDyNHCEHLYTi3TL2vHU9Ts72sAb8lELazg",
+      authDomain: "feelancingplatform.firebaseapp.com",
+      projectId: "feelancingplatform",
+      storageBucket: "feelancingplatform.appspot.com",
+      messagingSenderId: "343562754685",
+      appId: "1:343562754685:web:e9bff5295a4e9e501c2f14",
+    ),
   );
   runApp(const MyApp());
 }

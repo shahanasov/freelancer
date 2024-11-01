@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freelance/db/model/post_model.dart';
@@ -27,6 +29,7 @@ class EditImageWidget extends StatelessWidget {
                   if (formKey.currentState!.validate()) {
                     formKey.currentState!.save();
                     submit(context);
+                    context.read<HomePageBloc>().add(UsersPostFetchEvent());
                   } else {
                     Navigator.of(context).pop();
                   }
@@ -42,7 +45,7 @@ class EditImageWidget extends StatelessWidget {
         ));
   }
 
-  void submit(context) async {
+  void submit(BuildContext context) async {
     final postDescription = sharethoughtsController.text.trim();
     if (postDescription.isNotEmpty) {
       PostModel postModel = PostModel(

@@ -14,48 +14,55 @@ class ChatListPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Messsages'),
         ),
-        body: BlocBuilder<ChatListBloc, ChatListState>(
-          builder: (context, state) {
-            if (state is ChatListLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is ChatListed) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  itemCount: state.user.length,
-                  itemBuilder: (context, index) {
-                    DateTime timestamp = (state.time[index]).toDate();
-                    String formattedTime =
-                        DateFormat('h:mm a').format(timestamp);
-                    final user = state.user[index];
-                    return Card(
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: user.profilePhoto != null
-                              ? NetworkImage(user.profilePhoto!)
-                              : const AssetImage("assets/images/profilenew.jpg")
-                                  as ImageProvider,
-                        ),
-                        title: Text(user.firstName),
-                        subtitle: Text(" $formattedTime "),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ChatPage(
-                                    recieverId: state.user[index].id,
-                                    recieverEmail: state.user[index].firstName,
-                                    user: state.user[index],
-                                  )));
-                        },
-                      ),
-                    );
-                  },
-                ),
-              );
-            } else if (state is ChatListError) {
-              return Center(child: Text('Error: ${state.error}'));
-            }
-            return const Center(child: Text('No Messages'));
-          },
+        body: LayoutBuilder(builder: (context, constaints) {
+            return BlocBuilder<ChatListBloc, ChatListState>(
+              builder: (context, state) {
+                if (state is ChatListLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is ChatListed) {
+                  return list(state,constaints.maxWidth < 1000);
+                } else if (state is ChatListError) {
+                  return Center(child: Text('Error: ${state.error}'));
+                }
+                return const Center(child: Text('No Messages'));
+              },
+            );
+          }
         ));
+  }
+
+  Widget list(ChatListed state,bool web) {
+    return Padding(
+      padding: web? EdgeInsets.all(8.0):
+     const EdgeInsets.only(left:300.0,right: 300),
+      child: ListView.builder(
+        itemCount: state.user.length,
+        itemBuilder: (context, index) {
+          DateTime timestamp = (state.time[index]).toDate();
+          String formattedTime = DateFormat('h:mm a').format(timestamp);
+          final user = state.user[index];
+          return Card(
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundImage: user.profilePhoto != null
+                    ? NetworkImage(user.profilePhoto!)
+                    : const AssetImage("assets/images/profilenew.jpg")
+                        as ImageProvider,
+              ),
+              title: Text(user.firstName),
+              subtitle: Text(" $formattedTime "),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ChatPage(
+                          recieverId: state.user[index].id,
+                          recieverEmail: state.user[index].firstName,
+                          user: state.user[index],
+                        )));
+              },
+            ),
+          );
+        },
+      ),
+    );
   }
 }
